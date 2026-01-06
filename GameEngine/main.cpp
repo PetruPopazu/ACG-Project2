@@ -5,6 +5,8 @@
 #include "Model Loading\texture.h"
 #include "Model Loading\meshLoaderObj.h"
 
+using namespace glm;
+
 void processKeyboardInput ();
 
 float deltaTime = 0.0f;	// time between current frame and last frame
@@ -12,6 +14,9 @@ float lastFrame = 0.0f;
 
 Window window("Game Engine", 800, 800);
 Camera camera;
+
+vec3 playerPos = vec3(0.0f, 0.0f, 0.0f);
+float playerRoataion = 0.0f;
 
 glm::vec3 lightColor = glm::vec3(1.0f);
 glm::vec3 lightPos = glm::vec3(-180.0f, 100.0f, -200.0f);
@@ -152,29 +157,29 @@ int main()
 
 void processKeyboardInput()
 {
-	float cameraSpeed = 30 * deltaTime;
+	float moveSpeed = 30 * deltaTime;
 
 	//translation
 	if (window.isPressed(GLFW_KEY_W))
-		camera.keyboardMoveFront(cameraSpeed);
+		playerPos.z -= moveSpeed;
 	if (window.isPressed(GLFW_KEY_S))
-		camera.keyboardMoveBack(cameraSpeed);
+		playerPos.z += moveSpeed;
 	if (window.isPressed(GLFW_KEY_A))
-		camera.keyboardMoveLeft(cameraSpeed);
+		playerPos.x -= moveSpeed;
 	if (window.isPressed(GLFW_KEY_D))
-		camera.keyboardMoveRight(cameraSpeed);
+		playerPos.x += moveSpeed;
 	if (window.isPressed(GLFW_KEY_R))
-		camera.keyboardMoveUp(cameraSpeed);
+		camera.keyboardMoveUp(moveSpeed);
 	if (window.isPressed(GLFW_KEY_F))
-		camera.keyboardMoveDown(cameraSpeed);
+		camera.keyboardMoveDown(moveSpeed);
 
 	//rotation
 	if (window.isPressed(GLFW_KEY_LEFT))
-		camera.rotateOy(cameraSpeed);
+		camera.rotateOy(moveSpeed);
 	if (window.isPressed(GLFW_KEY_RIGHT))
-		camera.rotateOy(-cameraSpeed);
+		camera.rotateOy(-moveSpeed);
 	if (window.isPressed(GLFW_KEY_UP))
-		camera.rotateOx(cameraSpeed);
+		camera.rotateOx(moveSpeed);
 	if (window.isPressed(GLFW_KEY_DOWN))
-		camera.rotateOx(-cameraSpeed);
+		camera.rotateOx(-moveSpeed);
 }
