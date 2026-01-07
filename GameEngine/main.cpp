@@ -8,9 +8,11 @@
 using namespace glm;
 
 void processKeyboardInput ();
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
+float cameraDistance = 20.0f;
 
 Window window("Game Engine", 800, 800);
 Camera camera;
@@ -33,8 +35,12 @@ int main()
 	GLuint tex = loadBMP("Resources/Textures/wood.bmp");
 	GLuint tex2 = loadBMP("Resources/Textures/rock.bmp");
 	GLuint tex3 = loadBMP("Resources/Textures/orange.bmp");
+	GLuint tex4 = loadBMP("Resources/Textures/mat0_c.bmp");
+	//GLuint tex5 = loadBMP("Resources/Textures/grass.bmp");
 
 	glEnable(GL_DEPTH_TEST);
+
+	glfwSetScrollCallback(window.getWindow(), scroll_callback);
 
 	//Test custom mesh loading
 	std::vector<Vertex> vert;
@@ -77,6 +83,16 @@ int main()
 	textures3[0].id = tex3;
 	textures3[0].type = "texture_diffuse";
 
+	std::vector<Texture> textures4;
+	textures4.push_back(Texture());
+	textures4[0].id = tex4;
+	textures4[0].type = "texture_diffuse";
+
+	/*std::vector<Texture> textures5;
+	textures4.push_back(Texture());
+	textures4[0].id = tex5;
+	textures4[0].type = "texture_diffuse";*/
+
 
 	Mesh mesh(vert, ind, textures3);
 
@@ -86,6 +102,11 @@ int main()
 	Mesh sun = loader.loadObj("Resources/Models/sphere.obj");
 	Mesh box = loader.loadObj("Resources/Models/cube.obj", textures);
 	Mesh plane = loader.loadObj("Resources/Models/plane.obj", textures3);
+	Mesh mountain1 = loader.loadObj("Resources/Models/mountain1.obj", textures4);
+	Mesh mountain2 = loader.loadObj("Resources/Models/mountain2.obj", textures4);
+	//Mesh terrain = loader.loadObj("Resources/Models/Terrain2k.obj", textures4);
+	//Mesh player = loader.loadObj("Resources/Models/knight.obj", textures2);
+	//Mesh terrain = loader.loadObj("Resources/Models/grass.obj", textures3);
 
 	//check if we close the window or press the escape button
 	while (!window.isPressed(GLFW_KEY_ESCAPE) &&
@@ -98,6 +119,7 @@ int main()
 
 		processKeyboardInput();
 
+
 		//test mouse input
 		if (window.isMousePressed(GLFW_MOUSE_BUTTON_LEFT))
 		{
@@ -105,7 +127,7 @@ int main()
 		}
 		 //// Code for the light ////
 
-		vec3 cameraOffset = vec3(0.0f, 15.0f, 20.0f);
+		vec3 cameraOffset = vec3(0.0f, 1.0f, cameraDistance);
 		vec3 currentCameraPos = playerPos + cameraOffset;
 
 		glm::mat4 ViewMatrix = glm::lookAt(currentCameraPos, playerPos, camera.getCameraUp());
@@ -138,6 +160,7 @@ int main()
 
 		ModelMatrix = glm::mat4(1.0);
 		ModelMatrix = glm::translate(ModelMatrix, playerPos);
+		//ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -146,19 +169,69 @@ int main()
 		//glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
 		glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
 		box.draw(shader);
+		//player.draw(shader);
 
 		///// Test plane Obj file //////
 
 		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, -20.0f, 0.0f));
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 8.0f, 0.0f));
+		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		ModelMatrix = scale(ModelMatrix, glm::vec3(40.0f, 1.0f, 40.0f));
 		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 		plane.draw(shader);
+		//Primul Munte
+		ModelMatrix = glm::mat4(1.0);
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 5.0f, 0.0f));
+		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
+		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+		mountain1.draw(shader);
+		//Al doilea Munte
+		ModelMatrix = glm::mat4(1.0);
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-150.0f, 5.0f, 0.0f));
+		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
+		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+		mountain2.draw(shader);
+
+		//Terenul
+		//ModelMatrix = glm::mat4(1.0);
+		//ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 5.0f, -50.0f));
+		////ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		////ModelMatrix = scale(ModelMatrix, glm::vec3(40.0f, 1.0f, 40.0f));
+		//MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		//glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+		//glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+		//terrain.draw(shader);
+
+
+		/*ModelMatrix = glm::mat4(1.0);
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 5.0f, 2.0f));
+		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+		terrain.draw(shader);*/
 
 		window.update();
 	}
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	cameraDistance -= (float)yoffset * 1.5f;
 }
 
 void processKeyboardInput()
@@ -175,9 +248,9 @@ void processKeyboardInput()
 	if (window.isPressed(GLFW_KEY_D))
 		playerPos.x += moveSpeed;
 	if (window.isPressed(GLFW_KEY_R))
-		camera.keyboardMoveUp(moveSpeed);
+		playerPos.y += moveSpeed;
 	if (window.isPressed(GLFW_KEY_F))
-		camera.keyboardMoveDown(moveSpeed);
+		playerPos.y -= moveSpeed;
 
 	//rotation
 	if (window.isPressed(GLFW_KEY_LEFT))

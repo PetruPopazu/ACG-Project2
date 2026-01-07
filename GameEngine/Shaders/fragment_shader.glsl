@@ -14,6 +14,23 @@ uniform vec3 viewPos;
 void main()
 {
 	//TO DO: Add illumination from Lab 9
+	vec4 texColor = texture(texture1, textureCoord * 50.0);
+	float ambientStrength = 0.2;
+	vec3 ambient = ambientStrength * lightColor;
 
-	fragColor = texture(texture1, textureCoord);
+
+	vec3 normal = normalize(norm);
+	vec3 lightDir = normalize(lightPos - fragPos);
+	float diff = max(dot(normal, lightDir), 0.0);
+	vec3 diffuse = diff * lightColor;
+
+
+	float specularStrength = 0.5;
+	vec3 viewDir = normalize(viewPos - fragPos);
+	vec3 reflectDir = reflect(-lightDir, normal);
+	float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+	vec3 specular = specularStrength * spec * lightColor;
+
+	vec3 result = (ambient + diffuse + specular) * texColor.rgb;
+	fragColor = vec4(result, texColor.a);
 }
