@@ -36,6 +36,8 @@ int main()
 	GLuint tex2 = loadBMP("Resources/Textures/rock.bmp");
 	GLuint tex3 = loadBMP("Resources/Textures/orange.bmp");
 	GLuint tex4 = loadBMP("Resources/Textures/mat0_c.bmp");
+	GLuint grassColor = loadBMP("Resources/Textures/Grass001_Diffuse.bmp");
+	GLuint grassNormal = loadBMP("Resources/Textures/Grass001_Normal.bmp");
 	//GLuint tex5 = loadBMP("Resources/Textures/grass.bmp");
 
 	glEnable(GL_DEPTH_TEST);
@@ -96,12 +98,14 @@ int main()
 
 	Mesh mesh(vert, ind, textures3);
 
+	std::vector<Texture> emptyTextures;
+
 	// Create Obj files - easier :)
 	// we can add here our textures :)
 	MeshLoaderObj loader;
 	Mesh sun = loader.loadObj("Resources/Models/sphere.obj");
 	Mesh box = loader.loadObj("Resources/Models/cube.obj", textures);
-	Mesh plane = loader.loadObj("Resources/Models/plane.obj", textures3);
+	Mesh plane = loader.loadObj("Resources/Models/plane.obj", emptyTextures);
 	Mesh mountain1 = loader.loadObj("Resources/Models/mountain1.obj", textures4);
 	Mesh mountain2 = loader.loadObj("Resources/Models/mountain2.obj", textures4);
 	//Mesh terrain = loader.loadObj("Resources/Models/Terrain2k.obj", textures4);
@@ -172,11 +176,20 @@ int main()
 		//player.draw(shader);
 
 		///// Test plane Obj file //////
+		//Drawing the plane
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, grassColor);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, grassNormal);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 8.0f, 0.0f));
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-50.0f, 8.0f, 0.0f));
 		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		ModelMatrix = scale(ModelMatrix, glm::vec3(40.0f, 1.0f, 40.0f));
+		ModelMatrix = scale(ModelMatrix, glm::vec3(10.0f, 1.0f, 10.0f));
 		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
