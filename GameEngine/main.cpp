@@ -9,19 +9,20 @@ using namespace glm;
 
 void processKeyboardInput ();
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+unsigned int loadCubeMap(std::vector<std::string> faces);
 
-float deltaTime = 0.0f;	// time between current frame and last frame
+float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 float cameraDistance = 20.0f;
 
-Window window("Game Engine", 800, 800);
+Window window("Marian - The time traveler", 800, 800);
 Camera camera;
 
-vec3 playerPos = vec3(0.0f, 0.0f, 0.0f);
+vec3 playerPos = vec3(0.0f, 10.0f, 0.0f);
 float playerRoataion = 0.0f;
 
 glm::vec3 lightColor = glm::vec3(1.0f);
-glm::vec3 lightPos = glm::vec3(-180.0f, 100.0f, -200.0f);
+glm::vec3 lightPos = glm::vec3(-180.0f, 100.0f, 200.0f);
 
 int main()
 {
@@ -30,12 +31,21 @@ int main()
 	//building and compiling shader program
 	Shader shader("Shaders/vertex_shader.glsl", "Shaders/fragment_shader.glsl");
 	Shader sunShader("Shaders/sun_vertex_shader.glsl", "Shaders/sun_fragment_shader.glsl");
+	Shader skyboxShader("Shaders/skybox_vertex_shader.glsl", "Shaders/skybox_fragment_shader.glsl");
 
 	//Textures
 	GLuint tex = loadBMP("Resources/Textures/wood.bmp");
 	GLuint tex2 = loadBMP("Resources/Textures/rock.bmp");
 	GLuint tex3 = loadBMP("Resources/Textures/orange.bmp");
 	GLuint tex4 = loadBMP("Resources/Textures/mat0_c.bmp");
+	GLuint grassColor = loadBMP("Resources/Textures/Grass001_Diffuse.bmp");
+	GLuint grassNormal = loadBMP("Resources/Textures/Grass001_Normal.bmp");
+	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
+	GLuint left = loadBMP("Resources/Textures/left.bmp");
+	GLuint top = loadBMP("Resources/Textures/top.bmp");
+	GLuint bottom = loadBMP("Resources/Textures/bottom.bmp");
+	GLuint back = loadBMP("Resources/Textures/back.bmp");
+	GLuint front = loadBMP("Resources/Textures/front.bmp");*/
 	//GLuint tex5 = loadBMP("Resources/Textures/grass.bmp");
 
 	glEnable(GL_DEPTH_TEST);
@@ -96,23 +106,41 @@ int main()
 
 	Mesh mesh(vert, ind, textures3);
 
+	std::vector<Texture> emptyTextures;
+
 	// Create Obj files - easier :)
 	// we can add here our textures :)
 	MeshLoaderObj loader;
 	Mesh sun = loader.loadObj("Resources/Models/sphere.obj");
 	Mesh box = loader.loadObj("Resources/Models/cube.obj", textures);
-	Mesh plane = loader.loadObj("Resources/Models/plane.obj", textures3);
+	Mesh plane = loader.loadObj("Resources/Models/plane.obj", emptyTextures);
 	Mesh mountain1 = loader.loadObj("Resources/Models/mountain1.obj", textures4);
 	Mesh mountain2 = loader.loadObj("Resources/Models/mountain2.obj", textures4);
+	//Mesh skybox = loader.loadObj("Resources/Models/box.obj");
 	//Mesh terrain = loader.loadObj("Resources/Models/Terrain2k.obj", textures4);
 	//Mesh player = loader.loadObj("Resources/Models/knight.obj", textures2);
 	//Mesh terrain = loader.loadObj("Resources/Models/grass.obj", textures3);
+
+	std::vector<std::string> faces = {
+	"Resources/Textures/right.bmp",
+	"Resources/Textures/left.bmp",
+	"Resources/Textures/top.bmp",
+	"Resources/Textures/bottom.bmp",
+	"Resources/Textures/back.bmp",
+	"Resources/Textures/front.bmp"
+	};
+
+	unsigned int cubemapID = loadCubeMap(faces);
 
 	//check if we close the window or press the escape button
 	while (!window.isPressed(GLFW_KEY_ESCAPE) &&
 		glfwWindowShouldClose(window.getWindow()) == 0)
 	{
 		window.clear();
+
+
+
+
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
@@ -127,15 +155,15 @@ int main()
 		}
 		 //// Code for the light ////
 
-		vec3 cameraOffset = vec3(0.0f, 1.0f, cameraDistance);
+		vec3 cameraOffset = vec3(0.0f, 15.0f, cameraDistance);
 		vec3 currentCameraPos = playerPos + cameraOffset;
 
 		glm::mat4 ViewMatrix = glm::lookAt(currentCameraPos, playerPos, camera.getCameraUp());
-
+		glm::mat4 ProjectionMatrix = glm::perspective(90.0f, window.getWidth() * 1.0f / window.getHeight(), 0.1f, 10000.0f);
 
 		sunShader.use();
 
-		glm::mat4 ProjectionMatrix = glm::perspective(90.0f, window.getWidth() * 1.0f / window.getHeight(), 0.1f, 10000.0f);
+		
 		//glm::mat4 ViewMatrix = glm::lookAt(camera.getCameraPosition(), camera.getCameraPosition() + camera.getCameraViewDirection(), camera.getCameraUp());
 
 		GLuint MatrixID = glGetUniformLocation(sunShader.getId(), "MVP");
@@ -172,11 +200,20 @@ int main()
 		//player.draw(shader);
 
 		///// Test plane Obj file //////
+		//Drawing the plane
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, grassColor);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, grassNormal);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 8.0f, 0.0f));
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 9.0f, 0.0f));
 		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		ModelMatrix = scale(ModelMatrix, glm::vec3(40.0f, 1.0f, 40.0f));
+		ModelMatrix = scale(ModelMatrix, glm::vec3(10.0f, 1.0f, 10.0f));
 		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -184,9 +221,9 @@ int main()
 		plane.draw(shader);
 		//Primul Munte
 		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 5.0f, 0.0f));
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(75.0f, 5.0f, -350.0f));
 		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
+		ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -194,9 +231,9 @@ int main()
 		mountain1.draw(shader);
 		//Al doilea Munte
 		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-150.0f, 5.0f, 0.0f));
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-150.0f, 5.0f, -350.0f));
 		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
+		ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -224,6 +261,24 @@ int main()
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 		terrain.draw(shader);*/
+
+		//glDepthFunc(GL_LEQUAL); // Skybox passes depth test at maximum distance
+		//skyboxShader.use();
+		//mat4 skyboxView = mat4(mat3(ViewMatrix));
+
+		//// Remove translation from the view matrix so the sky follows the player
+
+		//// Set uniforms for the skybox shader
+		//glUniformMatrix4fv(glGetUniformLocation(skyboxShader.getId(), "projection"), 1, GL_FALSE, &ProjectionMatrix[0][0]);
+		//glUniformMatrix4fv(glGetUniformLocation(skyboxShader.getId(), "view"), 1, GL_FALSE, &skyboxView[0][0]);
+
+		//// Bind the cubemap and draw the cube
+		//glActiveTexture(GL_TEXTURE0);
+		//glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapID);
+		//glUniform1i(glGetUniformLocation(skyboxShader.getId(), "skybox"), 0);
+		//skybox.draw(skyboxShader); // Using your 'box' mesh for geometry
+
+		//glDepthFunc(GL_LESS); // Reset depth function to default
 
 		window.update();
 	}
@@ -261,4 +316,27 @@ void processKeyboardInput()
 		camera.rotateOx(moveSpeed);
 	if (window.isPressed(GLFW_KEY_DOWN))
 		camera.rotateOx(-moveSpeed);
+}
+
+unsigned int loadCubeMap(std::vector<std::string> faces)
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+	for (unsigned int i = 0; i < faces.size(); i++){
+		unsigned int width, height;
+		unsigned char* data = loadRawBMP(faces[i].c_str(), width, height);
+		if (data){
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+				0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data
+			);
+			delete[] data;
+		}
+	}
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	return textureID;
 }

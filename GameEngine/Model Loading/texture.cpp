@@ -68,3 +68,37 @@ GLuint loadBMP(const char * imagepath) {
 	// Return the ID of the texture
 	return textureID;
 }
+
+unsigned char* loadRawBMP(const char* imagepath, unsigned int& width, unsigned int& height) {
+	unsigned char header[54];
+	unsigned int dataPos;
+	unsigned int imageSize;
+	unsigned char* data;
+
+	FILE* file;
+	errno_t err = fopen_s(&file, imagepath, "rb");
+	if (err) {
+		printf("%s could not be opened.\n", imagepath);
+		return nullptr;
+	}
+
+	if (fread(header, 1, 54, file) != 54 || header[0] != 'B' || header[1] != 'M') {
+		printf("Not a correct BMP file\n");
+		fclose(file);
+		return nullptr;
+	}
+
+	dataPos = *(int*)&(header[0x0A]);
+	imageSize = *(int*)&(header[0x22]);
+	width = *(int*)&(header[0x12]);
+	height = *(int*)&(header[0x16]);
+
+	if (imageSize == 0) imageSize = width * height * 3;
+	if (dataPos == 0) dataPos = 54;
+
+	data = new unsigned char[imageSize];
+	fread(data, 1, imageSize, file);
+	fclose(file);
+
+	return data; // Returns raw pixels for the cubemap faces
+}

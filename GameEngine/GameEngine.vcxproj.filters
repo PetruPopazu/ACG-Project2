@@ -65,12 +65,42 @@
     <None Include="Shaders\fragment_shader.glsl" />
     <None Include="Shaders\sun_fragment_shader.glsl" />
     <None Include="Shaders\sun_vertex_shader.glsl" />
+    <None Include="Shaders\mountain_vertex_shader.glsl" />
+    <None Include="Shaders\skybox_fragment_shader.glsl" />
+    <None Include="Shaders\skybox_vertex_shader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\wood.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Resources\Textures\rock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Textures\orange.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Textures\mat0_c.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Textures\Grass001_Roughness.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Textures\back.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Textures\bottom.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Textures\front.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Textures\top.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Textures\right.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Textures\left.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

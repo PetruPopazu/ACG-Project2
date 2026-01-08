@@ -136,12 +136,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Shaders\fragment_shader.glsl" />
+    <None Include="Shaders\mountain_vertex_shader.glsl" />
+    <None Include="Shaders\skybox_fragment_shader.glsl" />
+    <None Include="Shaders\skybox_vertex_shader.glsl" />
     <None Include="Shaders\sun_fragment_shader.glsl" />
     <None Include="Shaders\sun_vertex_shader.glsl" />
     <None Include="Shaders\vertex_shader.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resources\Textures\back.bmp" />
+    <Image Include="Resources\Textures\bottom.bmp" />
+    <Image Include="Resources\Textures\front.bmp" />
+    <Image Include="Resources\Textures\Grass001_Roughness.bmp" />
+    <Image Include="Resources\Textures\left.bmp" />
+    <Image Include="Resources\Textures\mat0_c.bmp" />
+    <Image Include="Resources\Textures\orange.bmp" />
+    <Image Include="Resources\Textures\right.bmp" />
     <Image Include="Resources\Textures\rock.bmp" />
+    <Image Include="Resources\Textures\top.bmp" />
     <Image Include="Resources\Textures\wood.bmp" />
   </ItemGroup>
   <ItemGroup>
