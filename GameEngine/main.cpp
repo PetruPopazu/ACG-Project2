@@ -31,7 +31,9 @@ int main()
 	//building and compiling shader program
 	Shader shader("Shaders/vertex_shader.glsl", "Shaders/fragment_shader.glsl");
 	Shader sunShader("Shaders/sun_vertex_shader.glsl", "Shaders/sun_fragment_shader.glsl");
-	Shader skyboxShader("Shaders/skybox_vertex_shader.glsl", "Shaders/skybox_fragment_shader.glsl");
+	Shader mountainShader("Shaders/mountain_vertex_shader.glsl", "Shaders/mountain_fragment_shader.glsl");
+	Shader terrainShader("Shaders/terrain_vertex_shader.glsl", "Shaders/terrain_fragment_shader.glsl");
+	//Shader skyboxShader("Shaders/skybox_vertex_shader.glsl", "Shaders/skybox_fragment_shader.glsl");
 
 	//Textures
 	GLuint tex = loadBMP("Resources/Textures/wood.bmp");
@@ -40,6 +42,8 @@ int main()
 	GLuint tex4 = loadBMP("Resources/Textures/mat0_c.bmp");
 	GLuint grassColor = loadBMP("Resources/Textures/Grass001_Diffuse.bmp");
 	GLuint grassNormal = loadBMP("Resources/Textures/Grass001_Normal.bmp");
+	GLuint munteColor = loadBMP("Resources/Textures/munte_color.bmp");
+	GLuint munteNormal = loadBMP("Resources/Textures/munte_normal.bmp");
 	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
 	GLuint left = loadBMP("Resources/Textures/left.bmp");
 	GLuint top = loadBMP("Resources/Textures/top.bmp");
@@ -106,14 +110,17 @@ int main()
 
 	Mesh mesh(vert, ind, textures3);
 
+	std::vector<Texture> emptyTextures;
+
 	// Create Obj files - easier :)
 	// we can add here our textures :)
 	MeshLoaderObj loader;
 	Mesh sun = loader.loadObj("Resources/Models/sphere.obj");
 	Mesh box = loader.loadObj("Resources/Models/cube.obj", textures);
 	Mesh plane = loader.loadObj("Resources/Models/plane.obj", emptyTextures);
-	Mesh mountain1 = loader.loadObj("Resources/Models/mountain1.obj", textures4);
-	Mesh mountain2 = loader.loadObj("Resources/Models/mountain2.obj", textures4);
+	Mesh mountain1 = loader.loadObj("Resources/Models/mountain1.obj", textures3);
+	Mesh mountain2 = loader.loadObj("Resources/Models/mountain2.obj", textures3);
+	Mesh castle = loader.loadObj("Resources/Models/Castle.obj", textures2);
 	//Mesh skybox = loader.loadObj("Resources/Models/box.obj");
 	//Mesh terrain = loader.loadObj("Resources/Models/Terrain2k.obj", textures4);
 	//Mesh player = loader.loadObj("Resources/Models/knight.obj", textures2);
@@ -135,9 +142,6 @@ int main()
 		glfwWindowShouldClose(window.getWindow()) == 0)
 	{
 		window.clear();
-
-
-
 
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
@@ -199,14 +203,14 @@ int main()
 
 		///// Test plane Obj file //////
 		//Drawing the plane
-
+		terrainShader.use();
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, grassColor);
-		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+		glUniform1i(glGetUniformLocation(terrainShader.getId(), "texture_diffuse"), 0);
 
-		glActiveTexture(GL_TEXTURE1);
+		/*glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, grassNormal);
-		glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);*/
 
 		ModelMatrix = glm::mat4(1.0);
 		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 8.0f, 0.0f));
@@ -216,7 +220,25 @@ int main()
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-		plane.draw(shader);
+		glUniform3f(glGetUniformLocation(terrainShader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
+		glUniform3f(glGetUniformLocation(terrainShader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		glUniform3f(glGetUniformLocation(terrainShader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
+
+		plane.draw(terrainShader);
+
+		mountainShader.use();
+
+		glUniform3f(glGetUniformLocation(mountainShader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
+		glUniform3f(glGetUniformLocation(mountainShader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		glUniform3f(glGetUniformLocation(mountainShader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
+
+
+		/*glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, );
+		glUniform1i(glGetUniformLocation(mountainShader.getId(), "texture_diffuse"), 0);*/
+		/*glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, munteNormal);
+		glUniform1i(glGetUniformLocation(mountainShader.getId(), "texture_normal"), 1);*/
 		//Primul Munte
 		ModelMatrix = glm::mat4(1.0);
 		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(75.0f, 5.0f, -350.0f));
@@ -226,7 +248,7 @@ int main()
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-		mountain1.draw(shader);
+		mountain1.draw(mountainShader);
 		//Al doilea Munte
 		ModelMatrix = glm::mat4(1.0);
 		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-150.0f, 5.0f, -350.0f));
@@ -236,8 +258,19 @@ int main()
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-		mountain2.draw(shader);
+		mountain2.draw(mountainShader);
 
+		//Castel
+		shader.use();
+
+		ModelMatrix = glm::mat4(1.0);
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 9.0f, -100.0f));
+		ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+		castle.draw(shader);
 		//Terenul
 		//ModelMatrix = glm::mat4(1.0);
 		//ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 5.0f, -50.0f));

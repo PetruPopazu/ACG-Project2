@@ -1,7 +1,7 @@
 #version 400
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec2 aTexCoord;
-layout (location = 2) in vec3 aNormal;
+layout (location = 0) in vec3 pos;
+layout (location = 1) in vec2 texCoord;
+layout (location = 2) in vec3 normal;
 
 out vec2 textureCoord;
 out vec3 norm;
@@ -12,8 +12,8 @@ uniform mat4 model;
 
 void main()
 {
-	textureCoord = aTexCoord;
-	norm = mat3(transpose(inverse(model))) * aNormal;  
-	fragPos = vec3(model * vec4(aPos, 1.0));
-	gl_Position = MVP * vec4(aPos, 1.0);
+	textureCoord = texCoord;
+	norm = mat3(transpose(inverse(model))) * normal;  
+	fragPos = vec3(model * vec4(pos, 1.0));
+	gl_Position = MVP * vec4(pos, 1.0);
 }

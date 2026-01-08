@@ -68,6 +68,9 @@
     <None Include="Shaders\mountain_vertex_shader.glsl" />
     <None Include="Shaders\skybox_fragment_shader.glsl" />
     <None Include="Shaders\skybox_vertex_shader.glsl" />
+    <None Include="Shaders\mountain_fragment_shader.glsl" />
+    <None Include="Shaders\terrain_fragment_shader.glsl" />
+    <None Include="Shaders\terrain_vertex_shader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\wood.bmp">
