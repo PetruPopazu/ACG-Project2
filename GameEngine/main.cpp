@@ -106,8 +106,6 @@ int main()
 
 	Mesh mesh(vert, ind, textures3);
 
-	std::vector<Texture> emptyTextures;
-
 	// Create Obj files - easier :)
 	// we can add here our textures :)
 	MeshLoaderObj loader;
@@ -211,7 +209,7 @@ int main()
 		glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 9.0f, 0.0f));
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 8.0f, 0.0f));
 		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		ModelMatrix = scale(ModelMatrix, glm::vec3(10.0f, 1.0f, 10.0f));
 		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
