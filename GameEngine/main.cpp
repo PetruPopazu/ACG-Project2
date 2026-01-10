@@ -10,6 +10,10 @@ using namespace glm;
 void processKeyboardInput ();
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 unsigned int loadCubeMap(std::vector<std::string> faces);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+
+bool firstMouse = true;
+float lastX = 400, lastY = 400;
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
@@ -42,8 +46,11 @@ int main()
 	GLuint tex4 = loadBMP("Resources/Textures/mat0_c.bmp");
 	GLuint grassColor = loadBMP("Resources/Textures/Grass001_Diffuse.bmp");
 	GLuint grassNormal = loadBMP("Resources/Textures/Grass001_Normal.bmp");
-	GLuint munteColor = loadBMP("Resources/Textures/munte_color.bmp");
+	GLuint munteColor = loadBMP("Resources/Textures/Rock020_4K-JPG_Color.bmp");
 	GLuint munteNormal = loadBMP("Resources/Textures/munte_normal.bmp");
+	GLuint castelTex = loadBMP("Resources/Textures/castel.bmp");
+	GLuint stoneTex = loadBMP("Resources/Textures/Stone.bmp");
+	GLuint gateTex = loadBMP("Resources/Textures/gate.bmp");
 	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
 	GLuint left = loadBMP("Resources/Textures/left.bmp");
 	GLuint top = loadBMP("Resources/Textures/top.bmp");
@@ -55,6 +62,7 @@ int main()
 	glEnable(GL_DEPTH_TEST);
 
 	glfwSetScrollCallback(window.getWindow(), scroll_callback);
+	glfwSetCursorPosCallback(window.getWindow(), mouse_callback);
 
 	//Test custom mesh loading
 	std::vector<Vertex> vert;
@@ -118,9 +126,10 @@ int main()
 	Mesh sun = loader.loadObj("Resources/Models/sphere.obj");
 	Mesh box = loader.loadObj("Resources/Models/cube.obj", textures);
 	Mesh plane = loader.loadObj("Resources/Models/plane.obj", emptyTextures);
-	Mesh mountain1 = loader.loadObj("Resources/Models/mountain1.obj", textures3);
-	Mesh mountain2 = loader.loadObj("Resources/Models/mountain2.obj", textures3);
-	Mesh castle = loader.loadObj("Resources/Models/Castle.obj", textures2);
+	Mesh mountain1 = loader.loadObj("Resources/Models/mountain1.obj", emptyTextures);
+	Mesh mountain2 = loader.loadObj("Resources/Models/mountain2.obj", emptyTextures);
+	Mesh castle = loader.loadObj("Resources/Models/Castle.obj", emptyTextures);
+	Mesh wall = loader.loadObj("Resources/Models/Wall.obj", emptyTextures);
 	//Mesh skybox = loader.loadObj("Resources/Models/box.obj");
 	//Mesh terrain = loader.loadObj("Resources/Models/Terrain2k.obj", textures4);
 	//Mesh player = loader.loadObj("Resources/Models/knight.obj", textures2);
@@ -148,6 +157,7 @@ int main()
 		lastFrame = currentFrame;
 
 		processKeyboardInput();
+		//mouse_callback(window.getWindow(), lastX, lastY);
 
 
 		//test mouse input
@@ -157,10 +167,17 @@ int main()
 		}
 		 //// Code for the light ////
 
-		vec3 cameraOffset = vec3(0.0f, 15.0f, cameraDistance);
-		vec3 currentCameraPos = playerPos + cameraOffset;
+		float horizontalDist = cameraDistance * cos(glm::radians(camera.getRotationOx()));
+		float verticalDist = cameraDistance * sin(glm::radians(camera.getRotationOx()));
 
-		glm::mat4 ViewMatrix = glm::lookAt(currentCameraPos, playerPos, camera.getCameraUp());
+		float offsetX = horizontalDist * sin(glm::radians(camera.getRotationOy()));
+		float offsetZ = horizontalDist * cos(glm::radians(camera.getRotationOy()));
+
+		//vec3 cameraOffset = vec3(0.0f, 15.0f, cameraDistance);
+		//vec3 currentCameraPos = playerPos + cameraOffset;
+		vec3 currentCameraPos = vec3(playerPos.x - offsetX, playerPos.y + verticalDist, playerPos.z - offsetZ);
+
+		glm::mat4 ViewMatrix = glm::lookAt(currentCameraPos, playerPos, glm::vec3(0.0f, 1.0f, 0.0f));
 		glm::mat4 ProjectionMatrix = glm::perspective(90.0f, window.getWidth() * 1.0f / window.getHeight(), 0.1f, 10000.0f);
 
 		sunShader.use();
@@ -213,7 +230,7 @@ int main()
 		glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);*/
 
 		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 8.0f, 0.0f));
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 10.0f, 0.0f));
 		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		ModelMatrix = scale(ModelMatrix, glm::vec3(10.0f, 1.0f, 10.0f));
 		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -226,22 +243,27 @@ int main()
 
 		plane.draw(terrainShader);
 
-		mountainShader.use();
+		//mountainShader.use();
+		shader.use();
 
 		glUniform3f(glGetUniformLocation(mountainShader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
 		glUniform3f(glGetUniformLocation(mountainShader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 		glUniform3f(glGetUniformLocation(mountainShader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
 
+		/*glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
+		glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);*/
 
-		/*glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, );
-		glUniform1i(glGetUniformLocation(mountainShader.getId(), "texture_diffuse"), 0);*/
-		/*glActiveTexture(GL_TEXTURE1);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, munteColor);
+		glUniform1i(glGetUniformLocation(mountainShader.getId(), "texture_diffuse"), 0);
+		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, munteNormal);
-		glUniform1i(glGetUniformLocation(mountainShader.getId(), "texture_normal"), 1);*/
+		glUniform1i(glGetUniformLocation(mountainShader.getId(), "texture_normal"), 1);
 		//Primul Munte
 		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(75.0f, 5.0f, -350.0f));
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(75.0f, 4.0f, -350.0f));
 		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -251,7 +273,7 @@ int main()
 		mountain1.draw(mountainShader);
 		//Al doilea Munte
 		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-150.0f, 5.0f, -350.0f));
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-150.0f, 4.0f, -350.0f));
 		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -263,6 +285,10 @@ int main()
 		//Castel
 		shader.use();
 
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, castelTex);
+		glUniform1i(glGetUniformLocation(mountainShader.getId(), "texture_diffuse"), 0);
+
 		ModelMatrix = glm::mat4(1.0);
 		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 9.0f, -100.0f));
 		ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
@@ -271,6 +297,19 @@ int main()
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 		castle.draw(shader);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, stoneTex);
+		glUniform1i(glGetUniformLocation(mountainShader.getId(), "texture_diffuse"), 0);
+
+		ModelMatrix = glm::mat4(1.0);
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 5.0f, -10.0f));
+		ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+		wall.draw(shader);
 		//Terenul
 		//ModelMatrix = glm::mat4(1.0);
 		//ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 5.0f, -50.0f));
@@ -312,6 +351,29 @@ int main()
 		//glDepthFunc(GL_LESS); // Reset depth function to default
 
 		window.update();
+	}
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{	
+	//float x = xpos;
+	//float y = ypos;
+	if (firstMouse)
+	{
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+	float xoffset = (float)xpos - lastX;
+	float yoffset = lastY - float(ypos);
+	lastX = xpos;
+	lastY = ypos;
+	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
+		float sensitivity = 0.1f;
+		xoffset *= sensitivity;
+		yoffset *= sensitivity;
+		camera.rotateOy(xoffset);
+		camera.rotateOx(yoffset);
 	}
 }
 

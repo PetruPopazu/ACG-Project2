@@ -13,7 +13,7 @@ uniform vec3 viewPos;
 
 void main()
 {
-	vec2 tiledCoord = textureCoord * 200.0;
+	vec2 tiledCoord = textureCoord * 20.0;
 
 	vec4 textureColor = texture(texture_diffuse, tiledCoord);
 	vec3 normal = normalize(norm);

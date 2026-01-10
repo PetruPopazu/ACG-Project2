@@ -44,12 +44,12 @@ void Camera::keyboardMoveBack(float cameraSpeed)
 
 void Camera::keyboardMoveLeft(float cameraSpeed)
 {
-	//task
+	cameraPosition -= cameraRight * cameraSpeed;
 }
 
 void Camera::keyboardMoveRight(float cameraSpeed)
 {
-	//task
+	cameraPosition += cameraRight * cameraSpeed;
 }
 
 void Camera::keyboardMoveUp(float cameraSpeed)
@@ -64,14 +64,24 @@ void Camera::keyboardMoveDown(float cameraSpeed)
 
 void Camera::rotateOx(float angle)
 {	
-	cameraViewDirection = glm::normalize(glm::vec3((glm::rotate(glm::mat4(1.0f), angle, cameraRight) * glm::vec4(cameraViewDirection, 1))));
+	/*cameraViewDirection = glm::normalize(glm::vec3((glm::rotate(glm::mat4(1.0f), angle, cameraRight) * glm::vec4(cameraViewDirection, 1))));
 	cameraUp = glm::normalize(glm::cross(cameraRight, cameraViewDirection));
-	cameraRight = glm::cross(cameraViewDirection, cameraUp);
+	cameraRight = glm::cross(cameraViewDirection, cameraUp);*/
+	rotationOx += angle;
+
+	if(rotationOx > 89.0f)
+		rotationOx = 89.0f;
+	if (rotationOx < -89.0f)
+		rotationOx = -89.0f;
 }
 
 void Camera::rotateOy (float angle)
 {
-	//task
+	/*glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	cameraViewDirection = glm::normalize(glm::vec3((glm::rotate(glm::mat4(1.0f), angle, worldUp) * glm::vec4(cameraViewDirection, 0.0f))));
+	cameraRight = glm::normalize(glm::cross(cameraViewDirection, worldUp));
+	cameraUp = glm::cross(cameraRight, cameraViewDirection);*/
+	rotationOy += angle;
 }
 
 void Camera::setCameraPosition(glm::vec3 newPos) {
@@ -98,4 +108,5 @@ glm::vec3 Camera::getCameraUp()
 	return cameraUp;
 }
 
-
+float Camera::getRotationOx() { return Camera::rotationOx; }
+float Camera::getRotationOy() { return Camera::rotationOy; }
