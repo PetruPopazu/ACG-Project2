@@ -21,7 +21,7 @@ float cameraDistance = 20.0f;
 
 float swingTimer = 0.0f;
 bool isSwinging = false;
-float swingSpeed = 10.0f;
+float swingSpeed = 5.0f;
 
 Window window("Marian - The time traveler", 1024, 960);
 Camera camera;
@@ -184,6 +184,10 @@ int main()
 			std::cout << "Pressing mouse button" << std::endl;
 		}*/
 
+		if (window.isMousePressed(GLFW_MOUSE_BUTTON_LEFT)) {
+			isSwinging = true;
+		}
+
 		if (isSwinging) {
 			swingTimer += deltaTime * swingSpeed;
 			if (swingTimer > 3.14f) {
@@ -192,9 +196,7 @@ int main()
 			}
 		}
 
-		if (window.isMousePressed(GLFW_MOUSE_BUTTON_LEFT)) {
-			isSwinging = true;
-		}
+		
 		 //// Code for the light ////
 
 		float horizontalDist = cameraDistance * cos(glm::radians(camera.getRotationOx()));
@@ -288,12 +290,12 @@ int main()
 		mat4 rHandModel = torsoModel;
 		rHandModel = translate(rHandModel, vec3(0.7f, 0.3f, 0.3f));
 		rHandModel = rotate(rHandModel, -80.0f , vec3(1.0f, 0.0f, 0.0f));
-		rHandModel = rotate(rHandModel, -20.0f, vec3(0.0f, 1.0f, 0.0f));
-		rHandModel = rotate(rHandModel, 10.0f, vec3(0.0f, 0.0f, 1.0f));
+		//rHandModel = rotate(rHandModel, -20.0f, vec3(0.0f, 1.0f, 0.0f));
+		//rHandModel = rotate(rHandModel, 10.0f, vec3(0.0f, 0.0f, 1.0f));
 		rHandModel = scale(rHandModel, vec3(0.05f, 0.07f, -0.3f));
 		if (isSwinging) {
-			float swingAngle = sin(swingTimer) * 45.0f;
-			rHandModel = rotate(rHandModel, -swingAngle, vec3(1.0f, 0.0f, 0.0f));
+			float swingAngle = sin(swingTimer) * 1000.0f;
+			rHandModel = rotate(rHandModel, radians( - swingAngle), vec3(1.0f, 0.0f, 0.0f));
 		}
 		mat4 rHandMVP = ProjectionMatrix * ViewMatrix * rHandModel;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &rHandMVP[0][0]);
@@ -315,14 +317,14 @@ int main()
 		//now let's draw the legs
 		//left leg firstly
 		mat4 lLegModel = torsoModel;
-		lLegModel = translate(lLegModel, vec3(-0.4f, -3.0f, -0.3f));
+		lLegModel = translate(lLegModel, vec3(-0.4f, -1.1f, 0.2f));
 		if (window.isPressed(GLFW_KEY_W) || window.isPressed(GLFW_KEY_S) || window.isPressed(GLFW_KEY_A) || window.isPressed(GLFW_KEY_D)) {
 			float swingAngle = sin(currentFrame * 10.0f) * 30.0f;
 			lLegModel = rotate(lLegModel, swingAngle, vec3(1.0f, 0.0f, 0.0f));
 		}
-		lLegModel = rotate(lLegModel, 360.0f, vec3(1.0f, 0.0f, 0.0f));
-		lLegModel = rotate(lLegModel, -4.0f, vec3(0.0f, 0.0f, 1.0f));
-		lLegModel = scale(lLegModel, vec3(0.1f, 0.4f, 0.1f));
+		lLegModel = rotate(lLegModel, 180.0f, vec3(1.0f, 0.0f, 0.0f));
+		lLegModel = rotate(lLegModel, 4.0f, vec3(0.0f, 0.0f, 1.0f));
+		lLegModel = scale(lLegModel, vec3(0.08f, 0.4f, 0.1f));
 		mat4 lLegMVP = ProjectionMatrix * ViewMatrix * lLegModel;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &lLegMVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &lLegModel[0][0]);
@@ -331,14 +333,14 @@ int main()
 
 		//right leg
 		mat4 rLegModel = torsoModel;
-		rLegModel = translate(rLegModel, vec3(0.4f, -3.0f, -0.3f));
+		rLegModel = translate(rLegModel, vec3(0.4f, -1.1f, 0.2f));
 		if (window.isPressed(GLFW_KEY_W) || window.isPressed(GLFW_KEY_S) || window.isPressed(GLFW_KEY_A) || window.isPressed(GLFW_KEY_D)) {
 			float swingAngle = sin(currentFrame * 10.0f + 3.14f) * 30.0f;
 			rLegModel = rotate(rLegModel, swingAngle, vec3(1.0f, 0.0f, 0.0f));
 		}
-		rLegModel = rotate(rLegModel, 360.0f, vec3(1.0f, 0.0f, 0.0f));
-		rLegModel = rotate(rLegModel, 4.0f, vec3(0.0f, 0.0f, 1.0f));
-		rLegModel = scale(rLegModel, vec3(0.1f, 0.4f, 0.1f));
+		rLegModel = rotate(rLegModel, 180.0f, vec3(1.0f, 0.0f, 0.0f));
+		rLegModel = rotate(rLegModel, -4.0f, vec3(0.0f, 0.0f, 1.0f));
+		rLegModel = scale(rLegModel, vec3(0.08f, 0.4f, 0.1f));
 		mat4 rLegMVP = ProjectionMatrix * ViewMatrix * rLegModel;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &rLegMVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &rLegModel[0][0]);
@@ -506,6 +508,67 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	cameraDistance = glm::clamp(cameraDistance, 2.0f, 30.0f);
 }
 
+//void processKeyboardInput()
+//{
+//	float moveSpeed = 30.0f * deltaTime;
+//	// Get the horizontal angle from the camera
+//	float camYaw = camera.getRotationOy();
+//
+//	// We calculate movement vectors based on the camera's horizontal angle
+//	// Forward vector (XZ plane)
+//	vec3 forward = vec3(sin(radians(camYaw)), 0.0f, cos(radians(camYaw)));
+//	// Right vector (XZ plane)
+//	vec3 right = vec3(sin(radians(camYaw + 90.0f)), 0.0f, cos(radians(camYaw + 90.0f)));
+//
+//	bool isMoving = false;
+//	vec3 moveDir = vec3(0.0f);
+//
+//	// 1. Calculate Movement Direction
+//	if (window.isPressed(GLFW_KEY_W)) {
+//		moveDir += forward;
+//		isMoving = true;
+//	}
+//	if (window.isPressed(GLFW_KEY_S)) {
+//		moveDir -= forward;
+//		isMoving = true;
+//	}
+//	if (window.isPressed(GLFW_KEY_A)) {
+//		moveDir -= right;
+//		isMoving = true;
+//	}
+//	if (window.isPressed(GLFW_KEY_D)) {
+//		moveDir += right;
+//		isMoving = true;
+//	}
+//
+//	// 2. Apply Movement and Rotation
+//	if (isMoving) {
+//		// Normalize moveDir so diagonal movement isn't faster
+//		moveDir = normalize(moveDir);
+//		playerPos += moveDir * moveSpeed;
+//
+//		// Update player rotation to face the movement direction
+//		// atan2 determines the angle in degrees based on X and Z movement
+//		playerRoataion = degrees(atan2(moveDir.x, moveDir.z));
+//	}
+//
+//	// 3. Optional: Manual Vertical Movement (Fly mode/Testing)
+//	if (window.isPressed(GLFW_KEY_R))
+//		playerPos.y += moveSpeed;
+//	if (window.isPressed(GLFW_KEY_F))
+//		playerPos.y -= moveSpeed;
+//
+//	// 4. Camera Rotation (Arrow Keys)
+//	if (window.isPressed(GLFW_KEY_LEFT))
+//		camera.rotateOy(moveSpeed * 2.0f);
+//	if (window.isPressed(GLFW_KEY_RIGHT))
+//		camera.rotateOy(-moveSpeed * 2.0f);
+//	if (window.isPressed(GLFW_KEY_UP))
+//		camera.rotateOx(moveSpeed * 2.0f);
+//	if (window.isPressed(GLFW_KEY_DOWN))
+//		camera.rotateOx(-moveSpeed * 2.0f);
+//}
+
 void processKeyboardInput()
 {
 	float moveSpeed = 30 * deltaTime;
@@ -523,6 +586,8 @@ void processKeyboardInput()
 		playerPos.y += moveSpeed;
 	if (window.isPressed(GLFW_KEY_F))
 		playerPos.y -= moveSpeed;
+	if (window.isPressed(GLFW_KEY_LEFT_SHIFT))
+		moveSpeed *= 2.0f;
 
 	//rotation
 	if (window.isPressed(GLFW_KEY_LEFT))

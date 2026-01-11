@@ -71,8 +71,8 @@ void Camera::rotateOx(float angle)
 
 	if(rotationOx > 89.0f)
 		rotationOx = 89.0f;
-	if (rotationOx < -10.0f)
-		rotationOx = -10.0f;
+	if (rotationOx < -5.0f)
+		rotationOx = -5.0f;
 }
 
 void Camera::rotateOy (float angle)
