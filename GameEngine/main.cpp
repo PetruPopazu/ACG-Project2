@@ -19,14 +19,18 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 float cameraDistance = 20.0f;
 
-Window window("Marian - The time traveler", 800, 800);
+float swingTimer = 0.0f;
+bool isSwinging = false;
+float swingSpeed = 10.0f;
+
+Window window("Marian - The time traveler", 1024, 960);
 Camera camera;
 
-vec3 playerPos = vec3(0.0f, 10.0f, 0.0f);
+vec3 playerPos = vec3(0.0f, 13.0f, 0.0f);
 float playerRoataion = 0.0f;
 
 glm::vec3 lightColor = glm::vec3(1.0f);
-glm::vec3 lightPos = glm::vec3(-180.0f, 100.0f, 200.0f);
+glm::vec3 lightPos = glm::vec3(180.0f, 100.0f, 200.0f);
 
 int main()
 {
@@ -51,6 +55,8 @@ int main()
 	GLuint castelTex = loadBMP("Resources/Textures/castel.bmp");
 	GLuint stoneTex = loadBMP("Resources/Textures/Stone.bmp");
 	GLuint gateTex = loadBMP("Resources/Textures/gate.bmp");
+	GLuint handNormal = loadBMP("Resources/Textures/hand_normal.bmp");
+	GLuint handDiffuse = loadBMP("Resources/Textures/hand_diffuse.bmp");
 	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
 	GLuint left = loadBMP("Resources/Textures/left.bmp");
 	GLuint top = loadBMP("Resources/Textures/top.bmp");
@@ -124,12 +130,14 @@ int main()
 	// we can add here our textures :)
 	MeshLoaderObj loader;
 	Mesh sun = loader.loadObj("Resources/Models/sphere.obj");
-	Mesh box = loader.loadObj("Resources/Models/cube.obj", textures);
+	Mesh box = loader.loadObj("Resources/Models/cube.obj", emptyTextures);
 	Mesh plane = loader.loadObj("Resources/Models/plane.obj", emptyTextures);
 	Mesh mountain1 = loader.loadObj("Resources/Models/mountain1.obj", emptyTextures);
 	Mesh mountain2 = loader.loadObj("Resources/Models/mountain2.obj", emptyTextures);
 	Mesh castle = loader.loadObj("Resources/Models/Castle.obj", emptyTextures);
 	Mesh wall = loader.loadObj("Resources/Models/Wall.obj", emptyTextures);
+	Mesh torso = loader.loadObj("Resources/Models/torso.obj", textures2);
+	//Mesh hand = loader.loadObj("Resources/Models/hand2.obj", emptyTextures);
 	//Mesh skybox = loader.loadObj("Resources/Models/box.obj");
 	//Mesh terrain = loader.loadObj("Resources/Models/Terrain2k.obj", textures4);
 	//Mesh player = loader.loadObj("Resources/Models/knight.obj", textures2);
@@ -157,13 +165,35 @@ int main()
 		lastFrame = currentFrame;
 
 		processKeyboardInput();
+
+		float floorLevel = 10.0f;
+		float characterHeight = 3.0f;
+
+		if (playerPos.y > floorLevel + characterHeight) {
+			playerPos.y -= 20.0f * deltaTime;
+		}
+		if (playerPos.y < floorLevel + characterHeight) {
+			playerPos.y = floorLevel + characterHeight;
+		}
 		//mouse_callback(window.getWindow(), lastX, lastY);
 
 
 		//test mouse input
-		if (window.isMousePressed(GLFW_MOUSE_BUTTON_LEFT))
+		/*if (window.isMousePressed(GLFW_MOUSE_BUTTON_LEFT))
 		{
 			std::cout << "Pressing mouse button" << std::endl;
+		}*/
+
+		if (isSwinging) {
+			swingTimer += deltaTime * swingSpeed;
+			if (swingTimer > 3.14f) {
+				swingTimer = 0.0f;
+				isSwinging = false;
+			}
+		}
+
+		if (window.isMousePressed(GLFW_MOUSE_BUTTON_LEFT)) {
+			isSwinging = true;
 		}
 		 //// Code for the light ////
 
@@ -172,6 +202,12 @@ int main()
 
 		float offsetX = horizontalDist * sin(glm::radians(camera.getRotationOy()));
 		float offsetZ = horizontalDist * cos(glm::radians(camera.getRotationOy()));
+
+		float targetCameraY = playerPos.y + verticalDist;
+		float mapFloor = 10.0f;
+		if (targetCameraY < mapFloor + 1.0f) {
+			targetCameraY = mapFloor + 1.0f;
+		}
 
 		//vec3 cameraOffset = vec3(0.0f, 15.0f, cameraDistance);
 		//vec3 currentCameraPos = playerPos + cameraOffset;
@@ -205,18 +241,109 @@ int main()
 		GLuint MatrixID2 = glGetUniformLocation(shader.getId(), "MVP");
 		GLuint ModelMatrixID = glGetUniformLocation(shader.getId(), "model");
 
-		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, playerPos);
-		//ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-		glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
-		glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-		//glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
-		glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
-		box.draw(shader);
+		//ModelMatrix = glm::mat4(1.0);
+		//ModelMatrix = glm::translate(ModelMatrix, playerPos);
+		////ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+		//MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		//glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+		//glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+		//glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
+		//glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		////glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+		//glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
+		//box.draw(shader);
 		//player.draw(shader);
+
+		//ModelMatrix = glm::mat4(1.0);
+		//ModelMatrix = glm::translate(ModelMatrix, playerPos);
+		////ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+		//MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		//glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+		//glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+		//glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
+		//glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		////glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+		//glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
+		//torso.draw(shader);
+
+		//draw body parts
+		//firstly the torso
+		mat4 torsoModel = mat4(1.0f);
+		torsoModel = translate(torsoModel, playerPos);
+		torsoModel = rotate(torsoModel, radians(playerRoataion), vec3(1.0f, 0.0f, 0.0f));
+		mat4 torsoMVP = ProjectionMatrix * ViewMatrix * torsoModel;
+		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &torsoMVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &torsoModel[0][0]);
+		torso.draw(shader);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, handDiffuse);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, handNormal);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+		//then the right hand
+		mat4 rHandModel = torsoModel;
+		rHandModel = translate(rHandModel, vec3(0.7f, 0.3f, 0.3f));
+		rHandModel = rotate(rHandModel, -80.0f , vec3(1.0f, 0.0f, 0.0f));
+		rHandModel = rotate(rHandModel, -20.0f, vec3(0.0f, 1.0f, 0.0f));
+		rHandModel = rotate(rHandModel, 10.0f, vec3(0.0f, 0.0f, 1.0f));
+		rHandModel = scale(rHandModel, vec3(0.05f, 0.07f, -0.3f));
+		if (isSwinging) {
+			float swingAngle = sin(swingTimer) * 45.0f;
+			rHandModel = rotate(rHandModel, -swingAngle, vec3(1.0f, 0.0f, 0.0f));
+		}
+		mat4 rHandMVP = ProjectionMatrix * ViewMatrix * rHandModel;
+		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &rHandMVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &rHandModel[0][0]);
+		box.draw(shader);
+
+		//then the left hand
+		mat4 lHandModel = torsoModel;
+		lHandModel = translate(lHandModel, vec3(-0.7f, 0.3f, 0.3f));
+		lHandModel = rotate(lHandModel, -80.0f , vec3(1.0f, 0.0f, 0.0f));
+		lHandModel = rotate(lHandModel, 20.0f, vec3(0.0f, 1.0f, 0.0f));
+		lHandModel = rotate(lHandModel, 10.0f, vec3(0.0f, 0.0f, 1.0f));
+		lHandModel = scale(lHandModel, vec3(0.05f, 0.07f, -0.3f));
+		mat4 lHandMVP = ProjectionMatrix * ViewMatrix * lHandModel;
+		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &lHandMVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &lHandModel[0][0]);
+		box.draw(shader);
+
+		//now let's draw the legs
+		//left leg firstly
+		mat4 lLegModel = torsoModel;
+		lLegModel = translate(lLegModel, vec3(-0.4f, -3.0f, -0.3f));
+		if (window.isPressed(GLFW_KEY_W) || window.isPressed(GLFW_KEY_S) || window.isPressed(GLFW_KEY_A) || window.isPressed(GLFW_KEY_D)) {
+			float swingAngle = sin(currentFrame * 10.0f) * 30.0f;
+			lLegModel = rotate(lLegModel, swingAngle, vec3(1.0f, 0.0f, 0.0f));
+		}
+		lLegModel = rotate(lLegModel, 360.0f, vec3(1.0f, 0.0f, 0.0f));
+		lLegModel = rotate(lLegModel, -4.0f, vec3(0.0f, 0.0f, 1.0f));
+		lLegModel = scale(lLegModel, vec3(0.1f, 0.4f, 0.1f));
+		mat4 lLegMVP = ProjectionMatrix * ViewMatrix * lLegModel;
+		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &lLegMVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &lLegModel[0][0]);
+		box.draw(shader);
+
+
+		//right leg
+		mat4 rLegModel = torsoModel;
+		rLegModel = translate(rLegModel, vec3(0.4f, -3.0f, -0.3f));
+		if (window.isPressed(GLFW_KEY_W) || window.isPressed(GLFW_KEY_S) || window.isPressed(GLFW_KEY_A) || window.isPressed(GLFW_KEY_D)) {
+			float swingAngle = sin(currentFrame * 10.0f + 3.14f) * 30.0f;
+			rLegModel = rotate(rLegModel, swingAngle, vec3(1.0f, 0.0f, 0.0f));
+		}
+		rLegModel = rotate(rLegModel, 360.0f, vec3(1.0f, 0.0f, 0.0f));
+		rLegModel = rotate(rLegModel, 4.0f, vec3(0.0f, 0.0f, 1.0f));
+		rLegModel = scale(rLegModel, vec3(0.1f, 0.4f, 0.1f));
+		mat4 rLegMVP = ProjectionMatrix * ViewMatrix * rLegModel;
+		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &rLegMVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &rLegModel[0][0]);
+		box.draw(shader);
+
 
 		///// Test plane Obj file //////
 		//Drawing the plane
@@ -332,23 +459,19 @@ int main()
 
 		terrain.draw(shader);*/
 
-		//glDepthFunc(GL_LEQUAL); // Skybox passes depth test at maximum distance
+		//glDepthFunc(GL_LEQUAL);
 		//skyboxShader.use();
 		//mat4 skyboxView = mat4(mat3(ViewMatrix));
 
-		//// Remove translation from the view matrix so the sky follows the player
-
-		//// Set uniforms for the skybox shader
 		//glUniformMatrix4fv(glGetUniformLocation(skyboxShader.getId(), "projection"), 1, GL_FALSE, &ProjectionMatrix[0][0]);
 		//glUniformMatrix4fv(glGetUniformLocation(skyboxShader.getId(), "view"), 1, GL_FALSE, &skyboxView[0][0]);
 
-		//// Bind the cubemap and draw the cube
 		//glActiveTexture(GL_TEXTURE0);
 		//glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapID);
 		//glUniform1i(glGetUniformLocation(skyboxShader.getId(), "skybox"), 0);
-		//skybox.draw(skyboxShader); // Using your 'box' mesh for geometry
+		//skybox.draw(skyboxShader);
 
-		//glDepthFunc(GL_LESS); // Reset depth function to default
+		//glDepthFunc(GL_LESS);
 
 		window.update();
 	}
@@ -372,14 +495,15 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 		float sensitivity = 0.1f;
 		xoffset *= sensitivity;
 		yoffset *= sensitivity;
-		camera.rotateOy(xoffset);
-		camera.rotateOx(yoffset);
+		camera.rotateOy(-xoffset);
+		camera.rotateOx(-yoffset);
 	}
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	cameraDistance -= (float)yoffset * 1.5f;
+	cameraDistance = glm::clamp(cameraDistance, 2.0f, 30.0f);
 }
 
 void processKeyboardInput()

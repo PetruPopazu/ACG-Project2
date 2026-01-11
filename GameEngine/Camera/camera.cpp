@@ -7,7 +7,7 @@ Camera::Camera(glm::vec3 cameraPosition)
 	this->cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	this->cameraRight = glm::cross(cameraViewDirection, cameraUp);
 	this->rotationOx = 0.0f;
-	this->rotationOy = -90.0f;
+	this->rotationOy = -180.0f;
 }
 
 Camera::Camera()
@@ -17,7 +17,7 @@ Camera::Camera()
 	this ->cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 	this->cameraRight = glm::cross(cameraViewDirection, cameraUp);
 	this->rotationOx = 0.0f;
-	this->rotationOy = -90.0f;
+	this->rotationOy = -180.0f;
 }
 
 Camera::Camera(glm::vec3 cameraPosition, glm::vec3 cameraViewDirection, glm::vec3 cameraUp)
@@ -71,15 +71,14 @@ void Camera::rotateOx(float angle)
 
 	if(rotationOx > 89.0f)
 		rotationOx = 89.0f;
-	if (rotationOx < -89.0f)
-		rotationOx = -89.0f;
+	if (rotationOx < -10.0f)
+		rotationOx = -10.0f;
 }
 
 void Camera::rotateOy (float angle)
 {
-	/*glm::vec3 worldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-	cameraViewDirection = glm::normalize(glm::vec3((glm::rotate(glm::mat4(1.0f), angle, worldUp) * glm::vec4(cameraViewDirection, 0.0f))));
-	cameraRight = glm::normalize(glm::cross(cameraViewDirection, worldUp));
+	/*cameraViewDirection = glm::normalize(glm::vec3((glm::rotate(glm::mat4(1.0f), angle, cameraUp) * glm::vec4(cameraViewDirection, 0.0f))));
+	cameraRight = glm::normalize(glm::cross(cameraViewDirection, cameraUp));
 	cameraUp = glm::cross(cameraRight, cameraViewDirection);*/
 	rotationOy += angle;
 }
