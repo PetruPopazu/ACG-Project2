@@ -57,6 +57,18 @@ int main()
 	GLuint gateTex = loadBMP("Resources/Textures/gate.bmp");
 	GLuint handNormal = loadBMP("Resources/Textures/hand_normal.bmp");
 	GLuint handDiffuse = loadBMP("Resources/Textures/hand_diffuse.bmp");
+	GLuint treeTex = loadBMP("Resources/Textures/Tree_Branch.bmp");
+	GLuint blacksmith = loadBMP("Resources/Textures/blacksmith.bmp");
+	GLuint tent = loadBMP("Resources/Textures/tent.bmp");
+	GLuint house = loadBMP("Resources/Textures/house.bmp");
+	GLuint well = loadBMP("Resources/Textures/well.bmp");
+	GLuint barrels = loadBMP("Resources/Textures/barrels.bmp");
+	GLuint MedievalC = loadBMP("Resources/Textures/MedievalColor.bmp");
+	GLuint MedievalN = loadBMP("Resources/Textures/MedievalNormal.bmp");
+	GLuint marketC = loadBMP("Resources/Textures/marketC.bmp");
+	GLuint marketN = loadBMP("Resources/Textures/marketN.bmp");
+
+
 	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
 	GLuint left = loadBMP("Resources/Textures/left.bmp");
 	GLuint top = loadBMP("Resources/Textures/top.bmp");
@@ -137,6 +149,19 @@ int main()
 	Mesh castle = loader.loadObj("Resources/Models/Castle.obj", emptyTextures);
 	Mesh wall = loader.loadObj("Resources/Models/Wall.obj", emptyTextures);
 	Mesh torso = loader.loadObj("Resources/Models/torso.obj", textures2);
+	Mesh tree = loader.loadObj("Resources/Models/tree.obj", emptyTextures);
+	Mesh blacksmithModel = loader.loadObj("Resources/Models/blacksmith.obj", emptyTextures);
+	Mesh tentModel = loader.loadObj("Resources/Models/tent.obj", emptyTextures);
+	Mesh houseModel = loader.loadObj("Resources/Models/house.obj", emptyTextures);
+	Mesh wellModel = loader.loadObj("Resources/Models/well.obj", emptyTextures);
+	Mesh barrelsModel = loader.loadObj("Resources/Models/barrels.obj", emptyTextures);
+	Mesh lamppostModel = loader.loadObj("Resources/Models/lamppost.obj", emptyTextures);
+	Mesh cart2Model = loader.loadObj("Resources/Models/cart2.obj", emptyTextures);
+	Mesh cart1Model = loader.loadObj("Resources/Models/cart1.obj", emptyTextures);
+	Mesh marketModel = loader.loadObj("Resources/Models/market.obj", emptyTextures);
+	Mesh campfireModel = loader.loadObj("Resources/Models/campfire.obj", emptyTextures);
+
+
 	//Mesh hand = loader.loadObj("Resources/Models/hand2.obj", emptyTextures);
 	//Mesh skybox = loader.loadObj("Resources/Models/box.obj");
 	//Mesh terrain = loader.loadObj("Resources/Models/Terrain2k.obj", textures4);
@@ -375,9 +400,9 @@ int main()
 		//mountainShader.use();
 		shader.use();
 
-		glUniform3f(glGetUniformLocation(mountainShader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
-		glUniform3f(glGetUniformLocation(mountainShader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-		glUniform3f(glGetUniformLocation(mountainShader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
+		glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
+		glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+		glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
 
 		/*glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
 		glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
@@ -386,109 +411,603 @@ int main()
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, munteColor);
-		glUniform1i(glGetUniformLocation(mountainShader.getId(), "texture_diffuse"), 0);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, munteNormal);
-		glUniform1i(glGetUniformLocation(mountainShader.getId(), "texture_normal"), 1);
-		//Primul Munte
-		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(200.0f, -4.0f, -820.0f));
-		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f,1.0f,0.0f));
-		ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
-		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+		//Munti
+		{
+			//Primul Munte
+			{
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(200.0f, -4.0f, -820.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-		mountain1.draw(mountainShader);
-		//Al doilea Munte
-		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-220.0f, -1.0f, -680.0f));
-		ModelMatrix = glm::rotate(ModelMatrix, 180.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-		ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
-		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				mountain1.draw(shader);
+			}
+			//Al doilea Munte
+			{
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-220.0f, -1.0f, -680.0f));
+				ModelMatrix = glm::rotate(ModelMatrix, 180.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-		mountain2.draw(mountainShader);
+				mountain2.draw(shader);
+			}
+			//Al treilea Munte
+			{
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-560.0f, -1.0f, -500.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				//ModelMatrix = rotate(ModelMatrix, -60.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-		//Al treilea Munte
-		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-560.0f, -1.0f, -500.0f));
-		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		//ModelMatrix = rotate(ModelMatrix, -60.0f, vec3(0.0f, 1.0f, 0.0f));
-		ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
-		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				mountain1.draw(shader);
+			}
+			//Al patrulea Munte
+			{
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-600.0f, -20.0f, -100.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-		mountain1.draw(mountainShader);
+				mountain2.draw(shader);
+			}
+			//Al cincilea Munte
+			{
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(700.0f, -4.0f, -600.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				//ModelMatrix = rotate(ModelMatrix, -95.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-		//Al patrulea Munte
-		
-		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-600.0f, -20.0f, -100.0f));
-		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
-		ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
-		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				mountain2.draw(shader);
+			}
+			//Al saselea Munte
+			{
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(550.0f, -25.0f, -100.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-		mountain2.draw(mountainShader);
-
-		//Al cincilea Munte
-		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(700.0f, -4.0f, -600.0f));
-		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		//ModelMatrix = rotate(ModelMatrix, -95.0f, vec3(0.0f, 1.0f, 0.0f));
-		ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
-		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-		mountain2.draw(mountainShader);
-
-		//Al saselea Munte
-		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(550.0f, -25.0f, -100.0f));
-		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-		ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
-		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-		mountain1.draw(mountainShader);
-
+				mountain1.draw(shader);
+			}
+		}
 		//Castel
-		shader.use();
+		{
+			shader.use();
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, stoneTex);
-		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, stoneTex);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 9.0f, -100.0f));
-		ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-45.0f, 9.0f, -300.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(0.04f, 0.04f, 0.04f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-		castle.draw(shader);
+			castle.draw(shader);
+		}
+		//Wall
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, stoneTex);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, stoneTex);
-		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, -28.0f, -180.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(0.3f, 0.3f, 0.2f));
+			ModelMatrix = glm::rotate(ModelMatrix, 90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			wall.draw(shader);
+		}
+		//Copaci
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, grassColor);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 28.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 2.0f, 3.0f));
+			ModelMatrix = glm::rotate(ModelMatrix, 90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			tree.draw(shader);
+		}
+		//Tent
+		{
+			shader.use();
 
-		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, -28.0f, -180.0f));
-		ModelMatrix = scale(ModelMatrix, glm::vec3(0.3f, 0.3f, 0.2f));
-		ModelMatrix = glm::rotate(ModelMatrix, 90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-		wall.draw(shader);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, tent);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-165.0f, 10.0f, -30.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(0.07f, 0.07f, 0.07f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			tentModel.draw(shader);
+		}
+		//Blacksmith
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, blacksmith);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 24.0f, 10.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, -70.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(15.0f, 15.0f, 15.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			blacksmithModel.draw(shader);
+		}
+		//Houses
+		{
+			//House1
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, house);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-180.0f, 10.0f, 0.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(4.0f, 4.0f, 4.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				houseModel.draw(shader);
+			}
+			//House2
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, house);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(150.0f, 10.0f, -130.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, -135.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(4.0f, 4.0f, 4.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				houseModel.draw(shader);
+			}
+			//House3
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, house);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-175.0f, 10.0f, -80.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(4.0f, 4.0f, 4.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				houseModel.draw(shader);
+			}
+			//House4
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, house);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, -80.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, -180.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(4.0f, 4.0f, 4.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				houseModel.draw(shader);
+			}
+		}
+		//Well
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, well);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-150.0f, 10.0f, -50.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(0.05f, 0.05f, 0.05f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			wellModel.draw(shader);
+		}
+		//Barrels
+		{
+			//Barrel1
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, barrels);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, -20.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				barrelsModel.draw(shader);
+			}
+			//Barrel2
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, barrels);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, -23.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				barrelsModel.draw(shader);
+			}
+			//Barrel3
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, barrels);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 13.5f, -21.5f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				barrelsModel.draw(shader);
+			}
+		}
+		//Lampposts
+		{
+			//Lamppost1
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, MedievalC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, MedievalN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-180.0f, 10.0f, 30.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				lamppostModel.draw(shader);
+			}
+			//Lamppost2
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, MedievalC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, MedievalN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-165.0f, 10.0f, -50.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				lamppostModel.draw(shader);
+			}
+			//Lamppost3
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, MedievalC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, MedievalN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-155.0f, 10.0f, -100.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				lamppostModel.draw(shader);
+			}
+			//Lamppost4
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, MedievalC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, MedievalN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(120.0f, 10.0f, -140.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				lamppostModel.draw(shader);
+			}
+			//Lamppost5
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, MedievalC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, MedievalN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, -50.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				lamppostModel.draw(shader);
+			}
+			//Lamppost6
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, MedievalC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, MedievalN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, 40.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				lamppostModel.draw(shader);
+			}
+		}
+		//Cart1
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, MedievalC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, MedievalN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(80.0f, 10.0f, -55.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, 15.0f, vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			cart1Model.draw(shader);
+		}
+		//Cart2
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, MedievalC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, MedievalN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, -35.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			cart2Model.draw(shader);
+		}
+		//MarketPlace
+		{
+			//market1
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, marketC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, marketN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(50.0f, 12.0f, -55.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				//ModelMatrix = rotate(ModelMatrix, 15.0f, vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				marketModel.draw(shader);
+			}
+			//market2
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, marketC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, marketN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(95.0f, 12.0f, -30.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				marketModel.draw(shader);
+			}
+			//market3
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, marketC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, marketN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(65.0f, 12.0f, -5.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 190.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				marketModel.draw(shader);
+			}
+			//campfire
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, MedievalC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, MedievalN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(55.0f, 10.0f, -30.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				//ModelMatrix = rotate(ModelMatrix, 15.0f, vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				campfireModel.draw(shader);
+			}
+		}
+
 		//Terenul
 		//ModelMatrix = glm::mat4(1.0);
 		//ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 5.0f, -50.0f));
