@@ -69,6 +69,7 @@ int main()
 	GLuint marketN = loadBMP("Resources/Textures/marketN.bmp");
 
 
+
 	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
 	GLuint left = loadBMP("Resources/Textures/left.bmp");
 	GLuint top = loadBMP("Resources/Textures/top.bmp");
@@ -160,6 +161,8 @@ int main()
 	Mesh cart1Model = loader.loadObj("Resources/Models/cart1.obj", emptyTextures);
 	Mesh marketModel = loader.loadObj("Resources/Models/market.obj", emptyTextures);
 	Mesh campfireModel = loader.loadObj("Resources/Models/campfire.obj", emptyTextures);
+	Mesh woodpileModel = loader.loadObj("Resources/Models/woodpile.obj", emptyTextures);
+	Mesh marketstallModel = loader.loadObj("Resources/Models/marketstall.obj", emptyTextures);
 
 
 	//Mesh hand = loader.loadObj("Resources/Models/hand2.obj", emptyTextures);
@@ -529,7 +532,7 @@ int main()
 		}
 		//Copaci
 		{
-			glActiveTexture(GL_TEXTURE0);
+			/*glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, grassColor);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
@@ -539,7 +542,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-			tree.draw(shader);
+			tree.draw(shader);*/
 		}
 		//Tent
 		{
@@ -996,7 +999,7 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(55.0f, 10.0f, -30.0f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(60.0f, 10.0f, -30.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 15.0f, vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
@@ -1006,6 +1009,48 @@ int main()
 
 				campfireModel.draw(shader);
 			}
+			//woodpile
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, MedievalC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, MedievalN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(90.0f, 10.0f, 0.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				//ModelMatrix = rotate(ModelMatrix, 190.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				woodpileModel.draw(shader);
+			}
+			//marketstall
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, MedievalC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, MedievalN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, -35.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			marketstallModel.draw(shader);
 		}
 
 		//Terenul
