@@ -316,15 +316,15 @@ int main()
 
 		//then the right hand
 		mat4 rHandModel = torsoModel;
+		if (isSwinging) {
+			float swingAngle = sin(swingTimer) * 90.0f;
+			rHandModel = rotate(rHandModel, -swingAngle, vec3(1.0f, 0.0f, 0.0f));
+		}
 		rHandModel = translate(rHandModel, vec3(0.7f, 0.3f, 0.3f));
 		rHandModel = rotate(rHandModel, -80.0f , vec3(1.0f, 0.0f, 0.0f));
 		rHandModel = rotate(rHandModel, -20.0f, vec3(0.0f, 1.0f, 0.0f));
 		rHandModel = rotate(rHandModel, 10.0f, vec3(0.0f, 0.0f, 1.0f));
 		rHandModel = scale(rHandModel, vec3(0.05f, 0.07f, -0.3f));
-		if (isSwinging) {
-			float swingAngle = sin(swingTimer) * 90.0f;
-			rHandModel = rotate(rHandModel, radians( - swingAngle), vec3(1.0f, 0.0f, 0.0f));
-		}
 		mat4 rHandMVP = ProjectionMatrix * ViewMatrix * rHandModel;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &rHandMVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &rHandModel[0][0]);
