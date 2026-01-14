@@ -7,7 +7,7 @@
 
 using namespace glm;
 
-void processKeyboardInput ();
+void processKeyboardInput();
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 unsigned int loadCubeMap(std::vector<std::string> faces);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
@@ -67,8 +67,12 @@ int main()
 	GLuint MedievalN = loadBMP("Resources/Textures/MedievalNormal.bmp");
 	GLuint marketC = loadBMP("Resources/Textures/marketC.bmp");
 	GLuint marketN = loadBMP("Resources/Textures/marketN.bmp");
-
-
+	GLuint witchroomC = loadBMP("Resources/Textures/witchroomC.bmp");
+	GLuint witchroomN = loadBMP("Resources/Textures/witchroomN.bmp");
+	GLuint tombstoneC = loadBMP("Resources/Textures/tombstoneC.bmp");
+	GLuint tombstoneN = loadBMP("Resources/Textures/tombstoneN.bmp");
+	GLuint fenceC = loadBMP("Resources/Textures/fenceC.bmp");
+	GLuint fenceN = loadBMP("Resources/Textures/fenceN.bmp");
 
 	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
 	GLuint left = loadBMP("Resources/Textures/left.bmp");
@@ -106,7 +110,7 @@ int main()
 	vert[2].normals = glm::normalize(glm::cross(vert[3].pos - vert[2].pos, vert[1].pos - vert[2].pos));
 	vert[3].normals = glm::normalize(glm::cross(vert[0].pos - vert[3].pos, vert[2].pos - vert[3].pos));
 
-	std::vector<int> ind = { 0, 1, 3,   
+	std::vector<int> ind = { 0, 1, 3,
 		1, 2, 3 };
 
 	std::vector<Texture> textures;
@@ -163,6 +167,10 @@ int main()
 	Mesh campfireModel = loader.loadObj("Resources/Models/campfire.obj", emptyTextures);
 	Mesh woodpileModel = loader.loadObj("Resources/Models/woodpile.obj", emptyTextures);
 	Mesh marketstallModel = loader.loadObj("Resources/Models/marketstall.obj", emptyTextures);
+	Mesh witchroomModel = loader.loadObj("Resources/Models/witchroom.obj", emptyTextures);
+	Mesh tombstoneModel = loader.loadObj("Resources/Models/tombstone.obj", emptyTextures);
+	Mesh fenceModel = loader.loadObj("Resources/Models/fence.obj", emptyTextures);
+
 
 
 	//Mesh hand = loader.loadObj("Resources/Models/hand2.obj", emptyTextures);
@@ -224,8 +232,8 @@ int main()
 			}
 		}
 
-		
-		 //// Code for the light ////
+
+		//// Code for the light ////
 
 		float horizontalDist = cameraDistance * cos(glm::radians(camera.getRotationOx()));
 		float verticalDist = cameraDistance * sin(glm::radians(camera.getRotationOx()));
@@ -248,7 +256,7 @@ int main()
 
 		sunShader.use();
 
-		
+
 		//glm::mat4 ViewMatrix = glm::lookAt(camera.getCameraPosition(), camera.getCameraPosition() + camera.getCameraViewDirection(), camera.getCameraUp());
 
 		GLuint MatrixID = glGetUniformLocation(sunShader.getId(), "MVP");
@@ -321,7 +329,7 @@ int main()
 			rHandModel = rotate(rHandModel, -swingAngle, vec3(1.0f, 0.0f, 0.0f));
 		}
 		rHandModel = translate(rHandModel, vec3(0.7f, 0.3f, 0.3f));
-		rHandModel = rotate(rHandModel, -80.0f , vec3(1.0f, 0.0f, 0.0f));
+		rHandModel = rotate(rHandModel, -80.0f, vec3(1.0f, 0.0f, 0.0f));
 		rHandModel = rotate(rHandModel, -20.0f, vec3(0.0f, 1.0f, 0.0f));
 		rHandModel = rotate(rHandModel, 10.0f, vec3(0.0f, 0.0f, 1.0f));
 		rHandModel = scale(rHandModel, vec3(0.05f, 0.07f, -0.3f));
@@ -333,7 +341,7 @@ int main()
 		//then the left hand
 		mat4 lHandModel = torsoModel;
 		lHandModel = translate(lHandModel, vec3(-0.7f, 0.3f, 0.3f));
-		lHandModel = rotate(lHandModel, -80.0f , vec3(1.0f, 0.0f, 0.0f));
+		lHandModel = rotate(lHandModel, -80.0f, vec3(1.0f, 0.0f, 0.0f));
 		lHandModel = rotate(lHandModel, 20.0f, vec3(0.0f, 1.0f, 0.0f));
 		lHandModel = rotate(lHandModel, 10.0f, vec3(0.0f, 0.0f, 1.0f));
 		lHandModel = scale(lHandModel, vec3(0.05f, 0.07f, -0.3f));
@@ -1032,26 +1040,299 @@ int main()
 				woodpileModel.draw(shader);
 			}
 			//marketstall
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, MedievalC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, MedievalN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(35.0f, 10.0f, -20.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				marketstallModel.draw(shader);
+			}
+		}
+		//witchroom
+		{
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, MedievalC);
+			glBindTexture(GL_TEXTURE_2D, witchroomC);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, MedievalN);
+			glBindTexture(GL_TEXTURE_2D, witchroomN);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, -35.0f));
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-225.0f, 10.0f, 200.0f));
 			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-			marketstallModel.draw(shader);
+			witchroomModel.draw(shader);
 		}
+		//tombstones
+		{
+			//tombstone1
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tombstoneC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, tombstoneN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-230.0f, 10.0f, 230.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				tombstoneModel.draw(shader);
+			}
+			//tombstone2
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tombstoneC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, tombstoneN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-230.0f, 10.0f, 180.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				tombstoneModel.draw(shader);
+			}
+			//tombstone3
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tombstoneC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, tombstoneN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-230.0f, 10.0f, 160.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				tombstoneModel.draw(shader);
+			}
+			//tombstone4
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tombstoneC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, tombstoneN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-250.0f, 10.0f, 230.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				tombstoneModel.draw(shader);
+			}
+			//tombstone5
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tombstoneC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, tombstoneN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-250.0f, 10.0f, 210.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				tombstoneModel.draw(shader);
+			}
+			//tombstone6
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tombstoneC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, tombstoneN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-250.0f, 10.0f, 190.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				tombstoneModel.draw(shader);
+			}
+			//tombston7
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tombstoneC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, tombstoneN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-250.0f, 10.0f, 170.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				tombstoneModel.draw(shader);
+			}
+		}
+		//fences
+		{
+			//fence1
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, fenceC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, fenceN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-245.0f, 10.0f, 240.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				fenceModel.draw(shader);
+			}
+			//fence2
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, fenceC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, fenceN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-273.0f, 10.0f, 212.5f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				fenceModel.draw(shader);
+			}
+			//fence3
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, fenceC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, fenceN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-273.0f, 10.0f, 180.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				fenceModel.draw(shader);
+			}
+			//fence4
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, fenceC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, fenceN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-245.0f, 10.0f, 152.5f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				fenceModel.draw(shader);
+			}
+		}
+
 
 		//Terenul
 		//ModelMatrix = glm::mat4(1.0);
@@ -1094,7 +1375,7 @@ int main()
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{	
+{
 	//float x = xpos;
 	//float y = ypos;
 	if (firstMouse)
@@ -1162,7 +1443,7 @@ void processKeyboardInput()
 	if (window.isPressed(GLFW_KEY_LEFT_SHIFT))
 		moveSpeed *= 2.0f;*/
 
-	//rotation
+		//rotation
 	if (window.isPressed(GLFW_KEY_LEFT))
 		camera.rotateOy(moveSpeed);
 	if (window.isPressed(GLFW_KEY_RIGHT))
@@ -1178,10 +1459,10 @@ unsigned int loadCubeMap(std::vector<std::string> faces)
 	unsigned int textureID;
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-	for (unsigned int i = 0; i < faces.size(); i++){
+	for (unsigned int i = 0; i < faces.size(); i++) {
 		unsigned int width, height;
 		unsigned char* data = loadRawBMP(faces[i].c_str(), width, height);
-		if (data){
+		if (data) {
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
 				0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data
 			);
