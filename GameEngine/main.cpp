@@ -73,6 +73,14 @@ int main()
 	GLuint tombstoneN = loadBMP("Resources/Textures/tombstoneN.bmp");
 	GLuint fenceC = loadBMP("Resources/Textures/fenceC.bmp");
 	GLuint fenceN = loadBMP("Resources/Textures/fenceN.bmp");
+	GLuint churchC = loadBMP("Resources/Textures/churchC.bmp");
+	GLuint swordN = loadBMP("Resources/Textures/churchN.bmp");
+	GLuint swordC = loadBMP("Resources/Textures/swordC.bmp");
+	GLuint churchN = loadBMP("Resources/Textures/swordN.bmp");
+	GLuint signC = loadBMP("Resources/Textures/signC.bmp");
+	GLuint signN = loadBMP("Resources/Textures/signN.bmp");
+	GLuint tavernC = loadBMP("Resources/Textures/tavernC.bmp");
+	GLuint tavernN = loadBMP("Resources/Textures/tavernN.bmp");
 
 	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
 	GLuint left = loadBMP("Resources/Textures/left.bmp");
@@ -170,6 +178,10 @@ int main()
 	Mesh witchroomModel = loader.loadObj("Resources/Models/witchroom.obj", emptyTextures);
 	Mesh tombstoneModel = loader.loadObj("Resources/Models/tombstone.obj", emptyTextures);
 	Mesh fenceModel = loader.loadObj("Resources/Models/fence.obj", emptyTextures);
+	Mesh churchModel = loader.loadObj("Resources/Models/church.obj", emptyTextures);
+	Mesh signModel = loader.loadObj("Resources/Models/sign.obj", emptyTextures);
+	Mesh swordModel = loader.loadObj("Resources/Models/sword.obj", emptyTextures);
+	Mesh tavernModel = loader.loadObj("Resources/Models/tavern.obj", emptyTextures);
 
 
 
@@ -1062,6 +1074,72 @@ int main()
 				marketstallModel.draw(shader);
 			}
 		}
+		//Church
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, churchC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, churchN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-200.0f, 10.0f, -240.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, -50.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			churchModel.draw(shader);
+		}
+		//tavern
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, tavernC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, tavernN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-100.0f, 10.0f, 0.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			tavernModel.draw(shader);
+		}
+		//sign
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, signC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, signN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 10.0f, -180.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			signModel.draw(shader);
+		}
 		//witchroom
 		{
 			shader.use();
@@ -1083,6 +1161,28 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 			witchroomModel.draw(shader);
+		}
+		//sword
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, swordC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, swordN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-205.0f, 10.0f, 200.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			swordModel.draw(shader);
 		}
 		//tombstones
 		{
