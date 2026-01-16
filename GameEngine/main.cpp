@@ -32,6 +32,20 @@ Camera camera;
 vec3 playerPos = vec3(-11.0f, 15.0f, 250.0f);
 float playerRoataion = 0.0f;
 
+struct Apple {
+	vec3 position;
+	bool isEaten;
+};
+
+std::vector<Apple> mapApples = {
+    { vec3(0.0f, 19.0f, 250.0f), false },
+	{ vec3(10.0f, 19.0f, 255.0f), false },
+	{ vec3(-10.0f, 19.0f, 245.0f), false},
+	{ vec3(-10.0f, 19.0f, 255.0f), false},
+	{ vec3(-10.0f, 19.0f, 265.0f), false},
+	{ vec3(-10.0f, 19.0f, 265.0f), false}
+};
+
 vec3 goblin1Pos = vec3(235.0f, 15.0f, -360.0f);
 vec3 goblin2Pos = vec3(265.0f, 15.0f, -380.0f);
 vec3 goblin3Pos = vec3(300.0f, 15.0f, -344.0f);
@@ -106,6 +120,8 @@ int main()
 	GLuint culoareCopac3 = loadBMP("Resources/Textures/culoare_copac3.bmp");
 	GLuint vrajiculoare = loadBMP("Resources/Textures/vraji_color.bmp");
 	GLuint vrajinormal = loadBMP("Resources/Textures/vraji_normal.bmp");
+	GLuint appleC = loadBMP("Resources/Textures/apple_color.bmp");
+	GLuint appleN = loadBMP("Resources/Textures/apple_normal.bmp");
 	GLuint king_bob = loadBMP("Resources/Textures/king_bob.bmp");
 	GLuint gold = loadBMP("Resources/Textures/gold.bmp");
 	GLuint cow_texture = loadBMP("Resources/Textures/cow_tex.bmp");
@@ -217,6 +233,8 @@ int main()
 	Mesh church_StatueModel = loader.loadObj("Resources/Models/church_Statue.obj", emptyTextures);
 	Mesh tree3 = loader.loadObj("Resources/Models/tree3.obj", emptyTextures);
 	Mesh vraji = loader.loadObj("Resources/Models/vraji.obj", emptyTextures);
+	Mesh apple = loader.loadObj("Resources/Models/apple.obj", emptyTextures);
+	Mesh cap = loader.loadObj("Resources/Models/marianCap.obj", emptyTextures);
 	Mesh king_bobModel = loader.loadObj("Resources/Models/king_bob.obj", emptyTextures);
 	Mesh cow = loader.loadObj("Resources/Models/cow.obj", emptyTextures);
 	Mesh fan = loader.loadObj("Resources/Models/fan.obj", emptyTextures);
@@ -371,6 +389,13 @@ int main()
 			glBindTexture(GL_TEXTURE_2D, handNormal);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
+			//capul
+			mat4 capModel = torsoModel;
+			capModel = translate(capModel, vec3(0.0f, 1.5f, 0.0f));
+			mat4 capMVP = ProjectionMatrix * ViewMatrix * capModel;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &capMVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &capModel[0][0]);
+			cap.draw(shader);
 			//then the right hand
 			mat4 rHandModel = torsoModel;
 			if (isSwinging) {
@@ -660,21 +685,21 @@ int main()
 				healthBgModel = translate(healthBgModel, vec3(0.0f, 2.5f, 0.0f));
 				healthBgModel = scale(healthBgModel, vec3(0.3f, 0.05f, 0.1f));
 
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBgModel)[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBgModel[0][0]); // Update model matrix for lighting
-				glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.2f, 0.2f, 0.2f);
-				box.draw(shader);
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBgModel)[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBgModel[0][0]); // Update model matrix for lighting
+			glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.2f, 0.2f, 0.2f);
+			box.draw(shader);
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, green);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-			}
-			// 2. Foreground (Green health)
-			float healthWidth = (playerHealth / maxHealth) * 0.3f;
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, green);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			float healthPercent = (playerHealth / maxHealth);
+			float healthWidth = healthPercent * 0.3f;
 			mat4 healthBarModel = torsoModel;
 
-			// The offset (-1.0 + healthWidth/2.0) makes the bar expand from the left
-			healthBarModel = translate(healthBarModel, vec3(-1.0f + (healthWidth / 2.0f), 2.5f, 0.01f));
+			float leftEdge = -0.15f;
+			healthBarModel = translate(healthBarModel, vec3(leftEdge + (healthWidth / 2.0f), 2.5f, 0.01f));
 			healthBarModel = scale(healthBarModel, vec3(healthWidth, 0.05f, 0.1f));
 
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBarModel)[0][0]);
@@ -787,6 +812,7 @@ int main()
 			float healthWidth = (playerHealth / maxHealth) * 0.3f;
 			mat4 healthBarModel = torsoModel;
 
+
 			// The offset (-1.0 + healthWidth/2.0) makes the bar expand from the left
 			healthBarModel = translate(healthBarModel, vec3(-1.0f + (healthWidth / 2.0f), 2.5f, 0.01f));
 			healthBarModel = scale(healthBarModel, vec3(healthWidth, 0.05f, 0.1f));
@@ -796,20 +822,41 @@ int main()
 			glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.0f, 1.0f, 0.0f);
 			box.draw(shader);
 		}
-		///// Test plane Obj file //////
+
+		//apples
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, appleC);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, appleN);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+		for (const auto& appleItem : mapApples) {
+			if (!appleItem.isEaten) {
+				float appleBob = sin(glfwGetTime() * 2.0f) * 0.5f;
+
+				mat4 appleModel = mat4(1.0f);
+				appleModel = translate(appleModel, appleItem.position + vec3(0.0f, appleBob, 0.0f));
+				appleModel = scale(appleModel, vec3(0.1f, 0.1f, 0.1f));
+
+				mat4 appleMVP = ProjectionMatrix * ViewMatrix * appleModel;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &appleMVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &appleModel[0][0]);
+				apple.draw(shader);
+			}
+		}
+
 		//Drawing the plane
 		terrainShader.use();
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, grassColor);
 		glUniform1i(glGetUniformLocation(terrainShader.getId(), "texture_diffuse"), 0);
 
-		/*glActiveTexture(GL_TEXTURE1);
+		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, grassNormal);
-		glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);*/
+		glUniform1i(glGetUniformLocation(terrainShader.getId(), "texture_normal"), 1);
 
 		ModelMatrix = glm::mat4(1.0);
 		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 10.0f, 0.0f));
-		//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		ModelMatrix = scale(ModelMatrix, glm::vec3(10.0f, 1.0f, 10.0f));
 		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -1086,9 +1133,11 @@ int main()
 			glBindTexture(GL_TEXTURE_2D, armorN);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 0);
 
+			float bobbingOffset = sin(currentFrame * 2.0f) * 0.5f;
+
 			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(162.0f, 12.0f, 0.5f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(162.0f, 12.0f + bobbingOffset, 0.5f));
+			ModelMatrix = glm::rotate(ModelMatrix, radians(currentFrame * 150.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 			//ModelMatrix = rotate(ModelMatrix, -70.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.9f, 0.9f, 0.9f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -7495,6 +7544,19 @@ void processKeyboardInput()
 		//moveDir = normalize(moveDir);
 		playerPos += moveDir * moveSpeed;
 		playerRoataion = radians(atan2(moveDir.x, moveDir.z));
+	}
+
+	if (window.isPressed(GLFW_KEY_E)) {
+		for (int i = 0; i < mapApples.size(); i++) {
+			if (!mapApples[i].isEaten) {
+				float dist = glm::distance(playerPos, mapApples[i].position);
+				if (dist < 5.0f) {
+					mapApples[i].isEaten = true;
+					playerHealth += 20.0f;
+					if (playerHealth > maxHealth) playerHealth = maxHealth;
+				}
+			}
+		}
 	}
 
 	if (window.isPressed(GLFW_KEY_R))
