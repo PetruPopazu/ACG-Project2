@@ -1589,7 +1589,7 @@ int main()
 		//Road
 		shader.use();
 
-		glActiveTexture(GL_TEXTURE0);
+		/*glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, roadC);
 		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 		glActiveTexture(GL_TEXTURE1);
@@ -1604,7 +1604,7 @@ int main()
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-		stoneRoad.draw(shader);
+		stoneRoad.draw(shader);*/
 
 
 		//Terenul
