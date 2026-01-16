@@ -102,7 +102,7 @@ int main()
 	GLuint culoareCopac3 = loadBMP("Resources/Textures/culoare_copac3.bmp");
 	GLuint vrajiculoare = loadBMP("Resources/Textures/vraji_color.bmp");
 	GLuint vrajinormal = loadBMP("Resources/Textures/vraji_normal.bmp");
-
+	GLuint treegold = loadBMP("Resources/Textures/gold.bmp");
 	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
 	GLuint left = loadBMP("Resources/Textures/left.bmp");
 	GLuint top = loadBMP("Resources/Textures/top.bmp");
