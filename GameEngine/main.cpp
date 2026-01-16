@@ -84,6 +84,15 @@ int main()
 	GLuint signN = loadBMP("Resources/Textures/signN.bmp");
 	GLuint tavernC = loadBMP("Resources/Textures/tavernC.bmp");
 	GLuint tavernN = loadBMP("Resources/Textures/tavernN.bmp");
+	GLuint armorC = loadBMP("Resources/Textures/armorC.bmp");
+	GLuint armorN = loadBMP("Resources/Textures/armorN.bmp");
+	GLuint fountainC = loadBMP("Resources/Textures/fountainC.bmp");
+	GLuint fountainN = loadBMP("Resources/Textures/fountainN.bmp");
+	GLuint statue1 = loadBMP("Resources/Textures/statue1.bmp");
+	GLuint statue2C = loadBMP("Resources/Textures/statue2C.bmp");
+	GLuint statue2N = loadBMP("Resources/Textures/statue2N.bmp");
+	GLuint church_StatueC = loadBMP("Resources/Textures/church_StatueC.bmp");
+	GLuint church_StatueN = loadBMP("Resources/Textures/church_StatueN.bmp");
 	GLuint roadC = loadBMP("Resources/Textures/stoneC.bmp");
 	GLuint roadN = loadBMP("Resources/Textures/stoneN.bmp");
 	GLuint red = loadBMP("Resources/Textures/red.bmp");
@@ -189,8 +198,12 @@ int main()
 	Mesh signModel = loader.loadObj("Resources/Models/sign.obj", emptyTextures);
 	Mesh swordModel = loader.loadObj("Resources/Models/sword.obj", emptyTextures);
 	Mesh tavernModel = loader.loadObj("Resources/Models/tavern.obj", emptyTextures);
-	Mesh stoneRoad = loader.loadObj("Resources/Models/stoneRoad.obj", emptyTextures);
-
+	Mesh armorModel = loader.loadObj("Resources/Models/armor.obj", emptyTextures);
+	Mesh fountainModel = loader.loadObj("Resources/Models/fountain.obj", emptyTextures);
+	Mesh statue1Model = loader.loadObj("Resources/Models/statue1.obj", emptyTextures);
+	Mesh statue2Model = loader.loadObj("Resources/Models/statue2.obj", emptyTextures);
+	Mesh church_StatueModel = loader.loadObj("Resources/Models/church_Statue.obj", emptyTextures);
+	
 
 
 	//Mesh hand = loader.loadObj("Resources/Models/hand2.obj", emptyTextures);
@@ -592,6 +605,71 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 			wall.draw(shader);
 		}
+		//statue1
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, statue1);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-70.0f, 10.0f, 50.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, -180.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(1.5f, 1.5f, 1.5f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			statue1Model.draw(shader);
+		}
+		//statue2
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, statue2C);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, statue2N);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(70.0f, 10.0f, 60.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(0.2f, 0.2f, 0.2f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			statue2Model.draw(shader);
+		}
+		//statue3
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, church_StatueC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, church_StatueN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-237.0f, 10.0f, -192.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			church_StatueModel.draw(shader);
+		}
 		//Copaci
 		{
 			/*glActiveTexture(GL_TEXTURE0);
@@ -634,7 +712,7 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
 			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 24.0f, 10.0f));
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 24.0f, -5.0f));
 			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, -70.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(15.0f, 15.0f, 15.0f));
@@ -643,6 +721,52 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 			blacksmithModel.draw(shader);
+		}
+		//armor
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, armorC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, armorN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(162.0f, 12.0f, 0.5f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, -70.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(0.7f, 0.7f, 0.7f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			armorModel.draw(shader);
+		}
+		//fountain
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, fountainC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, fountainN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-113.0f, 13.5f, -27.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(0.05f, 0.05f, 0.05f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			fountainModel.draw(shader);
 		}
 		//Houses
 		{
@@ -753,7 +877,7 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, -20.0f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(155.0f, 10.0f, -25.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
@@ -772,7 +896,7 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, -23.0f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(155.0f, 10.0f, -28.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
@@ -791,7 +915,7 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 13.5f, -21.5f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(155.0f, 13.5f, -26.5f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
@@ -926,9 +1050,9 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, 40.0f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(155.0f, 10.0f, 35.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, -135.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -1138,27 +1262,52 @@ int main()
 
 			churchModel.draw(shader);
 		}
-		//tavern
+		//taverns
 		{
-			shader.use();
+			//tavern1
+			{
+				shader.use();
 
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, tavernC);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, tavernN);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tavernC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, tavernN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
-			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-120.0f, 10.0f, 45.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-			ModelMatrix = scale(ModelMatrix, glm::vec3(3.5f, 3.5f, 3.5f));
-			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-120.0f, 10.0f, 45.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(3.5f, 3.5f, 3.5f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-			tavernModel.draw(shader);
+				tavernModel.draw(shader);
+			}
+			//tavern2
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tavernC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, tavernN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(120.0f, 10.0f, 47.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				tavernModel.draw(shader);
+			}
 		}
 		//sign
 		{
@@ -1172,7 +1321,7 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(20.0f, 10.0f, 103.0f));
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-60.0f, 10.0f, 103.0f));
 			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 75.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
@@ -1399,7 +1548,7 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-245.0f, 0.0f, 240.0f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-245.0f, 10.0f, 240.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
@@ -1421,7 +1570,7 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-273.0f, 0.0f, 212.5f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-273.0f, 10.0f, 212.5f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
@@ -1443,7 +1592,7 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-273.0f, 0.0f, 180.0f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-273.0f, 10.0f, 180.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
@@ -1465,7 +1614,7 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-245.0f, 0.0f, 152.5f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-245.0f, 10.0f, 152.5f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
@@ -1480,7 +1629,7 @@ int main()
 		//Road
 		shader.use();
 
-		glActiveTexture(GL_TEXTURE0);
+		/*glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, roadC);
 		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 		glActiveTexture(GL_TEXTURE1);
@@ -1495,7 +1644,7 @@ int main()
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-		stoneRoad.draw(shader);
+		stoneRoad.draw(shader);*/
 
 
 		//Terenul
