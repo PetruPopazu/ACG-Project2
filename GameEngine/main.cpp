@@ -19,6 +19,9 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 float cameraDistance = 20.0f;
 
+float playerHealth = 20.0f;
+float maxHealth = 100.0f;
+
 float swingTimer = 0.0f;
 bool isSwinging = false;
 float swingSpeed = 5.0f;
@@ -90,6 +93,10 @@ int main()
 	GLuint statue2N = loadBMP("Resources/Textures/statue2N.bmp");
 	GLuint church_StatueC = loadBMP("Resources/Textures/church_StatueC.bmp");
 	GLuint church_StatueN = loadBMP("Resources/Textures/church_StatueN.bmp");
+	GLuint roadC = loadBMP("Resources/Textures/stoneC.bmp");
+	GLuint roadN = loadBMP("Resources/Textures/stoneN.bmp");
+	GLuint red = loadBMP("Resources/Textures/red.bmp");
+	GLuint green = loadBMP("Resources/Textures/green.bmp");
 
 	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
 	GLuint left = loadBMP("Resources/Textures/left.bmp");
@@ -407,6 +414,39 @@ int main()
 		mat4 rLegMVP = ProjectionMatrix * ViewMatrix * rLegModel;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &rLegMVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &rLegModel[0][0]);
+		box.draw(shader);
+
+		//Health bar
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, red);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+		mat4 healthBgModel = torsoModel;
+
+		// Only translate relative to the torso's center (0,0,0)
+		healthBgModel = translate(healthBgModel, vec3(0.0f, 2.5f, 0.0f));
+		healthBgModel = scale(healthBgModel, vec3(0.3f, 0.05f, 0.1f));
+
+		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBgModel)[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBgModel[0][0]); // Update model matrix for lighting
+		glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.2f, 0.2f, 0.2f);
+		box.draw(shader);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, green);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+		// 2. Foreground (Green health)
+		float healthWidth = (playerHealth / maxHealth) * 0.3f;
+		mat4 healthBarModel = torsoModel;
+
+		// The offset (-1.0 + healthWidth/2.0) makes the bar expand from the left
+		healthBarModel = translate(healthBarModel, vec3(-1.0f + (healthWidth / 2.0f), 2.5f, 0.01f));
+		healthBarModel = scale(healthBarModel, vec3(healthWidth, 0.05f, 0.1f));
+
+		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBarModel)[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBarModel[0][0]);
+		glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.0f, 1.0f, 0.0f);
 		box.draw(shader);
 
 
