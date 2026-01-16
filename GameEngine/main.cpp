@@ -2056,7 +2056,7 @@ int main()
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, fan_color);
+			glBindTexture(GL_TEXTURE_2D, culoareCopac3);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
 			ModelMatrix = glm::mat4(1.0);
@@ -2075,7 +2075,7 @@ int main()
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, fan_color);
+			glBindTexture(GL_TEXTURE_2D, culoareCopac3);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
 			ModelMatrix = glm::mat4(1.0);
@@ -2092,7 +2092,7 @@ int main()
 			//fan3
 			shader.use();
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, fan_color);
+			glBindTexture(GL_TEXTURE_2D, culoareCopac3);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
 			ModelMatrix = glm::mat4(1.0);
