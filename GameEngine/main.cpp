@@ -77,7 +77,7 @@ int main()
 	GLuint swordN = loadBMP("Resources/Textures/churchN.bmp");
 	GLuint swordC = loadBMP("Resources/Textures/swordC.bmp");
 	GLuint churchN = loadBMP("Resources/Textures/swordN.bmp");
-	GLuint signC = loadBMP("Resources/Textures/signC.bmp");
+	GLuint sign1C = loadBMP("Resources/Textures/signC1.bmp");
 	GLuint signN = loadBMP("Resources/Textures/signN.bmp");
 	GLuint tavernC = loadBMP("Resources/Textures/tavernC.bmp");
 	GLuint tavernN = loadBMP("Resources/Textures/tavernN.bmp");
@@ -774,9 +774,9 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-180.0f, 10.0f, 30.0f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-155.0f, 10.0f, 25.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 135.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -1108,10 +1108,10 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-100.0f, 10.0f, 0.0f));
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-120.0f, 10.0f, 45.0f));
 			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-			ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(3.5f, 3.5f, 3.5f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -1123,16 +1123,16 @@ int main()
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, signC);
+			glBindTexture(GL_TEXTURE_2D, sign1C);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, signN);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 10.0f, -180.0f));
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(20.0f, 10.0f, 103.0f));
 			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, 75.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -1355,7 +1355,7 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-245.0f, 10.0f, 240.0f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-245.0f, 0.0f, 240.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
@@ -1377,7 +1377,7 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-273.0f, 10.0f, 212.5f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-273.0f, 0.0f, 212.5f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
@@ -1399,7 +1399,7 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-273.0f, 10.0f, 180.0f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-273.0f, 0.0f, 180.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
@@ -1421,7 +1421,7 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-245.0f, 10.0f, 152.5f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-245.0f, 0.0f, 152.5f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
