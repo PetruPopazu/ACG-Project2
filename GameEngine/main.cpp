@@ -1694,14 +1694,14 @@ int main()
 				glBindTexture(GL_TEXTURE_2D, witchroomN);
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-225.0f, 10.0f, 200.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-225.0f, 10.0f, 200.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 				witchroomModel.draw(shader);
 			}
@@ -2584,24 +2584,7 @@ int main()
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 				tree3.draw(shader);
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-9.0f, 10.0f, 174.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(1.9f, 1.9f, 1.9f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
+				
 				shader.use();
 
 				glActiveTexture(GL_TEXTURE0);
@@ -2613,41 +2596,6 @@ int main()
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 10.0f, 123.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(3.1f, 3.1f, 3.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-17.0f, 10.0f, 118.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -5532,24 +5480,6 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-55.0f, 10.0f, 115.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-69.0f, 10.0f, 129.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
@@ -5568,130 +5498,7 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-57.0f, 10.0f, 108.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-52.0f, 10.0f, 122.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-23.0f, 10.0f, 115.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.3f, 2.3f, 2.3f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-25.0f, 10.0f, 250.0f));
-				ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-45.0f, 10.0f, 275.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.4f, 2.4f, 2.4f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-56.0f, 10.0f, 299.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-30.0f, 10.0f, 200.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-10.0f, 10.0f, 220.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
@@ -5728,43 +5535,6 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-33.0f, 10.0f, 162.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-54.0f, 10.0f, 188.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(1.7f, 1.7f, 1.7f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-98.0f, 10.0f, 188.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
@@ -5776,23 +5546,6 @@ int main()
 				tree3.draw(shader);
 
 
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-17.0f, 10.0f, 255.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
 
 				//alt copac cu mere
 				shader.use();
@@ -5806,24 +5559,6 @@ int main()
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-8.0f, 10.0f, 121.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -5852,24 +5587,6 @@ int main()
 				shader.use();
 
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-34.0f, 10.0f, 100.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
@@ -5878,24 +5595,6 @@ int main()
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.6f, 1.6f, 1.6f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-53.0f, 10.0f, 200.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -5932,43 +5631,6 @@ int main()
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.5f, 1.5f, 1.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-53.0f, 10.0f, 200.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(1.7f, 1.7f, 1.7f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-33.0f, 10.0f, 259.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -6152,25 +5814,6 @@ int main()
 				shader.use();
 
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-55.0f, 10.0f, 167.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
@@ -6338,166 +5981,11 @@ int main()
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-30.0f, 10.0f, 245.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 10.0f, 232.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-23.0f, 10.0f, 220.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-33.0f, 10.0f, 210.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-34.0f, 10.0f, 263.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-40.0f, 10.0f, 222.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-28.0f, 10.0f, 230.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.6f, 2.6f, 2.6f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
 			}
 			//parcela 5
 			{
 				int a = -215;
-				shader.use();
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 55.0f, 10.0f, 115.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
+				
 				//alt copac cu mere
 				shader.use();
 
@@ -6534,23 +6022,6 @@ int main()
 
 				tree3.draw(shader);
 
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 52.0f, 10.0f, 132.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
 
 				//alt copac cu mere
 				shader.use();
@@ -6625,43 +6096,6 @@ int main()
 				shader.use();
 
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 30.0f, 10.0f, 200.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 10.0f, 10.0f, 220.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
@@ -6670,42 +6104,6 @@ int main()
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 33.0f, 10.0f, 162.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 54.0f, 10.0f, 188.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(1.7f, 1.7f, 1.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -6772,24 +6170,6 @@ int main()
 				shader.use();
 
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 8.0f, 10.0f, 121.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
@@ -6834,24 +6214,6 @@ int main()
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.6f, 1.6f, 1.6f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 53.0f, 10.0f, 200.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -7090,25 +6452,6 @@ int main()
 				shader.use();
 
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 55.0f, 10.0f, 167.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
@@ -7167,25 +6510,6 @@ int main()
 				shader.use();
 
 				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 50.0f, 10.0f, 170.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
@@ -7194,44 +6518,6 @@ int main()
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 60.0f, 10.0f, 160.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 60.0f, 10.0f, 245.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -7276,26 +6562,6 @@ int main()
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 30.0f, 10.0f, 245.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
 
 				//alt copac cu mere
 				shader.use();
@@ -7487,21 +6753,6 @@ int main()
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				tree3.draw(shader);
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 35.0f, 10.0f, 240.0f));
-				ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
 
 				//alt copac cu mere
 				shader.use();
@@ -7540,23 +6791,6 @@ int main()
 
 				tree3.draw(shader);
 
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 30.0f, 10.0f, 200.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
 
 				//alt copac cu mere
 				shader.use();
@@ -7575,43 +6809,6 @@ int main()
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 33.0f, 10.0f, 155.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 98.0f, 10.0f, 188.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
 
 				//alt copac cu mere
 				shader.use();
@@ -7697,24 +6894,6 @@ int main()
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 99.0f, 10.0f, 187.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(1.6f, 1.6f, 1.6f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -7813,119 +6992,42 @@ int main()
 				tree3.draw(shader);
 
 
-				//alt copac cu mere
-				shader.use();
+				////alt copac cu mere
+				//shader.use();
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				//glActiveTexture(GL_TEXTURE0);
+				//glBindTexture(GL_TEXTURE_2D, culoareCopac2);
+				//glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 100.0f, 10.0f, 239.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				//ModelMatrix = glm::mat4(1.0);
+				//ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 110.0f, 10.0f, 205.0f));
+				////ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				////ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+				//ModelMatrix = scale(ModelMatrix, glm::vec3(2.3f, 2.3f, 2.3f));
+				//MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				//glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				//glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 95.0f, 10.0f, 214.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
+				//tree3.draw(shader);
 
 
 				//alt copac cu mere
-				shader.use();
+				//shader.use();
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				//glActiveTexture(GL_TEXTURE0);
+				//glBindTexture(GL_TEXTURE_2D, culoareCopac1);
+				//glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 110.0f, 10.0f, 205.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.3f, 2.3f, 2.3f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				//ModelMatrix = glm::mat4(1.0);
+				//ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 103.0f, 10.0f, 195.0f));
+				////ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				////ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+				//ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
+				//MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				//glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				//glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 103.0f, 10.0f, 195.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 88.0f, 10.0f, 147.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac2);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 100.0f, 10.0f, 170.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.8f, 2.8f, 2.8f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
+				//tree3.draw(shader);
 
 				//alt copac cu mere
 				shader.use();
@@ -7963,46 +7065,6 @@ int main()
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 				tree3.draw(shader);
-
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 96.0f, 10.0f, 229.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 30.0f, 10.0f, 245.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
 
 				//alt copac cu mere
 				shader.use();
@@ -8043,27 +7105,6 @@ int main()
 				tree3.draw(shader);
 
 
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac1);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 33.0f, 10.0f, 206.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-
 				//alt copac cu mere
 				shader.use();
 
@@ -8076,25 +7117,6 @@ int main()
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.2f, 3.2f, 3.2f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 40.0f, 10.0f, 212.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
