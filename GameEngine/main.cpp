@@ -26,7 +26,7 @@ float swingSpeed = 5.0f;
 Window window("Marian - The time traveler", 1024, 960);
 Camera camera;
 
-vec3 playerPos = vec3(0.0f, 13.0f, 250.0f);
+vec3 playerPos = vec3(0.0f, 15.0f, 250.0f);
 float playerRoataion = 0.0f;
 
 glm::vec3 lightColor = glm::vec3(1.0f);
@@ -229,7 +229,7 @@ int main()
 		processKeyboardInput();
 
 		float floorLevel = 10.0f;
-		float characterHeight = 3.0f;
+		float characterHeight = 6.0f;
 
 		if (playerPos.y > floorLevel + characterHeight) {
 			playerPos.y -= 20.0f * deltaTime;
@@ -334,7 +334,8 @@ int main()
 		//firstly the torso
 		mat4 torsoModel = mat4(1.0f);
 		torsoModel = translate(torsoModel, playerPos);
-		torsoModel = rotate(torsoModel, 180.0f + playerRoataion, vec3(0.0f, 1.0f, 0.0f));
+		torsoModel = rotate(torsoModel, radians(playerRoataion + 180.0f), vec3(0.0f, 1.0f, 0.0f));
+		torsoModel = scale(torsoModel, vec3(2.0f, 2.0f, 2.0f));
 		mat4 torsoMVP = ProjectionMatrix * ViewMatrix * torsoModel;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &torsoMVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &torsoModel[0][0]);
@@ -352,13 +353,13 @@ int main()
 		mat4 rHandModel = torsoModel;
 		if (isSwinging) {
 			float swingAngle = sin(swingTimer) * 90.0f;
-			rHandModel = rotate(rHandModel, -swingAngle, vec3(1.0f, 0.0f, 0.0f));
+			rHandModel = rotate(rHandModel, swingAngle, vec3(1.0f, 0.0f, 0.0f));
 		}
-		rHandModel = translate(rHandModel, vec3(0.7f, 0.3f, 0.3f));
+		rHandModel = translate(rHandModel, vec3(0.7f, 0.3f, 0.4f));
 		rHandModel = rotate(rHandModel, -80.0f, vec3(1.0f, 0.0f, 0.0f));
 		rHandModel = rotate(rHandModel, -20.0f, vec3(0.0f, 1.0f, 0.0f));
 		rHandModel = rotate(rHandModel, 10.0f, vec3(0.0f, 0.0f, 1.0f));
-		rHandModel = scale(rHandModel, vec3(0.05f, 0.07f, -0.3f));
+		rHandModel = scale(rHandModel, vec3(0.07f, 0.11f, -0.45f));
 		mat4 rHandMVP = ProjectionMatrix * ViewMatrix * rHandModel;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &rHandMVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &rHandModel[0][0]);
@@ -366,11 +367,11 @@ int main()
 
 		//then the left hand
 		mat4 lHandModel = torsoModel;
-		lHandModel = translate(lHandModel, vec3(-0.7f, 0.3f, 0.3f));
+		lHandModel = translate(lHandModel, vec3(-0.7f, 0.3f, 0.4f));
 		lHandModel = rotate(lHandModel, -80.0f, vec3(1.0f, 0.0f, 0.0f));
 		lHandModel = rotate(lHandModel, 20.0f, vec3(0.0f, 1.0f, 0.0f));
-		lHandModel = rotate(lHandModel, 10.0f, vec3(0.0f, 0.0f, 1.0f));
-		lHandModel = scale(lHandModel, vec3(0.05f, 0.07f, -0.3f));
+		lHandModel = rotate(lHandModel, -10.0f, vec3(0.0f, 0.0f, 1.0f));
+		lHandModel = scale(lHandModel, vec3(0.07f, 0.11f, -0.45f));
 		mat4 lHandMVP = ProjectionMatrix * ViewMatrix * lHandModel;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &lHandMVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &lHandModel[0][0]);
@@ -386,7 +387,7 @@ int main()
 		}
 		lLegModel = rotate(lLegModel, 180.0f, vec3(1.0f, 0.0f, 0.0f));
 		lLegModel = rotate(lLegModel, 4.0f, vec3(0.0f, 0.0f, 1.0f));
-		lLegModel = scale(lLegModel, vec3(0.08f, 0.4f, 0.1f));
+		lLegModel = scale(lLegModel, vec3(0.1f, 0.6f, 0.09f));
 		mat4 lLegMVP = ProjectionMatrix * ViewMatrix * lLegModel;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &lLegMVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &lLegModel[0][0]);
@@ -402,7 +403,7 @@ int main()
 		}
 		rLegModel = rotate(rLegModel, 180.0f, vec3(1.0f, 0.0f, 0.0f));
 		rLegModel = rotate(rLegModel, -4.0f, vec3(0.0f, 0.0f, 1.0f));
-		rLegModel = scale(rLegModel, vec3(0.08f, 0.4f, 0.1f));
+		rLegModel = scale(rLegModel, vec3(0.1f, 0.6f, 0.09f));
 		mat4 rLegMVP = ProjectionMatrix * ViewMatrix * rLegModel;
 		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &rLegMVP[0][0]);
 		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &rLegModel[0][0]);
@@ -1323,10 +1324,12 @@ int main()
 			glBindTexture(GL_TEXTURE_2D, swordN);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
+			float bobbingOffset = sin(currentFrame * 2.0f) * 0.5f;
 			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-205.0f, 10.0f, 200.0f));
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-205.0f, 10.0f + bobbingOffset, 200.0f));
 			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
+			float rotationAngle = currentFrame * 150.0f;
+			ModelMatrix = rotate(ModelMatrix, radians(rotationAngle), vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -1468,7 +1471,7 @@ int main()
 
 				tombstoneModel.draw(shader);
 			}
-			//tombston7
+			//tombstone7
 			{
 				shader.use();
 
@@ -1583,6 +1586,26 @@ int main()
 			}
 		}
 
+		//Road
+		shader.use();
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, roadC);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, roadN);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+		ModelMatrix = glm::mat4(1.0);
+		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 9.0f, 152.5f));
+		ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+		ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+		stoneRoad.draw(shader);
+
 
 		//Terenul
 		//ModelMatrix = glm::mat4(1.0);
@@ -1658,18 +1681,37 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 void processKeyboardInput()
 {
 	float moveSpeed = 100.0f * deltaTime;
-	float angleRad = radians(playerRoataion);
-	vec3 forward = vec3(sin(angleRad), 0.0f, cos(angleRad));
-	vec3 right = vec3(cos(angleRad), 0.0f, -sin(angleRad));
+	if (window.isPressed(GLFW_KEY_LEFT_SHIFT))
+		moveSpeed *= 2.0f;
+	bool isMoving = false;
+	vec3 moveDir = vec3(0.0f);
+	float angleRad = camera.getRotationOy();
+	vec3 forward = vec3(sin(radians(angleRad)), 0.0f, cos(radians(angleRad)));
+	vec3 right = vec3(cos(radians(angleRad)), 0.0f, -sin(radians(angleRad)));
 
-	if (window.isPressed(GLFW_KEY_W))
-		playerPos += forward * moveSpeed;
-	if (window.isPressed(GLFW_KEY_S))
-		playerPos -= forward * moveSpeed;
-	if (window.isPressed(GLFW_KEY_A))
-		playerPos += right * moveSpeed;
-	if (window.isPressed(GLFW_KEY_D))
-		playerPos -= right * moveSpeed;
+	if (window.isPressed(GLFW_KEY_W)) {
+		moveDir += forward;
+		isMoving = true;
+	}
+	if (window.isPressed(GLFW_KEY_S)) {
+		moveDir -= forward;
+		isMoving = true;
+	}
+	if (window.isPressed(GLFW_KEY_A)) {
+		moveDir += right;
+		isMoving = true;
+	}
+	if (window.isPressed(GLFW_KEY_D)) {
+		moveDir -= right;
+		isMoving = true;
+	}
+
+	if (isMoving) {
+		//moveDir = normalize(moveDir);
+		playerPos += moveDir * moveSpeed;
+		playerRoataion = radians(atan2(moveDir.x, moveDir.z));
+	}
+
 	if (window.isPressed(GLFW_KEY_R))
 		playerPos.y += moveSpeed;
 	if (window.isPressed(GLFW_KEY_F))
