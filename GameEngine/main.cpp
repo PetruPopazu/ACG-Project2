@@ -681,20 +681,6 @@ int main()
 				church_StatueModel.draw(shader);
 			}
 		}
-		//Copaci
-		{
-			/*glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, grassColor);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 28.0f, 0.0f));
-			ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 2.0f, 3.0f));
-			ModelMatrix = glm::rotate(ModelMatrix, 90.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-			tree.draw(shader);*/
-		}
 		//Tent
 		{
 			shader.use();
