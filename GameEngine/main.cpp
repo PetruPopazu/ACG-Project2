@@ -29,7 +29,8 @@ float swingSpeed = 5.0f;
 Window window("Marian - The time traveler", 1024, 960);
 Camera camera;
 
-vec3 playerPos = vec3(-20.0f, 15.0f, 250.0f);
+//vec3 playerPos = vec3(-20.0f, 15.0f, 250.0f);
+vec3 playerPos = vec3(-145.0f, 15.0f, -500.0f);
 float playerRoataion = 0.0f;
 
 struct Apple {
@@ -126,6 +127,10 @@ int main()
 	GLuint gold = loadBMP("Resources/Textures/gold.bmp");
 	GLuint cow_texture = loadBMP("Resources/Textures/cow_tex.bmp");
 	GLuint fan_color = loadBMP("Resources/Textures/fan_color.bmp");
+	GLuint cube1 = loadBMP("Resources/Textures/cube1.bmp");
+	GLuint portalN = loadBMP("Resources/Textures/portalN.bmp");
+	GLuint portalC = loadBMP("Resources/Textures/portalC.bmp");
+
 	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
 	GLuint left = loadBMP("Resources/Textures/left.bmp");
 	GLuint top = loadBMP("Resources/Textures/top.bmp");
@@ -239,6 +244,8 @@ int main()
 	Mesh cow = loader.loadObj("Resources/Models/cow.obj", emptyTextures);
 	Mesh fan = loader.loadObj("Resources/Models/fan.obj", emptyTextures);
 	Mesh stoneRoad = loader.loadObj("Resources/Models/stoneRoad.obj", emptyTextures);
+	Mesh cube1Model = loader.loadObj("Resources/Models/cube1.obj", emptyTextures);
+	Mesh portalModel = loader.loadObj("Resources/Models/portal.obj", emptyTextures);
 
 	//Mesh hand = loader.loadObj("Resources/Models/hand2.obj", emptyTextures);
 	//Mesh skybox = loader.loadObj("Resources/Models/box.obj");
@@ -662,8 +669,6 @@ int main()
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &lLegMVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &lLegModel[0][0]);
 			box.draw(shader);
-
-
 			//right leg
 			{
 				mat4 rLegModel = torsoModel;
@@ -687,27 +692,28 @@ int main()
 				healthBgModel = translate(healthBgModel, vec3(0.0f, 2.5f, 0.0f));
 				healthBgModel = scale(healthBgModel, vec3(0.3f, 0.05f, 0.1f));
 
-			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBgModel)[0][0]);
-			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBgModel[0][0]); // Update model matrix for lighting
-			glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.2f, 0.2f, 0.2f);
-			box.draw(shader);
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBgModel)[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBgModel[0][0]); // Update model matrix for lighting
+				glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.2f, 0.2f, 0.2f);
+				box.draw(shader);
 
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, green);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, green);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-			float healthPercent = (playerHealth / maxHealth);
-			float healthWidth = healthPercent * 0.3f;
-			mat4 healthBarModel = torsoModel;
+				float healthPercent = (playerHealth / maxHealth);
+				float healthWidth = healthPercent * 0.3f;
+				mat4 healthBarModel = torsoModel;
 
-			float leftEdge = -0.15f;
-			healthBarModel = translate(healthBarModel, vec3(leftEdge + (healthWidth / 2.0f), 2.5f, 0.01f));
-			healthBarModel = scale(healthBarModel, vec3(healthWidth, 0.05f, 0.1f));
+				float leftEdge = -0.15f;
+				healthBarModel = translate(healthBarModel, vec3(leftEdge + (healthWidth / 2.0f), 2.5f, 0.01f));
+				healthBarModel = scale(healthBarModel, vec3(healthWidth, 0.05f, 0.1f));
 
-			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBarModel)[0][0]);
-			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBarModel[0][0]);
-			glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.0f, 1.0f, 0.0f);
-			box.draw(shader);
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBarModel)[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBarModel[0][0]);
+				glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.0f, 1.0f, 0.0f);
+				box.draw(shader);
+			}
 		}
 		//goblin3
 		{
@@ -824,70 +830,72 @@ int main()
 			glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.0f, 1.0f, 0.0f);
 			box.draw(shader);
 		}
-
 		//apples
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, appleC);
-		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, appleN);
-		glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-		for (const auto& appleItem : mapApples) {
-			if (!appleItem.isEaten) {
-				float appleBob = sin(glfwGetTime() * 2.0f) * 0.5f;
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, appleC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, appleN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+			for (const auto& appleItem : mapApples) {
+				if (!appleItem.isEaten) {
+					float appleBob = sin(glfwGetTime() * 2.0f) * 0.5f;
 
-				mat4 appleModel = mat4(1.0f);
-				appleModel = translate(appleModel, appleItem.position + vec3(0.0f, appleBob, 0.0f));
-				appleModel = scale(appleModel, vec3(0.1f, 0.1f, 0.1f));
+					mat4 appleModel = mat4(1.0f);
+					appleModel = translate(appleModel, appleItem.position + vec3(0.0f, appleBob, 0.0f));
+					appleModel = scale(appleModel, vec3(0.1f, 0.1f, 0.1f));
 
-				mat4 appleMVP = ProjectionMatrix * ViewMatrix * appleModel;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &appleMVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &appleModel[0][0]);
-				apple.draw(shader);
+					mat4 appleMVP = ProjectionMatrix * ViewMatrix * appleModel;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &appleMVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &appleModel[0][0]);
+					apple.draw(shader);
+				}
 			}
 		}
-
 		//Drawing the plane
-		terrainShader.use();
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, grassColor);
-		glUniform1i(glGetUniformLocation(terrainShader.getId(), "texture_diffuse"), 0);
+		{
+			terrainShader.use();
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, grassColor);
+			glUniform1i(glGetUniformLocation(terrainShader.getId(), "texture_diffuse"), 0);
 
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, grassNormal);
-		glUniform1i(glGetUniformLocation(terrainShader.getId(), "texture_normal"), 1);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, grassNormal);
+			glUniform1i(glGetUniformLocation(terrainShader.getId(), "texture_normal"), 1);
 
-		ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 10.0f, 0.0f));
-		ModelMatrix = scale(ModelMatrix, glm::vec3(10.0f, 1.0f, 10.0f));
-		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 10.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(10.0f, 1.0f, 10.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-		glUniform3f(glGetUniformLocation(terrainShader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
-		glUniform3f(glGetUniformLocation(terrainShader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-		glUniform3f(glGetUniformLocation(terrainShader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
+			glUniform3f(glGetUniformLocation(terrainShader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
+			glUniform3f(glGetUniformLocation(terrainShader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+			glUniform3f(glGetUniformLocation(terrainShader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
 
-		plane.draw(terrainShader);
+			plane.draw(terrainShader);
 
-		//mountainShader.use();
-		shader.use();
+			//mountainShader.use();
+			shader.use();
 
-		glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
-		glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-		glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
+			glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
+			glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+			glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
 
-		/*glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
-		glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-		glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);*/
+			/*glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
+			glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
+			glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);*/
 
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, munteColor);
-		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, munteNormal);
-		glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, munteColor);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, munteNormal);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+		}
 		//Munti
 		{
 			//Primul Munte
@@ -967,6 +975,46 @@ int main()
 
 				mountain1.draw(shader);
 			}
+		}
+		//Hub 
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, cube1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-145.0f, 46.0f, -500.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, 15.0f, vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(35.0f, 35.0f, 35.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			cube1Model.draw(shader);
+		}
+		//portal
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, portalC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, portalN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-145.0f, 17.0f, -520.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, 15.0f, vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(0.2f, 0.2f, 0.2f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			portalModel.draw(shader);
 		}
 		//Castel
 		{
@@ -1808,7 +1856,6 @@ int main()
 				}
 			}
 		}
-		
 		//Church
 		{
 			shader.use();
@@ -2221,58 +2268,61 @@ int main()
 		//fan
 		{	
 			//fan1
-			shader.use();
+			{
+				shader.use();
 
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, fan_color);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, fan_color);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-224.0f, 10.0f, -142.5f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
-			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-224.0f, 10.0f, -142.5f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-			fan.draw(shader);
-
-
+				fan.draw(shader);
+			}
 			//fan2
-			shader.use();
+			{
+				shader.use();
 
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, fan_color);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, fan_color);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-207.0f, 10.0f, -169.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
-			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-207.0f, 10.0f, -169.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-			fan.draw(shader);
-
+				fan.draw(shader);
+			}
 			//fan3
-			shader.use();
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, fan_color);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			{
+				shader.use();
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, fan_color);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-183.0f, 10.0f, -144.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			ModelMatrix = rotate(ModelMatrix, -10.0f, vec3(0.0f, 1.0f, 0.0f));
-			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
-			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-183.0f, 10.0f, -144.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, -10.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-			fan.draw(shader);
+				fan.draw(shader);
+			}
 		}
 		//multe vaci
 		{
@@ -2438,6 +2488,765 @@ int main()
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 				cow.draw(shader);
+			}
+		}
+		//Road1
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, roadC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, roadN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 250.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			stoneRoad.draw(shader);
+		}
+		//Roads
+		{
+			//Road2
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 220.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//Road3
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 190.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//Road4
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 160.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//Road5
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 130.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//Road6
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 100.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//Road7
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 70.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//Road8
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 40.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//Road9
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 10.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//Road10
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, -20.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//Road11
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, -50.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//Road12
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, -80.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//Road13
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, -110.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//Road14
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, -140.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//Road15
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, -170.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadStanga1
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-45.0f, 9.0f, -27.5f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadStanga2
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-75.0f, 9.0f, -27.5f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadStanga3
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-105.0f, 9.0f, -27.5f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadDreapta1
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(5.0f, 9.0f, 25.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadDreapta2
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(35.0f, 9.0f, 25.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadDreapta3
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(65.0f, 9.0f, 25.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadDreapta4
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(95.0f, 9.0f, 25.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadDreapta5
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(125.0f, 9.0f, 25.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadDreaptasStanga1
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(130.0f, 9.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadDreaptasStanga2
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(130.0f, 9.0f, -30.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadDreaptasStanga3
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(130.0f, 9.0f, -60.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadDreaptaStangaStanga1
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(125.0f, 9.0f, -85.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadDreaptaStangaStanga2
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(95.0f, 9.0f, -85.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadDreaptaStangaStanga3
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(65.0f, 9.0f, -85.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadDreaptaStangaStanga4
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(35.0f, 9.0f, -85.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadDreaptaStangaStanga5
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(05.0f, 9.0f, -85.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadBiserica1
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-40.0f, 9.0f, -140.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 150.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadBiserica2
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-66.0f, 9.0f, -155.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 150.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadBiserica3
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-92.0f, 9.0f, -170.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 150.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadBiserica4
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-118.0f, 9.0f, -185.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 150.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
+			}
+			//RoadBiserica5
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, roadC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, roadN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-144.0f, 9.0f, -200.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
+				ModelMatrix = rotate(ModelMatrix, 150.0f, vec3(0.0f, 1.0f, 0.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				stoneRoad.draw(shader);
 			}
 		}
 		//toti copacii
@@ -7585,765 +8394,7 @@ int main()
 				tree3.draw(shader);
 			}
 		}
-		//Road1
-		{
-			shader.use();
-
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, roadC);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, roadN);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 250.0f));
-			ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-			stoneRoad.draw(shader);
-		}
-		//Roads
-		{
-			//Road2
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 220.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//Road3
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 190.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//Road4
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 160.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//Road5
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 130.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//Road6
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 100.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//Road7
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 70.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//Road8
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 40.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//Road9
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, 10.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//Road10
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, -20.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//Road11
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, -50.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//Road12
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, -80.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//Road13
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, -110.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//Road14
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, -140.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//Road15
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 9.0f, -170.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadStanga1
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-45.0f, 9.0f, -27.5f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadStanga2
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-75.0f, 9.0f, -27.5f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadStanga3
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-105.0f, 9.0f, -27.5f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadDreapta1
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(5.0f, 9.0f, 25.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadDreapta2
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(35.0f, 9.0f, 25.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadDreapta3
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(65.0f, 9.0f, 25.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadDreapta4
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(95.0f, 9.0f, 25.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadDreapta5
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(125.0f, 9.0f, 25.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadDreaptasStanga1
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(130.0f, 9.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadDreaptasStanga2
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(130.0f, 9.0f, -30.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadDreaptasStanga3
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(130.0f, 9.0f, -60.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadDreaptaStangaStanga1
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(125.0f, 9.0f, -85.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadDreaptaStangaStanga2
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(95.0f, 9.0f, -85.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadDreaptaStangaStanga3
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(65.0f, 9.0f, -85.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadDreaptaStangaStanga4
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(35.0f, 9.0f, -85.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadDreaptaStangaStanga5
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(05.0f, 9.0f, -85.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadBiserica1
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-40.0f, 9.0f, -140.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 150.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadBiserica2
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-66.0f, 9.0f, -155.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 150.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadBiserica3
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-92.0f, 9.0f, -170.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 150.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadBiserica4
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-118.0f, 9.0f, -185.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 150.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-			//RoadBiserica5
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, roadC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, roadN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-144.0f, 9.0f, -200.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				ModelMatrix = rotate(ModelMatrix, 150.0f, vec3(0.0f, 1.0f, 0.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				stoneRoad.draw(shader);
-			}
-		}
+		
 
 
 		//Terenul
