@@ -26,6 +26,10 @@ float swingTimer = 0.0f;
 bool isSwinging = false;
 float swingSpeed = 5.0f;
 
+float goblin1Health = 100.0f;
+float goblin2Health = 100.0f;
+float goblin3Health = 100.0f;
+
 Window window("Marian - The time traveler", 1024, 960);
 Camera camera;
 
@@ -126,6 +130,8 @@ int main()
 	GLuint gold = loadBMP("Resources/Textures/gold.bmp");
 	GLuint cow_texture = loadBMP("Resources/Textures/cow_tex.bmp");
 	GLuint fan_color = loadBMP("Resources/Textures/fan_color.bmp");
+	GLuint helmetN = loadBMP("Resources/Textures/Helmet_NORM.bmp");
+	GLuint helmetC = loadBMP("Resources/Textures/Helmet_DIFF.bmp");
 	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
 	GLuint left = loadBMP("Resources/Textures/left.bmp");
 	GLuint top = loadBMP("Resources/Textures/top.bmp");
@@ -239,6 +245,7 @@ int main()
 	Mesh cow = loader.loadObj("Resources/Models/cow.obj", emptyTextures);
 	Mesh fan = loader.loadObj("Resources/Models/fan.obj", emptyTextures);
 	Mesh stoneRoad = loader.loadObj("Resources/Models/stoneRoad.obj", emptyTextures);
+	Mesh helmet = loader.loadObj("Resources/Models/helmet.obj", emptyTextures);
 
 	//Mesh hand = loader.loadObj("Resources/Models/hand2.obj", emptyTextures);
 	//Mesh skybox = loader.loadObj("Resources/Models/box.obj");
@@ -393,7 +400,9 @@ int main()
 
 			//capul
 			mat4 capModel = torsoModel;
-			capModel = translate(capModel, vec3(0.0f, 1.5f, 0.0f));
+			capModel = translate(capModel, vec3(0.0f, 1.0f, 0.0f));
+			capModel = rotate(capModel, 180.0f, vec3(0.0f, 1.0f, 0.0f));
+			capModel = scale(capModel, vec3(3.0f, 3.0f, 3.0f));
 			mat4 capMVP = ProjectionMatrix * ViewMatrix * capModel;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &capMVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &capModel[0][0]);
@@ -479,13 +488,11 @@ int main()
 				glBindTexture(GL_TEXTURE_2D, green);
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			}
-			// 2. Foreground (Green health)
 			float healthWidth = (playerHealth / maxHealth) * 0.3f;
 			mat4 healthBarModel = torsoModel;
 
-			// The offset (-1.0 + healthWidth/2.0) makes the bar expand from the left
-			healthBarModel = translate(healthBarModel, vec3(-1.0f + (healthWidth / 2.0f), 2.5f, 0.01f));
-			healthBarModel = scale(healthBarModel, vec3(healthWidth, 0.05f, 0.1f));
+			healthBarModel = translate(healthBarModel, vec3(-0.8f + healthWidth*2.65f, 2.5f, -0.05f));
+			healthBarModel = scale(healthBarModel, vec3(healthWidth+0.01f, 0.055f, 0.12f));
 
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBarModel)[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBarModel[0][0]);
@@ -594,13 +601,11 @@ int main()
 				glBindTexture(GL_TEXTURE_2D, green);
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			}
-			// 2. Foreground (Green health)
-			float healthWidth = (playerHealth / maxHealth) * 0.3f;
+			float healthWidth = (goblin1Health / maxHealth) * 0.3f;
 			mat4 healthBarModel = torsoModel;
 
-			// The offset (-1.0 + healthWidth/2.0) makes the bar expand from the left
-			healthBarModel = translate(healthBarModel, vec3(-1.0f + (healthWidth / 2.0f), 2.5f, 0.01f));
-			healthBarModel = scale(healthBarModel, vec3(healthWidth, 0.05f, 0.1f));
+			healthBarModel = translate(healthBarModel, vec3(-0.8f + healthWidth * 2.65f, 2.5f, -0.05f));
+			healthBarModel = scale(healthBarModel, vec3(healthWidth + 0.01f, 0.055f, 0.12f));
 
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix* ViewMatrix* healthBarModel)[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBarModel[0][0]);
@@ -687,24 +692,22 @@ int main()
 				healthBgModel = translate(healthBgModel, vec3(0.0f, 2.5f, 0.0f));
 				healthBgModel = scale(healthBgModel, vec3(0.3f, 0.05f, 0.1f));
 
-			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBgModel)[0][0]);
-			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBgModel[0][0]); // Update model matrix for lighting
-			glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.2f, 0.2f, 0.2f);
-			box.draw(shader);
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBgModel)[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBgModel[0][0]); // Update model matrix for lighting
+				glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.2f, 0.2f, 0.2f);
+				box.draw(shader);
 
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, green);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-			float healthPercent = (playerHealth / maxHealth);
-			float healthWidth = healthPercent * 0.3f;
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, green);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			}
+			float healthWidth = (goblin2Health / maxHealth) * 0.3f;
 			mat4 healthBarModel = torsoModel;
 
-			float leftEdge = -0.15f;
-			healthBarModel = translate(healthBarModel, vec3(leftEdge + (healthWidth / 2.0f), 2.5f, 0.01f));
-			healthBarModel = scale(healthBarModel, vec3(healthWidth, 0.05f, 0.1f));
+			healthBarModel = translate(healthBarModel, vec3(-0.8f + healthWidth * 2.65f, 2.5f, -0.05f));
+			healthBarModel = scale(healthBarModel, vec3(healthWidth + 0.01f, 0.055f, 0.12f));
 
-			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBarModel)[0][0]);
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix* ViewMatrix* healthBarModel)[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBarModel[0][0]);
 			glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.0f, 1.0f, 0.0f);
 			box.draw(shader);
@@ -731,10 +734,10 @@ int main()
 
 			//then the right hand
 			mat4 rHandModel = torsoModel;
-			if (isSwinging) {
-				float swingAngle = sin(swingTimer) * 90.0f;
-				rHandModel = rotate(rHandModel, swingAngle, vec3(1.0f, 0.0f, 0.0f));
-			}
+			//if (isSwinging) {
+			//	float swingAngle = sin(swingTimer) * 90.0f;
+			//	rHandModel = rotate(rHandModel, swingAngle, vec3(1.0f, 0.0f, 0.0f));
+			//}
 			rHandModel = translate(rHandModel, vec3(0.7f, 0.3f, 0.4f));
 			rHandModel = rotate(rHandModel, -80.0f, vec3(1.0f, 0.0f, 0.0f));
 			rHandModel = rotate(rHandModel, -20.0f, vec3(0.0f, 1.0f, 0.0f));
@@ -761,10 +764,10 @@ int main()
 			//left leg firstly
 			mat4 lLegModel = torsoModel;
 			lLegModel = translate(lLegModel, vec3(-0.4f, -1.1f, 0.2f));
-			if (window.isPressed(GLFW_KEY_W) || window.isPressed(GLFW_KEY_S) || window.isPressed(GLFW_KEY_A) || window.isPressed(GLFW_KEY_D)) {
+			/*if (window.isPressed(GLFW_KEY_W) || window.isPressed(GLFW_KEY_S) || window.isPressed(GLFW_KEY_A) || window.isPressed(GLFW_KEY_D)) {
 				float swingAngle = sin(currentFrame * 10.0f) * 30.0f;
 				lLegModel = rotate(lLegModel, swingAngle, vec3(1.0f, 0.0f, 0.0f));
-			}
+			}*/
 			lLegModel = rotate(lLegModel, 180.0f, vec3(1.0f, 0.0f, 0.0f));
 			lLegModel = rotate(lLegModel, 4.0f, vec3(0.0f, 0.0f, 1.0f));
 			lLegModel = scale(lLegModel, vec3(0.1f, 0.6f, 0.09f));
@@ -778,10 +781,10 @@ int main()
 			{
 				mat4 rLegModel = torsoModel;
 				rLegModel = translate(rLegModel, vec3(0.4f, -1.1f, 0.2f));
-				if (window.isPressed(GLFW_KEY_W) || window.isPressed(GLFW_KEY_S) || window.isPressed(GLFW_KEY_A) || window.isPressed(GLFW_KEY_D)) {
+				/*if (window.isPressed(GLFW_KEY_W) || window.isPressed(GLFW_KEY_S) || window.isPressed(GLFW_KEY_A) || window.isPressed(GLFW_KEY_D)) {
 					float swingAngle = sin(currentFrame * 10.0f + 3.14f) * 30.0f;
 					rLegModel = rotate(rLegModel, swingAngle, vec3(1.0f, 0.0f, 0.0f));
-				}
+				}*/
 				rLegModel = rotate(rLegModel, 180.0f, vec3(1.0f, 0.0f, 0.0f));
 				rLegModel = rotate(rLegModel, -4.0f, vec3(0.0f, 0.0f, 1.0f));
 				rLegModel = scale(rLegModel, vec3(0.1f, 0.6f, 0.09f));
@@ -810,16 +813,13 @@ int main()
 				glBindTexture(GL_TEXTURE_2D, green);
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			}
-			// 2. Foreground (Green health)
-			float healthWidth = (playerHealth / maxHealth) * 0.3f;
+			float healthWidth = (goblin3Health / maxHealth) * 0.3f;
 			mat4 healthBarModel = torsoModel;
 
+			healthBarModel = translate(healthBarModel, vec3(-0.8f + healthWidth * 2.65f, 2.5f, -0.05f));
+			healthBarModel = scale(healthBarModel, vec3(healthWidth + 0.01f, 0.055f, 0.12f));
 
-			// The offset (-1.0 + healthWidth/2.0) makes the bar expand from the left
-			healthBarModel = translate(healthBarModel, vec3(-1.0f + (healthWidth / 2.0f), 2.5f, 0.01f));
-			healthBarModel = scale(healthBarModel, vec3(healthWidth, 0.05f, 0.1f));
-
-			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBarModel)[0][0]);
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix* ViewMatrix* healthBarModel)[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBarModel[0][0]);
 			glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.0f, 1.0f, 0.0f);
 			box.draw(shader);
@@ -967,6 +967,58 @@ int main()
 
 				mountain1.draw(shader);
 			}
+			//Al saptelea Munte
+			{
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(750.0f, -25.0f, 300.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				mountain2.draw(shader);
+			}
+			//Al optulea Munte
+			{
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(300.0f, -25.0f, 620.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, -60.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				mountain1.draw(shader);
+			}
+			//Al noulea muntedw
+			{
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-300.0f, -25.0f, 620.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 210.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				mountain2.draw(shader);
+			}
+			//Al zecelea munte
+			{
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-750.0f, -25.0f, 300.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				mountain1.draw(shader);
+			}
+
 		}
 		//Castel
 		{
@@ -8384,7 +8436,7 @@ int main()
 
 		window.update();
 	}
-}}
+}
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
@@ -8454,7 +8506,7 @@ void processKeyboardInput()
 	if (window.isPressed(GLFW_KEY_E)) {
 		for (int i = 0; i < mapApples.size(); i++) {
 			if (!mapApples[i].isEaten) {
-				float dist = glm::distance(playerPos, mapApples[i].position);
+				float dist = distance(playerPos, mapApples[i].position);
 				if (dist < 5.0f) {
 					mapApples[i].isEaten = true;
 					playerHealth += 20.0f;
