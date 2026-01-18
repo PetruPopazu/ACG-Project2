@@ -9554,7 +9554,7 @@ int main()
 
 		window.update();
 	}
-}}
+}
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
