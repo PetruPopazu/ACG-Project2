@@ -5,6 +5,7 @@
 #include "Model Loading\texture.h"
 #include "Model Loading\meshLoaderObj.h"
 
+
 using namespace glm;
 
 void processKeyboardInput();
@@ -268,6 +269,7 @@ int main()
 	};
 
 	unsigned int cubemapID = loadCubeMap(faces);
+
 
 	//check if we close the window or press the escape button
 	while (!window.isPressed(GLFW_KEY_ESCAPE) &&
