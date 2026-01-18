@@ -1032,7 +1032,7 @@ int main()
 			}
 
 		}
-		}
+		
 		//Hub 
 		{
 			shader.use();
@@ -3159,10 +3159,11 @@ int main()
 				fan.draw(shader);
 			}
 			//fan3
-			shader.use();
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			{
+				shader.use();
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-183.0f, 10.0f, -144.0f));
@@ -9605,6 +9606,7 @@ int main()
 		window.update();
 	}
 }
+
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
