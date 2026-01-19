@@ -5,6 +5,10 @@
 #include "Model Loading\texture.h"
 #include "Model Loading\meshLoaderObj.h"
 
+#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"
+#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
+#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h"
+
 using namespace glm;
 
 void processKeyboardInput();
@@ -218,7 +222,7 @@ int main()
 	Mesh mountain2 = loader.loadObj("Resources/Models/mountain2.obj", emptyTextures);
 	Mesh castle = loader.loadObj("Resources/Models/Castle.obj", emptyTextures);
 	Mesh wall = loader.loadObj("Resources/Models/Wall.obj", emptyTextures);
-	Mesh torso = loader.loadObj("Resources/Models/torso.obj", textures2);
+	Mesh torso = loader.loadObj("Resources/Models/torso.obj", emptyTextures);
 	Mesh tree = loader.loadObj("Resources/Models/tree.obj", emptyTextures);
 	Mesh blacksmithModel = loader.loadObj("Resources/Models/blacksmith.obj", emptyTextures);
 	Mesh tentModel = loader.loadObj("Resources/Models/tent.obj", emptyTextures);
@@ -275,6 +279,13 @@ int main()
 	};
 
 	unsigned int cubemapID = loadCubeMap(faces);
+
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(window.getWindow(), true);
+	ImGui_ImplOpenGL3_Init("#version 330");
 
 	//check if we close the window or press the escape button
 	while (!window.isPressed(GLFW_KEY_ESCAPE) &&
@@ -393,6 +404,14 @@ int main()
 		//draw body parts
 		{
 			//firstly the torso
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, handDiffuse);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, handNormal);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
 			mat4 torsoModel = mat4(1.0f);
 			torsoModel = translate(torsoModel, playerPos);
 			torsoModel = rotate(torsoModel, radians(playerRoataion + 180.0f), vec3(0.0f, 1.0f, 0.0f));
@@ -402,19 +421,13 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &torsoModel[0][0]);
 			torso.draw(shader);
 
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, handDiffuse);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, handNormal);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+			
 
 			//capul
 			mat4 capModel = torsoModel;
 			capModel = translate(capModel, vec3(0.0f, 1.0f, 0.0f));
 			capModel = rotate(capModel, 180.0f, vec3(0.0f, 1.0f, 0.0f));
-			capModel = scale(capModel, vec3(3.0f, 3.0f, 3.0f));
+			capModel = scale(capModel, vec3(3.4f, 3.4f, 3.4f));
 			mat4 capMVP = ProjectionMatrix * ViewMatrix * capModel;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &capMVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &capModel[0][0]);
@@ -9603,8 +9616,22 @@ int main()
 
 		//glDepthFunc(GL_LESS);
 
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+		ImGui::Begin("Info Window");
+		ImGui::Text("Camera position: X: %.2f Y: %.2f Z: %.2f", camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
+		ImGui::End();
+
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 		window.update();
 	}
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 }
 
 
