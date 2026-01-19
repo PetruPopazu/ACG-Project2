@@ -5,9 +5,12 @@
 #include "Model Loading\texture.h"
 #include "Model Loading\meshLoaderObj.h"
 
-#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"
-#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
-#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h"
+//C:\ECG\acg\Dependencies\imgui\imgui.h -- Alexutz
+//C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h -- Alexutz
+//C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h -- Alexutz
+#include "C:\ECG\acg\Dependencies\imgui\imgui.h"
+#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h"
+#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h"
 
 using namespace glm;
 

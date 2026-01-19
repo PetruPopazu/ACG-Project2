@@ -23,7 +23,8 @@
 
 #pragma once
 //D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h -- Petru
-#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"      // IMGUI_IMPL_API
+//C:\ECG\acg\Dependencies\imgui\imgui.h -- Alexutz
+#include "C:\ECG\acg\Dependencies\imgui\imgui.h"      // IMGUI_IMPL_API
 #ifndef IMGUI_DISABLE
 
 struct GLFWwindow;

@@ -96,10 +96,11 @@
 
 //D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h -- Petru
 //D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h -- Petru
-
-#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"
+//C:\ECG\acg\Dependencies\imgui\imgui.h -- Alexutz
+//C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h -- Alexutz
+#include "C:\ECG\acg\Dependencies\imgui\imgui.h"
 #ifndef IMGUI_DISABLE
-#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
+#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h"
 
 // Clang warnings with -Weverything
 #if defined(__clang__)
@@ -117,7 +118,8 @@
 #define GLFW_HAS_X11_OR_WAYLAND     0
 #endif
 //D:\ACG\ACG-Project2\Dependencies\GLFW\include\glfw3.h -- Petru
-#include <D:\ACG\ACG-Project2\Dependencies\GLFW\include\glfw3.h>
+//C:\ECG\acg\Dependencies\GLFW\include\glfw3.h -- Alexutz
+#include <C:\ECG\acg\Dependencies\GLFW\include\glfw3.h>
 #ifdef _WIN32
 #undef APIENTRY
 #ifndef GLFW_EXPOSE_NATIVE_WIN32    // for glfwGetWin32Window()
@@ -125,7 +127,8 @@
 #endif
 
 //D:\ACG\ACG-Project2\Dependencies\GLFW\include\glfw3native.h -- Petru
-#include <D:\ACG\ACG-Project2\Dependencies\GLFW\include\glfw3native.h>
+//C:\ECG\acg\Dependencies\GLFW\include\glfw3native.h -- Alexutz
+#include <C:\ECG\acg\Dependencies\GLFW\include\glfw3native.h>
 #elif defined(__APPLE__)
 #ifndef GLFW_EXPOSE_NATIVE_COCOA    // for glfwGetCocoaWindow()
 #define GLFW_EXPOSE_NATIVE_COCOA
