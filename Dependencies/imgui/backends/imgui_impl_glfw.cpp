@@ -94,12 +94,16 @@
 //  2017-08-25: Inputs: MousePos set to -FLT_MAX,-FLT_MAX when mouse is unavailable/missing (instead of -1,-1).
 //  2016-10-15: Misc: Added a void* user_data parameter to Clipboard function handlers.
 
-//D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h -- Petru laptop
-//D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h -- Petru laptop
+//D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h -- Petru
+//D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h -- Petru
+//C:\ECG\acg\Dependencies\imgui\imgui.h -- Alexutz
+//C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h -- Alexutz
+//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h -- Petru calc
+//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h -- Petru calc
 
-#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"
+#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"
 #ifndef IMGUI_DISABLE
-#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
+#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
 
 // Clang warnings with -Weverything
 #if defined(__clang__)
@@ -117,7 +121,9 @@
 #define GLFW_HAS_X11_OR_WAYLAND     0
 #endif
 //D:\ACG\ACG-Project2\Dependencies\GLFW\include\glfw3.h -- Petru
-#include <D:\ACG\ACG-Project2\Dependencies\GLFW\include\glfw3.h>
+//C:\ECG\acg\Dependencies\GLFW\include\glfw3.h -- Alexutz
+//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\GLFW\include\glfw3.h -- Petru calc
+#include <H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\GLFW\include\glfw3.h>
 #ifdef _WIN32
 #undef APIENTRY
 #ifndef GLFW_EXPOSE_NATIVE_WIN32    // for glfwGetWin32Window()
@@ -125,7 +131,9 @@
 #endif
 
 //D:\ACG\ACG-Project2\Dependencies\GLFW\include\glfw3native.h -- Petru
-#include <D:\ACG\ACG-Project2\Dependencies\GLFW\include\glfw3native.h>
+//C:\ECG\acg\Dependencies\GLFW\include\glfw3native.h -- Alexutz
+//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\GLFW\include\glfw3native.h -- Petru calc
+#include <H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\GLFW\include\glfw3native.h>
 #elif defined(__APPLE__)
 #ifndef GLFW_EXPOSE_NATIVE_COCOA    // for glfwGetCocoaWindow()
 #define GLFW_EXPOSE_NATIVE_COCOA

@@ -28,6 +28,9 @@ Mesh MeshLoaderObj::loadObj(const std::string &filename)
 	std::vector<glm::vec2> texcoords;
 	texcoords.reserve(1000);
 
+	glm::vec3 minB(1e6f);
+	glm::vec3 maxB(-1e6f);
+
 	//Parsing obj file
 	while (std::getline(file, line))
 	{
@@ -41,8 +44,20 @@ Mesh MeshLoaderObj::loadObj(const std::string &filename)
 			continue;
 
 		//Vertices
-		if (tokens.size()>3 && tokens[0] == "v")
-			positions.push_back(glm::vec3(_stringToFloat(tokens[1]), _stringToFloat(tokens[2]), _stringToFloat(tokens[3])));
+		if (tokens.size() > 3 && tokens[0] == "v") {
+			float x = _stringToFloat(tokens[1]);
+			float y = _stringToFloat(tokens[2]);
+			float z = _stringToFloat(tokens[3]);
+			glm::vec3 pos(x, y, z);
+
+			positions.push_back(pos);
+
+			minB = glm::min(minB, pos);
+			maxB = glm::max(maxB, pos);
+		}
+			
+			
+		//positions.push_back(glm::vec3(_stringToFloat(tokens[1]), _stringToFloat(tokens[2]), _stringToFloat(tokens[3])));
 
 		//Normals
 		if (tokens.size()>3 && tokens[0] == "vn")
@@ -151,6 +166,13 @@ Mesh MeshLoaderObj::loadObj(const std::string &filename)
 	std::cout << "Loading:  " << filename << std::endl;
 
 	Mesh mesh(vertices, indices);
+
+	mesh.minB = minB;
+	mesh.maxB = maxB;
+
+	std::cout << "Model: " << filename
+		<< " | Min: " << minB.x << ", " << minB.y << ", " << minB.z
+		<< " | Max: " << maxB.x << ", " << maxB.y << ", " << maxB.z << std::endl;
 
 	return mesh;
 }

@@ -4,6 +4,14 @@
 #include "Model Loading\mesh.h"
 #include "Model Loading\texture.h"
 #include "Model Loading\meshLoaderObj.h"
+
+//C:\ECG\acg\Dependencies\imgui\imgui.h -- Alexutz
+//C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h -- Alexutz
+//C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h -- Alexutz
+//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h -- Petru Calc
+//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h -- Petru Calc
+//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_openl3.h -- Petru Calc
+
 //D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h Petru laptop
 //D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h Petru Laptop
 //D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h Petru Laptop
@@ -13,6 +21,18 @@
 
 using namespace glm;
 
+struct Collide {
+	vec3 min, max;
+};
+
+const float square_size = 20.0f;
+const float grid_size = 100.0f;
+const float offset = 1000.0f;//we use the offset in order to have positive values for the array
+std::vector<Collide> grid[100][100];
+
+void registerCollide(Mesh& mesh, vec3 worldPos, vec3 scale);
+bool isColliding(vec3 playerPos);
+
 void processKeyboardInput();
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 unsigned int loadCubeMap(std::vector<std::string> faces);
@@ -20,6 +40,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 bool firstMouse = true;
 float lastX = 400, lastY = 400;
+
+vec3 worldPos = vec3(0.0f);
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
@@ -35,6 +57,8 @@ float swingSpeed = 5.0f;
 float goblin1Health = 100.0f;
 float goblin2Health = 100.0f;
 float goblin3Health = 100.0f;
+
+bool showStory = true;
 
 Window window("Marian - The time traveler", 1024, 960);
 Camera camera;
@@ -145,6 +169,11 @@ int main()
 	GLuint gard_texture = loadBMP("Resources/Textures/gard_text.bmp");
 	GLuint helmetN = loadBMP("Resources/Textures/Helmet_NORM.bmp");
 	GLuint helmetC = loadBMP("Resources/Textures/Helmet_DIFF.bmp");
+	GLuint boxC = loadBMP("Resources/Textures/wooden_box_color.bmp");
+	GLuint boxN = loadBMP("Resources/Textures/wooden_box_normal.bmp");
+	GLuint hambarC = loadBMP("Resources/Textures/hambarC.bmp");
+	GLuint hambarN = loadBMP("Resources/Textures/hambarN.bmp");
+	GLuint horse_texture = loadBMP("Resources/Textures/hourse.bmp");
 	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
 	GLuint left = loadBMP("Resources/Textures/left.bmp");
 	GLuint top = loadBMP("Resources/Textures/top.bmp");
@@ -265,6 +294,9 @@ int main()
 	Mesh gaina = loader.loadObj("Resources/Models/gaina.obj", emptyTextures);
 	Mesh gard = loader.loadObj("Resources/Models/gard.obj", emptyTextures);
 	Mesh nest = loader.loadObj("Resources/Models/nest.obj", emptyTextures);
+	Mesh wooden_box = loader.loadObj("Resources/Models/wooden_box.obj", emptyTextures);
+	Mesh hambar = loader.loadObj("Resources/Models/hambar.obj", emptyTextures);
+	Mesh horse = loader.loadObj("Resources/Models/horse.obj", emptyTextures);
 	//Mesh hand = loader.loadObj("Resources/Models/hand2.obj", emptyTextures);
 	//Mesh skybox = loader.loadObj("Resources/Models/box.obj");
 	//Mesh terrain = loader.loadObj("Resources/Models/Terrain2k.obj", textures4);
@@ -289,6 +321,7 @@ int main()
 	ImGui_ImplGlfw_InitForOpenGL(window.getWindow(), true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
+	
 	//check if we close the window or press the escape button
 	while (!window.isPressed(GLFW_KEY_ESCAPE) &&
 		glfwWindowShouldClose(window.getWindow()) == 0)
@@ -378,30 +411,31 @@ int main()
 		GLuint MatrixID2 = glGetUniformLocation(shader.getId(), "MVP");
 		GLuint ModelMatrixID = glGetUniformLocation(shader.getId(), "model");
 
-		//ModelMatrix = glm::mat4(1.0);
-		//ModelMatrix = glm::translate(ModelMatrix, playerPos);
-		////ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-		//MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		//glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-		//glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-		//glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
-		//glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-		////glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
-		//glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
-		//box.draw(shader);
-		//player.draw(shader);
+		//for (int x = 0; x < 100; x++) {
+		//	for (int z = 0; z < 100; z++) {
+		//		for (const auto& b : grid[x][z]) {
+		//			mat4 debugModel = mat4(1.0f);
 
-		//ModelMatrix = glm::mat4(1.0);
-		//ModelMatrix = glm::translate(ModelMatrix, playerPos);
-		////ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-		//MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		//glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-		//glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-		//glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
-		//glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-		////glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
-		//glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
-		//torso.draw(shader);
+		//			// 1. Calculate the center and size of the box
+		//			vec3 center = (b.min + b.max) * 0.5f;
+		//			vec3 size = b.max - b.min;
+
+		//			// 2. Position and scale the box mesh to match the collider
+		//			debugModel = translate(debugModel, center);
+		//			debugModel = scale(debugModel, size);
+
+		//			// 3. Set color to Bright Red (for visibility)
+		//			glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "MVP"), 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * debugModel)[0][0]);
+		//			glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 1.0f, 0.0f, 0.0f);
+
+		//			// 4. Draw using your existing cube mesh
+		//			// Use glPolygonMode to see wireframes if the boxes hide your models
+		//			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		//			box.draw(shader);
+		//			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // Reset to normal
+		//		}
+		//	}
+		//}
 
 		//draw body parts
 		{
@@ -502,12 +536,11 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 				mat4 healthBgModel = torsoModel;
 
-				// Only translate relative to the torso's center (0,0,0)
 				healthBgModel = translate(healthBgModel, vec3(0.0f, 2.5f, 0.0f));
 				healthBgModel = scale(healthBgModel, vec3(0.3f, 0.05f, 0.1f));
 
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBgModel)[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBgModel[0][0]); // Update model matrix for lighting
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBgModel[0][0]);
 				glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.2f, 0.2f, 0.2f);
 				box.draw(shader);
 
@@ -615,12 +648,11 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 				mat4 healthBgModel = torsoModel;
 
-				// Only translate relative to the torso's center (0,0,0)
 				healthBgModel = translate(healthBgModel, vec3(0.0f, 2.5f, 0.0f));
 				healthBgModel = scale(healthBgModel, vec3(0.3f, 0.05f, 0.1f));
 
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBgModel)[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBgModel[0][0]); // Update model matrix for lighting
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBgModel[0][0]);
 				glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.2f, 0.2f, 0.2f);
 				box.draw(shader);
 
@@ -713,12 +745,11 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 				mat4 healthBgModel = torsoModel;
 
-				// Only translate relative to the torso's center (0,0,0)
 				healthBgModel = translate(healthBgModel, vec3(0.0f, 2.5f, 0.0f));
 				healthBgModel = scale(healthBgModel, vec3(0.3f, 0.05f, 0.1f));
 
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBgModel)[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBgModel[0][0]); // Update model matrix for lighting
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBgModel[0][0]);
 				glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.2f, 0.2f, 0.2f);
 				box.draw(shader);
 
@@ -825,12 +856,11 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 				mat4 healthBgModel = torsoModel;
 
-				// Only translate relative to the torso's center (0,0,0)
 				healthBgModel = translate(healthBgModel, vec3(0.0f, 2.5f, 0.0f));
 				healthBgModel = scale(healthBgModel, vec3(0.3f, 0.05f, 0.1f));
 
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBgModel)[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBgModel[0][0]); // Update model matrix for lighting
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBgModel[0][0]);
 				glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.2f, 0.2f, 0.2f);
 				box.draw(shader);
 
@@ -1065,6 +1095,7 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 			cube1Model.draw(shader);
+			//registerCollide(cube1Model, vec3(-145.0f, 46.0f, -500.0f), vec3(35.0f, 35.0f, 35.0f));
 		}
 		//portal
 		{
@@ -1087,7 +1118,30 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 			portalModel.draw(shader);
+			registerCollide(portalModel, vec3(-145.0f, 17.0f, -520.0f), vec3(0.2f, 0.2f, 0.2f));
 		}
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		if (showStory) {
+			ImGui::SetNextWindowPos(ImVec2(window.getWidth() / 2.0f - 200, window.getHeight() / 2.0f - 100), ImGuiCond_FirstUseEver);
+			ImGui::SetNextWindowSize(ImVec2(400, 200));
+			ImGui::Begin("The Chrono-Log", &showStory, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+			ImGui::TextWrapped("Vedem ce punem aici");
+			ImGui::Separator();
+			ImGui::TextWrapped("Vedem ce punem aici");
+			ImGui::TextWrapped("Vedem ce punem aici");
+
+			ImGui::Spacing();
+			if (ImGui::Button("I understand", ImVec2(120, 0))) {
+				showStory = false;
+			}
+
+
+			ImGui::End();
+		}
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		//Castel
 		{
 			shader.use();
@@ -1098,6 +1152,7 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-45.0f, 9.0f, -300.0f));
+			registerCollide(castle, vec3(-45.0f, 9.0f, -300.0f), vec3(0.04f, 0.04f, 0.04f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.04f, 0.04f, 0.04f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -1127,7 +1182,7 @@ int main()
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, stoneTex);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
+			
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, -28.0f, -180.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.3f, 0.3f, 0.2f));
@@ -1305,7 +1360,7 @@ int main()
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-180.0f, 10.0f, 0.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(4.0f, 4.0f, 4.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(4.5f, 4.5f, 4.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -1324,7 +1379,7 @@ int main()
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(150.0f, 10.0f, -130.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -135.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(4.0f, 4.0f, 4.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(4.5f, 4.5f, 4.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -1343,7 +1398,7 @@ int main()
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-175.0f, 10.0f, -80.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(4.0f, 4.0f, 4.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(4.5f, 4.5f, 4.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -1359,10 +1414,105 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, -80.0f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, -70.0f));
 				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -180.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(4.0f, 4.0f, 4.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(4.5f, 4.5f, 4.5f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				houseModel.draw(shader);
+			}
+			//House5
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, house);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(250.0f, 10.0f, 28.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, -180.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(4.5f, 4.5f, 4.5f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				houseModel.draw(shader);
+			}
+			//House6
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, house);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(260.0f, 10.0f, -20.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, -180.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(4.5f, 4.5f, 4.5f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				houseModel.draw(shader);
+			}
+			//House7
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, house);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(245.0f, 10.0f, -85.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, -135.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(4.4f, 4.4f, 4.4f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				houseModel.draw(shader);
+			}
+			//House8
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, house);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-250.0f, 10.0f, 25.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				//ModelMatrix = rotate(ModelMatrix, -50.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(4.4f, 4.4f, 4.4f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				houseModel.draw(shader);
+			}
+			//House9
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, house);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-235.0f, 10.0f, -30.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				//ModelMatrix = rotate(ModelMatrix, -50.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(4.4f, 4.4f, 4.4f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -2746,6 +2896,217 @@ int main()
 
 			churchModel.draw(shader);
 		}
+		//hambar
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, hambarC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, hambarN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(90.0f, 10.0f, -107.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(4.0f, 4.0f, 4.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			hambar.draw(shader);
+		}
+		//cai hambar
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, horse_texture);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(18.0f, 11.0f, -140.0f));
+			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			horse.draw(shader);
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, horse_texture);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(34.0f, 11.0f, -140.0f));
+			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			horse.draw(shader);
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, horse_texture);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(50.0f, 11.0f, -140.0f));
+			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			horse.draw(shader);
+		}
+		//fan hambar
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, culoareCopac3);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(85.0f, 10.0f, -142.5f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			fan.draw(shader);
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, culoareCopac3);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(85.0f, 12.0f, -142.5f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			fan.draw(shader);
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, culoareCopac3);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(80.0f, 10.0f, -142.5f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			fan.draw(shader);
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, culoareCopac3);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(80.0f, 12.0f, -142.5f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			fan.draw(shader);
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, culoareCopac3);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(80.0f, 10.0f, -147.5f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			fan.draw(shader);
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, culoareCopac3);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(80.0f, 12.0f, -147.5f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			fan.draw(shader);
+
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, culoareCopac3);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(85.0f, 10.0f, -147.5f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			fan.draw(shader);
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, culoareCopac3);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(85.0f, 12.0f, -147.5f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			fan.draw(shader);
+		}
 		//taverns
 		{
 			//tavern1
@@ -2792,6 +3153,213 @@ int main()
 
 				tavernModel.draw(shader);
 			}
+			//tavern3
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, tavernC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, tavernN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(80.0f, 10.0f, 47.0f));
+				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				tavernModel.draw(shader);
+			}
+		}
+		//cutii 
+		{	
+			//cutii dreapta
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, boxC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, boxN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(178.0f, 14.0f, 38.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			wooden_box.draw(shader);
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, boxC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, boxN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(185.0f, 14.0f, 32.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, 45.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			wooden_box.draw(shader);
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, boxC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, boxN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(180.0f, 21.0f, 35.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			wooden_box.draw(shader);
+
+			//cutii piata
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, boxC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, boxN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(18.0f, 14.0f,-58.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			wooden_box.draw(shader);
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, boxC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, boxN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(25.0f, 14.0f,-52.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, 45.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			wooden_box.draw(shader);
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, boxC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, boxN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(20.0f, 21.0f, -55.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			wooden_box.draw(shader);
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, boxC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, boxN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 14.0f, -63.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			wooden_box.draw(shader);
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, boxC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, boxN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(8.0f, 14.0f, -57.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, 45.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			wooden_box.draw(shader);
+
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, boxC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, boxN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(2.0f, 21.0f, -60.0f));
+			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+			ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f, 1.0f, 0.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+			wooden_box.draw(shader);
 		}
 		//sign
 		{
@@ -9578,47 +10146,12 @@ int main()
 
 				tree3.draw(shader);
 			}
+
+			registerCollide(castle, vec3(-45.0f, 9.0f, -300.0f), vec3(0.04f, 0.04f, 0.04f));
+			registerCollide(wall, vec3(0.0f, -28.0f, -180.0f), vec3(0.3f, 0.3f, 0.2f));
 		}
-		
 
-
-		//Terenul
-		//ModelMatrix = glm::mat4(1.0);
-		//ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 5.0f, -50.0f));
-		////ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		////ModelMatrix = scale(ModelMatrix, glm::vec3(40.0f, 1.0f, 40.0f));
-		//MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		//glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-		//glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-		//terrain.draw(shader);
-
-
-		/*ModelMatrix = glm::mat4(1.0);
-		ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 5.0f, 2.0f));
-		ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-		MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-		terrain.draw(shader);*/
-
-		//glDepthFunc(GL_LEQUAL);
-		//skyboxShader.use();
-		//mat4 skyboxView = mat4(mat3(ViewMatrix));
-
-		//glUniformMatrix4fv(glGetUniformLocation(skyboxShader.getId(), "projection"), 1, GL_FALSE, &ProjectionMatrix[0][0]);
-		//glUniformMatrix4fv(glGetUniformLocation(skyboxShader.getId(), "view"), 1, GL_FALSE, &skyboxView[0][0]);
-
-		//glActiveTexture(GL_TEXTURE0);
-		//glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapID);
-		//glUniform1i(glGetUniformLocation(skyboxShader.getId(), "skybox"), 0);
-		//skybox.draw(skyboxShader);
-
-		//glDepthFunc(GL_LESS);
-
-		ImGui_ImplOpenGL3_NewFrame();
+		/*ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
@@ -9627,7 +10160,7 @@ int main()
 		ImGui::End();
 
 		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
 
 		window.update();
 	}
@@ -9639,8 +10172,6 @@ int main()
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-	//float x = xpos;
-	//float y = ypos;
 	if (firstMouse)
 	{
 		lastX = xpos;
@@ -9671,6 +10202,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 void processKeyboardInput()
 {
 	float moveSpeed = 100.0f * deltaTime;
+	vec3 nextPos = playerPos;
 	if (window.isPressed(GLFW_KEY_LEFT_SHIFT))
 		moveSpeed *= 2.0f;
 	bool isMoving = false;
@@ -9696,10 +10228,40 @@ void processKeyboardInput()
 		isMoving = true;
 	}
 
+	/*vec3 possiblePosX = vec3(nextPos.x, playerPos.y, playerPos.z);
+	if(!isColliding(possiblePosX)) {
+		playerPos.x = nextPos.x;
+		std::cout << "COLLISION DETECTED ON X!" << std::endl;
+	}
+
+	vec3 possiblePosZ = vec3(playerPos.x, playerPos.y, nextPos.z);
+	if (!isColliding(possiblePosZ)) {
+		playerPos.z = nextPos.z;
+	}*/
+
 	if (isMoving) {
 		//moveDir = normalize(moveDir);
-		playerPos += moveDir * moveSpeed;
-		playerRoataion = radians(atan2(moveDir.x, moveDir.z));
+		//playerPos += moveDir * moveSpeed;
+		vec3 v = moveDir * moveSpeed;
+
+		vec3 nextPosx = playerPos + vec3(v.x, 0.0f, 0.0f);
+		if (!isColliding(nextPosx)) {
+			playerPos.x = nextPosx.x;
+		}
+		else {
+			std::cout << "COLLISION DETECTED ON X!" << std::endl;
+		}
+
+		vec3 nextPosZ = playerPos + vec3(0.0f, 0.0f, v.z);
+		if (!isColliding(nextPosZ)) {
+			playerPos.z = nextPosZ.z;
+		}
+		else {
+			std::cout << "COLLISION ON Z!" << std::endl;
+		}
+
+		//playerRoataion = radians(atan2(moveDir.x, moveDir.z));
+		playerRoataion = atan2(moveDir.x, moveDir.z);
 	}
 
 	if (window.isPressed(GLFW_KEY_E)) {
@@ -9770,4 +10332,43 @@ unsigned int loadCubeMap(std::vector<std::string> faces)
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	return textureID;
+}
+
+void registerCollide(Mesh& mesh, vec3 pos, vec3 scale) {
+	Collide box;
+	box.min = (mesh.minB * scale) + pos;
+	box.max = (mesh.maxB * scale) + pos;
+
+	/*int cx = (pos.x + offset) / square_size;
+	int cz = (pos.z + offset) / square_size;*/
+	int minX = (int)((box.min.x + offset) / square_size);
+	int maxX = (int)((box.max.x + offset) / square_size);
+	int minZ = (int)((box.min.z + offset) / square_size);
+	int maxZ = (int)((box.max.z + offset) / square_size);
+
+	/*if(cx >= 0 && cx < 100 && cz >= 0 && cz < 100)
+		grid[cx][cz].push_back(box);*/
+
+	for (int x = minX; x <= maxX; x++) {
+		for (int z = minZ; z <= maxZ; z++) {
+			if (x >= 0 && x < 100 && z >= 0 && z < 100) {
+				grid[x][z].push_back(box);
+			}
+		}
+	}
+}
+
+bool isColliding(vec3 pos) {
+	int cx = (pos.x + offset) / square_size;
+	int cz = (pos.z + offset) / square_size;
+
+	if(cx < 0 || cx >= 100 || cz < 0 || cz >= 100)
+		return false;
+
+	for(Collide box : grid[cx][cz]) {
+		if (pos.x + 2.0f >= box.min.x && pos.x - 2.0f <= box.max.x && pos.z + 2.0f >= box.min.z && pos.z -2.0f <= box.max.z) {
+			return true;
+		}
+	}
+	return false;
 }
