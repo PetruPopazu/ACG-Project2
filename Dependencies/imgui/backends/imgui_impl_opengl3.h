@@ -27,10 +27,10 @@
 //  Only override if your GL version doesn't handle this GLSL version. See GLSL version table at the top of imgui_impl_opengl3.cpp.
 
 #pragma once
-//D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h -- Petru
-//C:\ECG\acg\Dependencies\imgui\imgui.h -- Alexutz
-//H:\alexutzvaci\PetruPopazu\ACG - Project2\Dependencies\imgui\imgui.h -- Petru Calc
-#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"      // IMGUI_IMPL_API
+//#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"// -- Petru
+#include "C:\ECG\acg\Dependencies\imgui\imgui.h" //-- Alexutz
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"// -- Petru Calc
+
 #ifndef IMGUI_DISABLE
 
 // Follow "Getting Started" link and check examples/ folder to learn about using backends!
