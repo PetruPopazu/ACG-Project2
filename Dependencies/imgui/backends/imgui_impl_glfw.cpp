@@ -94,10 +94,10 @@
 //  2017-08-25: Inputs: MousePos set to -FLT_MAX,-FLT_MAX when mouse is unavailable/missing (instead of -1,-1).
 //  2016-10-15: Misc: Added a void* user_data parameter to Clipboard function handlers.
 
-//#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"// -- Petru
-//#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Petru
-#include "C:\ECG\acg\Dependencies\imgui\imgui.h"// -- Alexutz
-#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Alexutz
+#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"// -- Petru
+#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Petru
+//#include "C:\ECG\acg\Dependencies\imgui\imgui.h"// -- Alexutz
+//#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Alexutz
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"// -- Petru calc
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Petru calc
 
@@ -120,8 +120,8 @@
 #else
 #define GLFW_HAS_X11_OR_WAYLAND     0
 #endif
-//#include "D:\ACG\ACG-Project2\Dependencies\GLFW\include\glfw3.h"// -- Petru
-#include "C:\ECG\acg\Dependencies\GLFW\include\glfw3.h"// -- Alexutz
+#include "D:\ACG\ACG-Project2\Dependencies\GLFW\include\glfw3.h"// -- Petru
+//#include "C:\ECG\acg\Dependencies\GLFW\include\glfw3.h"// -- Alexutz
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\GLFW\include\glfw3.h"// -- Petru calc
 
 #ifdef _WIN32
@@ -130,8 +130,8 @@
 #define GLFW_EXPOSE_NATIVE_WIN32
 #endif
 
-//#include "D:\ACG\ACG-Project2\Dependencies\GLFW\include\glfw3native.h"// -- Petru
-#include "C:\ECG\acg\Dependencies\GLFW\include\glfw3native.h"// -- Alexutz
+#include "D:\ACG\ACG-Project2\Dependencies\GLFW\include\glfw3native.h"// -- Petru
+//#include "C:\ECG\acg\Dependencies\GLFW\include\glfw3native.h"// -- Alexutz
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\GLFW\include\glfw3native.h"// -- Petru calc
 
 #elif defined(__APPLE__)

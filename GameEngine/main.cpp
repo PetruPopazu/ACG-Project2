@@ -5,12 +5,16 @@
 #include "Model Loading\texture.h"
 #include "Model Loading\meshLoaderObj.h"
 
-#include "C:\ECG\acg\Dependencies\imgui\imgui.h"// -- Alexutz
-#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Alexutz
-#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h"// -- Alexutz
+//#include "C:\ECG\acg\Dependencies\imgui\imgui.h"// -- Alexutz
+//#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Alexutz
+//#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h"// -- Alexutz
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"// -- Petru Calc
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Petru Calc
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_openl3.h"// -- Petru Calc
+
+#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"
+#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
+#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h"
 
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
@@ -38,6 +42,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 bool firstMouse = true;
 float lastX = 400, lastY = 400;
 
+int applecnt = 0;
+
 vec3 worldPos = vec3(0.0f);
 
 float deltaTime = 0.0f;
@@ -56,12 +62,21 @@ float goblin2Health = 100.0f;
 float goblin3Health = 100.0f;
 
 bool showStory = true;
+bool showHelloApple = false;
+bool questKing1 = false;
+bool questArmour = false;
+bool questKing2 = false;
+bool questWitch = false;
+bool questKing3 = false;
+bool questFight = false;
 
-Window window("Marian - The time traveler", 1024, 960);
+
+Window window("Marian - The time traveler", 1920, 1080);
 Camera camera;
 
 //vec3 playerPos = vec3(-20.0f, 15.0f, 250.0f);
 vec3 playerPos = vec3(-145.0f, 15.0f, -500.0f);
+vec3 kingBobPos = vec3(-30.0f, 17.25f, -235.0f);
 float playerRoataion = 0.0f;
 
 struct Apple {
@@ -1119,29 +1134,6 @@ int main()
 			portalModel.draw(shader);
 			registerCollide(portalModel, vec3(-145.0f, 17.0f, -520.0f), vec3(0.2f, 0.2f, 0.2f));
 		}
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-		if (showStory) {
-			ImGui::SetNextWindowPos(ImVec2(window.getWidth() / 2.0f - 200, window.getHeight() / 2.0f - 100), ImGuiCond_FirstUseEver);
-			ImGui::SetNextWindowSize(ImVec2(400, 200));
-			ImGui::Begin("The Chrono-Log", &showStory, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-			ImGui::TextWrapped("Vedem ce punem aici");
-			ImGui::Separator();
-			ImGui::TextWrapped("Vedem ce punem aici");
-			ImGui::TextWrapped("Vedem ce punem aici");
-
-			ImGui::Spacing();
-			if (ImGui::Button("I understand", ImVec2(120, 0))) {
-				showStory = false;
-				playerPos = vec3(-20.0f, 15.0f, 250.0f);
-			}
-
-
-			ImGui::End();
-		}
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		//Castel
 		{
 			shader.use();
@@ -9975,6 +9967,73 @@ int main()
 			registerCollide(castle, vec3(-45.0f, 9.0f, -300.0f), vec3(0.04f, 0.04f, 0.04f));
 			registerCollide(wall, vec3(0.0f, -28.0f, -180.0f), vec3(0.3f, 0.3f, 0.2f));
 		}
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		if (showStory) {
+			ImGui::SetNextWindowPos(ImVec2(window.getWidth() / 2.0f - 200, window.getHeight() / 2.0f - 100));
+			ImGui::SetNextWindowSize(ImVec2(400, 200));
+			ImGui::Begin("Headquarters of the Time Travelers", &showStory, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+			ImGui::TextWrapped("Hello Marian! So you've finished the training I see. I hope you did well in the Time Travelers academy.");
+			ImGui::Separator();
+			ImGui::TextWrapped("This is your very first mission. You must travel back in time to the 17th century and save the Princess of Luminara from the gypsy goblins.");
+			ImGui::TextWrapped("It will not be an easy mission, be careful the past is unforgiving, and danger lurks at every step.");
+			ImGui::TextWrapped("I wish you goodluck. As soon as you arrive in the Kingdom of Luminara the Omnitrix will guide.");
+
+			ImGui::Spacing();
+			if (ImGui::Button("Travel?", ImVec2(120, 0))) {
+				showStory = false;
+				showHelloApple = true;
+				playerPos = vec3(-20.0f, 15.0f, 250.0f);
+			}
+			ImGui::End();
+		}
+		else if (showHelloApple) {
+			ImGui::SetNextWindowPos(ImVec2(window.getWidth() - 400.0f, 30.0f));
+			ImGui::SetNextWindowSize(ImVec2(400.0f, 320.0f));
+			ImGui::Begin("Kingdom Arrival", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+
+			ImGui::TextColored(ImVec4(1, 0.8f, 0, 1), "WELCOME TO THE KINGDOM");
+			ImGui::Separator();
+			ImGui::TextWrapped("You have arrived in the 17th century at the village gates.\n Use the WASD keys to move and the Right Mouse to look around. In order to interact with other objects use E.");
+			ImGui::Separator();
+			ImGui::TextWrapped("Your first journey through time did not go as planned. The trip through time has weakened you, and your health is low. Search for apples and eat them to restore your strength before continuing your mission");
+			ImGui::Separator();
+
+			if (playerHealth == 100.0f && applecnt>=4) {
+				showHelloApple = false;
+				questKing1 = true;
+			}
+
+			ImGui::End();
+
+		}
+		if(!showStory && !showHelloApple) {
+			ImGui::SetNextWindowPos(ImVec2(window.getWidth() - 400.0f, 30.0f));
+			ImGui::SetNextWindowSize(ImVec2(400.0f, 320.0f));
+			if (questKing1) {
+				ImGui::Begin("King Bob", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+				ImGui::TextColored(ImVec4(1, 0.9f, 0, 1), "ACTIVE MISSION:");
+				ImGui::Separator();
+				ImGui::TextWrapped("Now that you have restored your health go look for the King.");
+				ImGui::BulletText("HINT! Look for the castle.");
+				if (abs(playerPos.x - kingBobPos.x) < 15.0f) {
+					ImGui::Spacing();
+					ImGui::Separator();
+					if (ImGui::Button("Talk to King Bob", ImVec2(-1.0f, 40.0f))) {
+						questKing1 = false;
+						questArmour = true;
+					}
+				}
+				ImGui::End();
+
+
+			}
+
+			
+		}
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		/*ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -10095,6 +10154,8 @@ void processKeyboardInput()
 				float dist = distance(playerPos, mapApples[i].position);
 				if (dist < 5.0f) {
 					mapApples[i].isEaten = true;
+					if (showHelloApple)
+						applecnt++;
 					playerHealth += 20.0f;
 					if (playerHealth > maxHealth) playerHealth = maxHealth;
 				}
