@@ -28,9 +28,9 @@
 
 #pragma once
 //#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"// -- Petru
-//#include "C:\ECG\acg\Dependencies\imgui\imgui.h"// -- Alexutz
+#include "C:\ECG\acg\Dependencies\imgui\imgui.h"// -- Alexutz
 //#include "H:\alexutzvaci\PetruPopazu\ACG - Project2\Dependencies\imgui\imgui.h" //-- Petru Calc
-#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h" //Alex
+//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h" //Alex
 #ifndef IMGUI_DISABLE
 
 // Follow "Getting Started" link and check examples/ folder to learn about using backends!
