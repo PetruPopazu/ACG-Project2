@@ -5,6 +5,7 @@
 #include "Model Loading\texture.h"
 #include "Model Loading\meshLoaderObj.h"
 
+
 using namespace glm;
 
 void processKeyboardInput();
@@ -35,7 +36,7 @@ Camera camera;
 
 //vec3 playerPos = vec3(-20.0f, 15.0f, 250.0f);
 vec3 playerPos = vec3(-145.0f, 15.0f, -500.0f);
-float playerRoataion = 0.0f;
+
 
 struct Apple {
 	vec3 position;
@@ -275,10 +276,9 @@ int main()
 	};
 
 	unsigned int cubemapID = loadCubeMap(faces);
-
+	
 	//check if we close the window or press the escape button
-	while (!window.isPressed(GLFW_KEY_ESCAPE) &&
-		glfwWindowShouldClose(window.getWindow()) == 0)
+	while (!window.isPressed(GLFW_KEY_ESCAPE) && glfwWindowShouldClose(window.getWindow()) == 0)
 	{
 		window.clear();
 
@@ -297,6 +297,7 @@ int main()
 		if (playerPos.y < floorLevel + characterHeight) {
 			playerPos.y = floorLevel + characterHeight;
 		}
+		
 		//mouse_callback(window.getWindow(), lastX, lastY);
 
 
@@ -336,6 +337,7 @@ int main()
 		//vec3 cameraOffset = vec3(0.0f, 15.0f, cameraDistance);
 		//vec3 currentCameraPos = playerPos + cameraOffset;
 		vec3 currentCameraPos = vec3(playerPos.x - offsetX, targetCameraY, playerPos.z - offsetZ);
+
 
 		glm::mat4 ViewMatrix = glm::lookAt(currentCameraPos, playerPos, glm::vec3(0.0f, 1.0f, 0.0f));
 		glm::mat4 ProjectionMatrix = glm::perspective(90.0f, window.getWidth() * 1.0f / window.getHeight(), 0.1f, 10000.0f);
@@ -1041,7 +1043,8 @@ int main()
 			glBindTexture(GL_TEXTURE_2D, cube1);
 
 			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-145.0f, 46.0f, -500.0f));
+			//ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-145.0f, 46.0f, -500.0f));
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-45.0f, 9.0f, -300.0f));
 			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			//ModelMatrix = rotate(ModelMatrix, 15.0f, vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(35.0f, 35.0f, 35.0f));
@@ -3343,6 +3346,7 @@ int main()
 				cow.draw(shader);
 			}
 		}
+
 		//gard vaci nord
 		{
 			shader.use();
