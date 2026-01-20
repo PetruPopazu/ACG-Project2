@@ -5,18 +5,20 @@
 #include "Model Loading\texture.h"
 #include "Model Loading\meshLoaderObj.h"
 
-//C:\ECG\acg\Dependencies\imgui\imgui.h -- Alexutz
-//C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h -- Alexutz
-//C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h -- Alexutz
-//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h -- Petru Calc
-//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h -- Petru Calc
-//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_openl3.h -- Petru Calc
-//D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h Petru laptop
-//D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h Petru Laptop
-//D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h Petru Laptop
+#include "C:\ECG\acg\Dependencies\imgui\imgui.h"// -- Alexutz
+#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Alexutz
+#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h"// -- Alexutz
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"// -- Petru Calc
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Petru Calc
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_openl3.h"// -- Petru Calc
+
 #include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"
 #include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
 #include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h"
+
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h"
 
 using namespace glm;
 
@@ -73,12 +75,12 @@ struct Apple {
 };
 
 std::vector<Apple> mapApples = {
-    { vec3(0.0f, 19.0f, 250.0f), false },
-	{ vec3(10.0f, 19.0f, 255.0f), false },
-	{ vec3(-10.0f, 19.0f, 245.0f), false},
-	{ vec3(-10.0f, 19.0f, 255.0f), false},
-	{ vec3(-10.0f, 19.0f, 265.0f), false},
-	{ vec3(-10.0f, 19.0f, 265.0f), false}
+    { vec3(20.0f, 15.0f, 180.0f), false },
+	{ vec3(80.0f, 15.0f, 260.0f), false },
+	{ vec3(100.0f, 15.0f, 145.0f), false},
+	{ vec3(-87.0f, 15.0f, 150.0f), false},
+	{ vec3(-100.0f, 15.0f, 260.0f), false},
+	{ vec3(-150.0f, 15.0f, 140.0f), false}
 };
 
 vec3 goblin1Pos = vec3(235.0f, 15.0f, -360.0f);
@@ -174,6 +176,7 @@ int main()
 	GLuint hambarC = loadBMP("Resources/Textures/hambarC.bmp");
 	GLuint hambarN = loadBMP("Resources/Textures/hambarN.bmp");
 	GLuint horse_texture = loadBMP("Resources/Textures/hourse.bmp");
+	GLuint cusca_gaini_text = loadBMP("Resources/Textures/cusca_gaini_texture.bmp");
 	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
 	GLuint left = loadBMP("Resources/Textures/left.bmp");
 	GLuint top = loadBMP("Resources/Textures/top.bmp");
@@ -297,6 +300,7 @@ int main()
 	Mesh wooden_box = loader.loadObj("Resources/Models/wooden_box.obj", emptyTextures);
 	Mesh hambar = loader.loadObj("Resources/Models/hambar.obj", emptyTextures);
 	Mesh horse = loader.loadObj("Resources/Models/horse.obj", emptyTextures);
+	Mesh cusca_gaini = loader.loadObj("Resources/Models/cusca_gaini.obj", emptyTextures);
 	//Mesh hand = loader.loadObj("Resources/Models/hand2.obj", emptyTextures);
 	//Mesh skybox = loader.loadObj("Resources/Models/box.obj");
 	//Mesh terrain = loader.loadObj("Resources/Models/Terrain2k.obj", textures4);
@@ -893,7 +897,7 @@ int main()
 
 					mat4 appleModel = mat4(1.0f);
 					appleModel = translate(appleModel, appleItem.position + vec3(0.0f, appleBob, 0.0f));
-					appleModel = scale(appleModel, vec3(0.1f, 0.1f, 0.1f));
+					appleModel = scale(appleModel, vec3(0.05f, 0.05f, 0.05f));
 
 					mat4 appleMVP = ProjectionMatrix * ViewMatrix * appleModel;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &appleMVP[0][0]);
@@ -2899,6 +2903,111 @@ int main()
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 				nest.draw(shader);
+			}
+			//cusca gaini 1
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, cusca_gaini_text);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(20.0f, 6.5f, -30.0f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.5f, 5.5f, 5.5f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				cusca_gaini.draw(shader);
+				//gaini din cusca
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(19.0f, 9.5f, -29.0f));
+					//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(22.0f, 9.5f, -32.0f));
+					ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+			}
+			//cusca gaini 2
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, cusca_gaini_text);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(5.0f, 6.5f, -30.0f));
+				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.5f, 5.5f, 5.5f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				cusca_gaini.draw(shader);
+
+				//gaini din cusca
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(7.0f, 9.5f, -29.0f));
+					//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(3.0f, 9.5f, -32.0f));
+					ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
 			}
 		}
 		//Church
