@@ -4,7 +4,9 @@
 #include "Model Loading\mesh.h"
 #include "Model Loading\texture.h"
 #include "Model Loading\meshLoaderObj.h"
-
+//D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h Petru laptop
+//D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h Petru Laptop
+//D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h Petru Laptop
 #include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"
 #include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
 #include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h"

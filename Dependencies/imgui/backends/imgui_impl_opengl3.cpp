@@ -120,8 +120,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-//D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h -- Petru
-//D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h -- Petru
+//D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h -- Petru laptop
+//D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h -- Petru laptop
 
 #include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"
 #ifndef IMGUI_DISABLE
