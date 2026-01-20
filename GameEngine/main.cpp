@@ -3394,6 +3394,7 @@ int main()
 			wooden_box.draw(shader);
 		}
 		//sign
+		{}
 		{
 			shader.use();
 
