@@ -124,9 +124,11 @@
 //D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h -- Petru
 //C:\ECG\acg\Dependencies\imgui\imgui.h -- Alexutz
 //C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h -- Alexutz
-#include "C:\ECG\acg\Dependencies\imgui\imgui.h"
+//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h -- Petru Calc
+//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h -- Petru Calc
+#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"
 #ifndef IMGUI_DISABLE
-#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h"
+#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h"
 #include <stdio.h>
 #include <stdint.h>     // intptr_t
 #if defined(__APPLE__)

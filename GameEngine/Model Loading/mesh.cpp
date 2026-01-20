@@ -7,6 +7,9 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<int> indices)
 	this->vertices = vertices;
 	this->indices = indices;
 
+	this->minB = glm::vec3(1e6f);
+	this->maxB = glm::vec3(-1e6f);
+
 	setup2();
 }
 
@@ -15,6 +18,9 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<int> indices, std::vector<T
 	this->vertices = vertices;
 	this->indices = indices;
 	this->textures = textures;
+
+	this->minB = glm::vec3(1e6f);
+	this->maxB = glm::vec3(-1e6f);
 
 	setup();
 }

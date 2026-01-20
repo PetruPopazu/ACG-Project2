@@ -13,6 +13,7 @@ struct Vertex
 	glm::vec3 normals;
 	glm::vec2 textureCoords;
 
+
 	Vertex() {}
 
 	Vertex(float pos_x, float pos_y, float pos_z)
@@ -70,6 +71,8 @@ class Mesh
 		std::vector<Vertex> vertices;
 		std::vector<int> indices;
 		std::vector<Texture> textures;
+		glm::vec3 minB;
+		glm::vec3 maxB;
 
 		unsigned int vao, vbo, ibo;
 
