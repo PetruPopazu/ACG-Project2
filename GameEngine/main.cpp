@@ -5,9 +5,9 @@
 #include "Model Loading\texture.h"
 #include "Model Loading\meshLoaderObj.h"
 
-#include "C:\ECG\acg\Dependencies\imgui\imgui.h"// -- Alexutz
-#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Alexutz
-#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h"// -- Alexutz
+//#include "C:\ECG\acg\Dependencies\imgui\imgui.h"// -- Alexutz
+//#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Alexutz
+//#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h"// -- Alexutz
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"// -- Petru Calc
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Petru Calc
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_openl3.h"// -- Petru Calc
