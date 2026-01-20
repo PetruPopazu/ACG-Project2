@@ -5,15 +5,29 @@
 #include "Model Loading\texture.h"
 #include "Model Loading\meshLoaderObj.h"
 
-//C:\ECG\acg\Dependencies\imgui\imgui.h -- Alexutz
-//C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h -- Alexutz
-//C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h -- Alexutz
-//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h -- Petru Calc
-//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h -- Petru Calc
-//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_openl3.h -- Petru Calc
-#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"
-#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
-#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h"
+//#include "C:\ECG\acg\Dependencies\imgui\imgui.h"// -- Alexutz
+//#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Alexutz
+//#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h"// -- Alexutz
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"// -- Petru Calc
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Petru Calc
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_openl3.h"// -- Petru Calc
+//#include "C:\ECG\acg\Dependencies\imgui\imgui.h" //-- Alexutz
+//#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Alexutz
+//#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h" //-- Alexutz
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h" //-- Petru Calc
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Petru Calc
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_openl3.h" //-- Petru Calc
+#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h" //-- Alex
+#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Alex
+#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h" //--Alex
+
+//#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"
+//#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
+//#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h"
+
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h"
 
 using namespace glm;
 
@@ -37,6 +51,8 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 bool firstMouse = true;
 float lastX = 400, lastY = 400;
 
+int applecnt = 0;
+
 vec3 worldPos = vec3(0.0f);
 
 float deltaTime = 0.0f;
@@ -55,13 +71,23 @@ float goblin2Health = 100.0f;
 float goblin3Health = 100.0f;
 
 bool showStory = true;
+bool showHelloApple = false;
+bool questKing1 = false;
+bool questArmour = false;
+bool questKing2 = false;
+bool questWitch = false;
+bool questKing3 = false;
+bool questFight = false;
 
-Window window("Marian - The time traveler", 1024, 960);
+
+Window window("Marian - The time traveler", 1920, 1080);
 Camera camera;
 
 //vec3 playerPos = vec3(-20.0f, 15.0f, 250.0f);
 vec3 playerPos = vec3(-145.0f, 15.0f, -500.0f);
+vec3 kingBobPos = vec3(-30.0f, 17.25f, -235.0f);
 float playerRoataion = 0.0f;
+
 
 struct Apple {
 	vec3 position;
@@ -69,12 +95,12 @@ struct Apple {
 };
 
 std::vector<Apple> mapApples = {
-    { vec3(0.0f, 19.0f, 250.0f), false },
-	{ vec3(10.0f, 19.0f, 255.0f), false },
-	{ vec3(-10.0f, 19.0f, 245.0f), false},
-	{ vec3(-10.0f, 19.0f, 255.0f), false},
-	{ vec3(-10.0f, 19.0f, 265.0f), false},
-	{ vec3(-10.0f, 19.0f, 265.0f), false}
+    { vec3(20.0f, 15.0f, 180.0f), false },
+	{ vec3(80.0f, 15.0f, 260.0f), false },
+	{ vec3(100.0f, 15.0f, 145.0f), false},
+	{ vec3(-87.0f, 15.0f, 150.0f), false},
+	{ vec3(-100.0f, 15.0f, 260.0f), false},
+	{ vec3(-150.0f, 15.0f, 140.0f), false}
 };
 
 vec3 goblin1Pos = vec3(235.0f, 15.0f, -360.0f);
@@ -88,13 +114,11 @@ int main()
 {
 	glClearColor(0.2f, 0.8f, 1.0f, 1.0f);
 
-	//building and compiling shader program
 	Shader shader("Shaders/vertex_shader.glsl", "Shaders/fragment_shader.glsl");
 	Shader sunShader("Shaders/sun_vertex_shader.glsl", "Shaders/sun_fragment_shader.glsl");
 	Shader mountainShader("Shaders/mountain_vertex_shader.glsl", "Shaders/mountain_fragment_shader.glsl");
 	Shader terrainShader("Shaders/terrain_vertex_shader.glsl", "Shaders/terrain_fragment_shader.glsl");
-	//Shader skyboxShader("Shaders/skybox_vertex_shader.glsl", "Shaders/skybox_fragment_shader.glsl");
-
+	
 	//Textures
 	GLuint tex = loadBMP("Resources/Textures/wood.bmp");
 	GLuint tex2 = loadBMP("Resources/Textures/rock.bmp");
@@ -170,6 +194,7 @@ int main()
 	GLuint hambarC = loadBMP("Resources/Textures/hambarC.bmp");
 	GLuint hambarN = loadBMP("Resources/Textures/hambarN.bmp");
 	GLuint horse_texture = loadBMP("Resources/Textures/hourse.bmp");
+	GLuint cusca_gaini_text = loadBMP("Resources/Textures/cusca_gaini_texture.bmp");
 	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
 	GLuint left = loadBMP("Resources/Textures/left.bmp");
 	GLuint top = loadBMP("Resources/Textures/top.bmp");
@@ -229,12 +254,6 @@ int main()
 	textures4[0].id = tex4;
 	textures4[0].type = "texture_diffuse";
 
-	/*std::vector<Texture> textures5;
-	textures4.push_back(Texture());
-	textures4[0].id = tex5;
-	textures4[0].type = "texture_diffuse";*/
-
-
 	Mesh mesh(vert, ind, textures3);
 
 	std::vector<Texture> emptyTextures;
@@ -286,13 +305,13 @@ int main()
 	Mesh cube1Model = loader.loadObj("Resources/Models/cube1.obj", emptyTextures);
 	Mesh portalModel = loader.loadObj("Resources/Models/portal.obj", emptyTextures);
 	Mesh helmet = loader.loadObj("Resources/Models/helmet.obj", emptyTextures);
-
 	Mesh gaina = loader.loadObj("Resources/Models/gaina.obj", emptyTextures);
 	Mesh gard = loader.loadObj("Resources/Models/gard.obj", emptyTextures);
 	Mesh nest = loader.loadObj("Resources/Models/nest.obj", emptyTextures);
 	Mesh wooden_box = loader.loadObj("Resources/Models/wooden_box.obj", emptyTextures);
 	Mesh hambar = loader.loadObj("Resources/Models/hambar.obj", emptyTextures);
 	Mesh horse = loader.loadObj("Resources/Models/horse.obj", emptyTextures);
+	Mesh cusca_gaini = loader.loadObj("Resources/Models/cusca_gaini.obj", emptyTextures);
 	//Mesh hand = loader.loadObj("Resources/Models/hand2.obj", emptyTextures);
 	//Mesh skybox = loader.loadObj("Resources/Models/box.obj");
 	//Mesh terrain = loader.loadObj("Resources/Models/Terrain2k.obj", textures4);
@@ -319,8 +338,7 @@ int main()
 
 	
 	//check if we close the window or press the escape button
-	while (!window.isPressed(GLFW_KEY_ESCAPE) &&
-		glfwWindowShouldClose(window.getWindow()) == 0)
+	while (!window.isPressed(GLFW_KEY_ESCAPE) && glfwWindowShouldClose(window.getWindow()) == 0)
 	{
 		window.clear();
 
@@ -339,14 +357,6 @@ int main()
 		if (playerPos.y < floorLevel + characterHeight) {
 			playerPos.y = floorLevel + characterHeight;
 		}
-		//mouse_callback(window.getWindow(), lastX, lastY);
-
-
-		//test mouse input
-		/*if (window.isMousePressed(GLFW_MOUSE_BUTTON_LEFT))
-		{
-			std::cout << "Pressing mouse button" << std::endl;
-		}*/
 
 		if (window.isMousePressed(GLFW_MOUSE_BUTTON_LEFT)) {
 			isSwinging = true;
@@ -359,7 +369,6 @@ int main()
 				isSwinging = false;
 			}
 		}
-
 
 		//// Code for the light ////
 
@@ -375,8 +384,6 @@ int main()
 			targetCameraY = mapFloor + 1.0f;
 		}
 
-		//vec3 cameraOffset = vec3(0.0f, 15.0f, cameraDistance);
-		//vec3 currentCameraPos = playerPos + cameraOffset;
 		vec3 currentCameraPos = vec3(playerPos.x - offsetX, targetCameraY, playerPos.z - offsetZ);
 
 		glm::mat4 ViewMatrix = glm::lookAt(currentCameraPos, playerPos, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -384,13 +391,9 @@ int main()
 
 		sunShader.use();
 
-
-		//glm::mat4 ViewMatrix = glm::lookAt(camera.getCameraPosition(), camera.getCameraPosition() + camera.getCameraViewDirection(), camera.getCameraUp());
-
 		GLuint MatrixID = glGetUniformLocation(sunShader.getId(), "MVP");
 
 		//Test for one Obj loading = light source
-
 		glm::mat4 ModelMatrix = glm::mat4(1.0);
 		ModelMatrix = glm::translate(ModelMatrix, lightPos);
 		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -399,7 +402,6 @@ int main()
 		sun.draw(sunShader);
 
 		//// End code for the light ////
-
 		shader.use();
 
 		///// Test Obj files for box ////
@@ -407,35 +409,10 @@ int main()
 		GLuint MatrixID2 = glGetUniformLocation(shader.getId(), "MVP");
 		GLuint ModelMatrixID = glGetUniformLocation(shader.getId(), "model");
 
-		//for (int x = 0; x < 100; x++) {
-		//	for (int z = 0; z < 100; z++) {
-		//		for (const auto& b : grid[x][z]) {
-		//			mat4 debugModel = mat4(1.0f);
-
-		//			// 1. Calculate the center and size of the box
-		//			vec3 center = (b.min + b.max) * 0.5f;
-		//			vec3 size = b.max - b.min;
-
-		//			// 2. Position and scale the box mesh to match the collider
-		//			debugModel = translate(debugModel, center);
-		//			debugModel = scale(debugModel, size);
-
-		//			// 3. Set color to Bright Red (for visibility)
-		//			glUniformMatrix4fv(glGetUniformLocation(shader.getId(), "MVP"), 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * debugModel)[0][0]);
-		//			glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 1.0f, 0.0f, 0.0f);
-
-		//			// 4. Draw using your existing cube mesh
-		//			// Use glPolygonMode to see wireframes if the boxes hide your models
-		//			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		//			box.draw(shader);
-		//			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // Reset to normal
-		//		}
-		//	}
-		//}
-
 		//draw body parts
 		{
 			//firstly the torso
+
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, handDiffuse);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
@@ -453,8 +430,6 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &torsoModel[0][0]);
 			torso.draw(shader);
 
-			
-
 			//capul
 			mat4 capModel = torsoModel;
 			capModel = translate(capModel, vec3(0.0f, 1.0f, 0.0f));
@@ -464,6 +439,7 @@ int main()
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &capMVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &capModel[0][0]);
 			cap.draw(shader);
+
 			//then the right hand
 			mat4 rHandModel = torsoModel;
 			if (isSwinging) {
@@ -508,7 +484,6 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &lLegModel[0][0]);
 			box.draw(shader);
 
-
 			//right leg
 			{
 				mat4 rLegModel = torsoModel;
@@ -547,16 +522,16 @@ int main()
 			float healthWidth = (playerHealth / maxHealth) * 0.3f;
 			mat4 healthBarModel = torsoModel;
 
-			healthBarModel = translate(healthBarModel, vec3(-0.8f + healthWidth*2.65f, 2.5f, -0.05f));
-			healthBarModel = scale(healthBarModel, vec3(healthWidth+0.01f, 0.055f, 0.12f));
+			healthBarModel = translate(healthBarModel, vec3(-0.8f + healthWidth * 2.65f, 2.5f, -0.05f));
+			healthBarModel = scale(healthBarModel, vec3(healthWidth + 0.01f, 0.055f, 0.12f));
 
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &(ProjectionMatrix * ViewMatrix * healthBarModel)[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBarModel[0][0]);
 			glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.0f, 1.0f, 0.0f);
 			box.draw(shader);
-
 		}
 		//gobin1
+		{}
 		{
 			//firstly the torso
 			mat4 torsoModel = mat4(1.0f);
@@ -578,10 +553,6 @@ int main()
 
 			//then the right hand
 			mat4 rHandModel = torsoModel;
-			/*if (isSwinging) {
-				float swingAngle = sin(swingTimer) * 90.0f;
-				rHandModel = rotate(rHandModel, swingAngle, vec3(1.0f, 0.0f, 0.0f));
-			}*/
 			rHandModel = translate(rHandModel, vec3(0.7f, 0.3f, 0.4f));
 			rHandModel = rotate(rHandModel, -80.0f, vec3(1.0f, 0.0f, 0.0f));
 			rHandModel = rotate(rHandModel, -20.0f, vec3(0.0f, 1.0f, 0.0f));
@@ -608,10 +579,6 @@ int main()
 			//left leg firstly
 			mat4 lLegModel = torsoModel;
 			lLegModel = translate(lLegModel, vec3(-0.4f, -1.1f, 0.2f));
-			/*if (window.isPressed(GLFW_KEY_W) || window.isPressed(GLFW_KEY_S) || window.isPressed(GLFW_KEY_A) || window.isPressed(GLFW_KEY_D)) {
-				float swingAngle = sin(currentFrame * 10.0f) * 30.0f;
-				lLegModel = rotate(lLegModel, swingAngle, vec3(1.0f, 0.0f, 0.0f));
-			}*/
 			lLegModel = rotate(lLegModel, 180.0f, vec3(1.0f, 0.0f, 0.0f));
 			lLegModel = rotate(lLegModel, 4.0f, vec3(0.0f, 0.0f, 1.0f));
 			lLegModel = scale(lLegModel, vec3(0.1f, 0.6f, 0.09f));
@@ -620,15 +587,10 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &lLegModel[0][0]);
 			box.draw(shader);
 
-
 			//right leg
 			{
 				mat4 rLegModel = torsoModel;
 				rLegModel = translate(rLegModel, vec3(0.4f, -1.1f, 0.2f));
-				/*if (window.isPressed(GLFW_KEY_W) || window.isPressed(GLFW_KEY_S) || window.isPressed(GLFW_KEY_A) || window.isPressed(GLFW_KEY_D)) {
-					float swingAngle = sin(currentFrame * 10.0f + 3.14f) * 30.0f;
-					rLegModel = rotate(rLegModel, swingAngle, vec3(1.0f, 0.0f, 0.0f));
-				}*/
 				rLegModel = rotate(rLegModel, 180.0f, vec3(1.0f, 0.0f, 0.0f));
 				rLegModel = rotate(rLegModel, -4.0f, vec3(0.0f, 0.0f, 1.0f));
 				rLegModel = scale(rLegModel, vec3(0.1f, 0.6f, 0.09f));
@@ -876,6 +838,7 @@ int main()
 			box.draw(shader);
 		}
 		//apples
+		{}
 		{
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, appleC);
@@ -889,7 +852,7 @@ int main()
 
 					mat4 appleModel = mat4(1.0f);
 					appleModel = translate(appleModel, appleItem.position + vec3(0.0f, appleBob, 0.0f));
-					appleModel = scale(appleModel, vec3(0.1f, 0.1f, 0.1f));
+					appleModel = scale(appleModel, vec3(0.05f, 0.05f, 0.05f));
 
 					mat4 appleMVP = ProjectionMatrix * ViewMatrix * appleModel;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &appleMVP[0][0]);
@@ -922,17 +885,11 @@ int main()
 
 			plane.draw(terrainShader);
 
-			//mountainShader.use();
 			shader.use();
 
 			glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
 			glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
 			glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);
-
-			/*glUniform3f(glGetUniformLocation(shader.getId(), "lightColor"), lightColor.x, lightColor.y, lightColor.z);
-			glUniform3f(glGetUniformLocation(shader.getId(), "lightPos"), lightPos.x, lightPos.y, lightPos.z);
-			glUniform3f(glGetUniformLocation(shader.getId(), "viewPos"), currentCameraPos.x, currentCameraPos.y, currentCameraPos.z);*/
-
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, munteColor);
@@ -947,13 +904,11 @@ int main()
 			{
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(200.0f, -4.0f, -820.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
 				mountain1.draw(shader);
 			}
 			//Al doilea Munte
@@ -965,116 +920,104 @@ int main()
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
 				mountain2.draw(shader);
 			}
 			//Al treilea Munte
 			{
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-560.0f, -1.0f, -500.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, -60.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				//registerCollide(portalModel, vec3(-560.0f, -1.0f, -500.0f), vec3(10.0f, 10.0f, 10.0f));
 				mountain1.draw(shader);
 			}
 			//Al patrulea Munte
 			{
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-600.0f, -20.0f, -100.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				//registerCollide(portalModel, vec3(-600.0f, -20.0f, -100.0f), vec3(10.0f, 10.0f, 10.0f));
 				mountain2.draw(shader);
 			}
 			//Al cincilea Munte
 			{
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(700.0f, -4.0f, -600.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, -95.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				//registerCollide(portalModel, vec3(700.0f, -4.0f, -600.0f), vec3(10.0f, 10.0f, 10.0f));
 				mountain2.draw(shader);
 			}
 			//Al saselea Munte
 			{
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(550.0f, -25.0f, -100.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				//registerCollide(portalModel, vec3(550.0f, -25.0f, -100.0f), vec3(10.0f, 10.0f, 10.0f));
 				mountain1.draw(shader);
 			}
 			//Al saptelea Munte
 			{
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(750.0f, -25.0f, 300.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				//registerCollide(portalModel, vec3(750.0f, -25.0f, 300.0f), vec3(10.0f, 10.0f, 10.0f));
 				mountain2.draw(shader);
 			}
 			//Al optulea Munte
 			{
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(300.0f, -25.0f, 620.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -60.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				//registerCollide(portalModel, vec3(300.0f, -25.0f, 620.0f), vec3(10.0f, 10.0f, 10.0f));
 				mountain1.draw(shader);
 			}
 			//Al noulea muntedw
 			{
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-300.0f, -25.0f, 620.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 210.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				//registerCollide(portalModel, vec3(-300.0f, -25.0f, 620.0f), vec3(10.0f, 10.0f, 10.0f));
 				mountain2.draw(shader);
 			}
 			//Al zecelea munte
 			{
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-750.0f, -25.0f, 300.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				//registerCollide(portalModel, vec3(-750.0f, -25.0f, 300.0f), vec3(10.0f, 10.0f, 10.0f));
 				mountain1.draw(shader);
 			}
-
 		}
-		
 		//Hub 
+		{}
 		{
 			shader.use();
 
@@ -1083,15 +1026,73 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-145.0f, 46.0f, -500.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 15.0f, vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(35.0f, 35.0f, 35.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 			cube1Model.draw(shader);
-			//registerCollide(cube1Model, vec3(-145.0f, 46.0f, -500.0f), vec3(35.0f, 35.0f, 35.0f));
+		}
+		//hub walls
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, cube1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-145.0f, 46.0f, -570.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(35.0f, 35.0f, 35.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(portalModel, vec3(-145.0f, 46.0f, -570.0f), vec3(10.0f, 1.0f, 1.3f));
+			cube1Model.draw(shader);
+		}
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, cube1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-75.0f, 46.0f, -500.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(35.0f, 35.0f, 35.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(portalModel, vec3(-75.0f, 46.0f, -500.0f), vec3(1.0f, 1.0f, 3.0f));
+			cube1Model.draw(shader);
+		}
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, cube1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-145.0f, 36.0f, -460.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(35.0f, 10.0f, 10.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(portalModel, vec3(-145.0f, 36.0f, -460.0f), vec3(10.0f, 1.0f, 1.0f));
+			cube1Model.draw(shader);
+		}
+		{
+			shader.use();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, cube1);
+
+			ModelMatrix = glm::mat4(1.0);
+			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-215.0f, 46.0f, -500.0f));
+			ModelMatrix = scale(ModelMatrix, glm::vec3(35.0f, 35.0f, 35.0f));
+			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(portalModel, vec3(-215.0f, 46.0f, -500.0f), vec3(1.0f, 1.0f, 3.0f));
+			cube1Model.draw(shader);
 		}
 		//portal
 		{
@@ -1106,8 +1107,6 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-145.0f, 17.0f, -520.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 15.0f, vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.2f, 0.2f, 0.2f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -1116,28 +1115,6 @@ int main()
 			portalModel.draw(shader);
 			registerCollide(portalModel, vec3(-145.0f, 17.0f, -520.0f), vec3(0.2f, 0.2f, 0.2f));
 		}
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-		if (showStory) {
-			ImGui::SetNextWindowPos(ImVec2(window.getWidth() / 2.0f - 200, window.getHeight() / 2.0f - 100), ImGuiCond_FirstUseEver);
-			ImGui::SetNextWindowSize(ImVec2(400, 200));
-			ImGui::Begin("The Chrono-Log", &showStory, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-			ImGui::TextWrapped("Vedem ce punem aici");
-			ImGui::Separator();
-			ImGui::TextWrapped("Vedem ce punem aici");
-			ImGui::TextWrapped("Vedem ce punem aici ");
-
-			ImGui::Spacing();
-			if (ImGui::Button("I understand", ImVec2(120, 0))) {
-				showStory = false;
-			}
-
-
-			ImGui::End();
-		}
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		//Castel
 		{
 			shader.use();
@@ -1166,11 +1143,12 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-30.0f, 17.25f, -235.0f));
+			//registerCollide(king_bobModel, vec3(-30.0f, 17.25f, -235.0f), vec3(2.0f, 2.0f, 2.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(portalModel, vec3(-30.0f, 17.25f, -235.0f), vec3(0.1f, 0.5f, 0.3f));
 			king_bobModel.draw(shader);
 		}
 		//Wall
@@ -1200,13 +1178,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-70.0f, 10.0f, 50.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, -180.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.5f, 1.5f, 1.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(statue1Model, vec3(-70.0f, 10.0f, 50.0f), vec3(1.5f, 1.5f, 1.5f));
 				statue1Model.draw(shader);
 			}
 			//statue2
@@ -1223,13 +1199,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(80.0f, 10.0f, 50.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.2f, 0.2f, 0.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(statue2Model, vec3(80.0f, 10.0f, 50.0f), vec3(0.2f, 0.2f, 0.2f));
 				statue2Model.draw(shader);
 			}
 			//statue3
@@ -1246,13 +1221,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-215.0f, 10.0f, -205.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 130.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.7f, 0.7f, 0.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
 				church_StatueModel.draw(shader);
 			}
 		}
@@ -1266,13 +1239,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-165.0f, 10.0f, -30.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.07f, 0.07f, 0.07f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(portalModel, vec3(-165.0f, 10.0f, -30.0f), vec3(0.2f, 1.0f, 0.3f));
 			tentModel.draw(shader);
 		}
 		//Blacksmith
@@ -1285,13 +1256,12 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 24.0f, -5.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, -70.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(15.0f, 15.0f, 15.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(portalModel, vec3(170.0f, 24.0f, -5.0f), vec3(0.2f, 1.0f, 1.0f));
 			blacksmithModel.draw(shader);
 		}
 		//armor
@@ -1311,7 +1281,6 @@ int main()
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(162.0f, 12.0f + bobbingOffset, 0.5f));
 			ModelMatrix = glm::rotate(ModelMatrix, radians(currentFrame * 150.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, -70.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.9f, 0.9f, 0.9f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -1333,13 +1302,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-113.0f, 13.5f, -27.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.05f, 0.05f, 0.05f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(portalModel, vec3(-113.0f, 13.5f, -27.0f), vec3(0.2f, 0.1f, 0.2f));
 			fountainModel.draw(shader);
 		}
 		//Houses
@@ -1354,13 +1321,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-180.0f, 10.0f, 0.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(4.5f, 4.5f, 4.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(portalModel, vec3(-180.0f, 10.0f, 0.0f), vec3(0.5f, 0.5f, 0.8f));
 				houseModel.draw(shader);
 			}
 			//House2
@@ -1373,13 +1338,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(150.0f, 10.0f, -130.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -135.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(4.5f, 4.5f, 4.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(houseModel, vec3(150.0f, 10.0f, -130.0f), vec3(4.4f, 4.4f, 4.4f));
 				houseModel.draw(shader);
 			}
 			//House3
@@ -1392,13 +1356,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-175.0f, 10.0f, -80.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(4.5f, 4.5f, 4.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(houseModel, vec3(-175.0f, 10.0f, -80.0f), vec3(4.4f, 4.4f, 4.4f));
 				houseModel.draw(shader);
 			}
 			//House4
@@ -1411,13 +1374,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, -70.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -180.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(4.5f, 4.5f, 4.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(houseModel, vec3(170.0f, 10.0f, -70.0f), vec3(4.4f, 4.4f, 4.4f));
 				houseModel.draw(shader);
 			}
 			//House5
@@ -1430,13 +1392,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(250.0f, 10.0f, 28.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -180.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(4.5f, 4.5f, 4.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(houseModel, vec3(250.0f, 10.0f, 28.0f), vec3(4.4f, 4.4f, 4.4f));
 				houseModel.draw(shader);
 			}
 			//House6
@@ -1449,13 +1410,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(260.0f, 10.0f, -20.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -180.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(4.5f, 4.5f, 4.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(houseModel, vec3(260.0f, 10.0f, -20.0f), vec3(4.4f, 4.4f, 4.4f));
 				houseModel.draw(shader);
 			}
 			//House7
@@ -1468,13 +1428,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(245.0f, 10.0f, -85.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -135.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(4.4f, 4.4f, 4.4f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(houseModel, vec3(245.0f, 10.0f, -85.0f), vec3(4.4f, 4.4f, 4.4f));
 				houseModel.draw(shader);
 			}
 			//House8
@@ -1487,13 +1446,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-250.0f, 10.0f, 25.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, -50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(4.4f, 4.4f, 4.4f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(houseModel, vec3(-250.0f, 10.0f, 25.0f), vec3(4.4f, 4.4f, 4.4f));
 				houseModel.draw(shader);
 			}
 			//House9
@@ -1506,17 +1463,16 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-235.0f, 10.0f, -30.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, -50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(4.4f, 4.4f, 4.4f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(houseModel, vec3(-235.0f, 10.0f, -30.0f), vec3(4.4f, 4.4f, 4.4f));
 				houseModel.draw(shader);
 			}
 		}
 		//Well
+		{}
 		{
 			shader.use();
 
@@ -1526,13 +1482,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-150.0f, 10.0f, -50.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.05f, 0.05f, 0.05f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(wellModel, vec3(-150.0f, 10.0f, -50.0f), vec3(0.05f, 0.05f, 0.05f));
 			wellModel.draw(shader);
 		}
 		//Barrels
@@ -1547,13 +1501,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(155.0f, 10.0f, -25.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(barrelsModel, vec3(155.0f, 10.0f, -25.0f), vec3(0.1f, 0.1f, 0.1f));
 				barrelsModel.draw(shader);
 			}
 			//Barrel2
@@ -1566,13 +1518,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(155.0f, 10.0f, -28.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(barrelsModel, vec3(155.0f, 10.0f, -28.0f), vec3(0.1f, 0.1f, 0.1f));
 				barrelsModel.draw(shader);
 			}
 			//Barrel3
@@ -1585,13 +1535,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(155.0f, 13.5f, -26.5f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(barrelsModel, vec3(155.0f, 13.5f, -26.5f), vec3(0.1f, 0.1f, 0.1f));
 				barrelsModel.draw(shader);
 			}
 		}
@@ -1610,7 +1558,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-155.0f, 10.0f, 25.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 135.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -1632,7 +1579,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-165.0f, 10.0f, -50.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -1654,7 +1600,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-155.0f, 10.0f, -100.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -1676,7 +1621,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(120.0f, 10.0f, -140.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -1698,7 +1642,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, -50.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -1720,7 +1663,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(155.0f, 10.0f, 35.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -135.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -1731,6 +1673,7 @@ int main()
 			}
 		}
 		//Cart1
+		{}
 		{
 			shader.use();
 
@@ -1743,13 +1686,12 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(80.0f, 10.0f, -55.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 15.0f, vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(cart1Model, vec3(80.0f, 10.0f, -55.0f), vec3(5.0f, 5.0f, 5.0f));
 			cart1Model.draw(shader);
 		}
 		//Cart2
@@ -1765,13 +1707,12 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(170.0f, 10.0f, -35.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(cart2Model, vec3(170.0f, 10.0f, -35.0f), vec3(5.0f, 5.0f, 5.0f));
 			cart2Model.draw(shader);
 		}
 		//MarketPlace
@@ -1789,13 +1730,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(50.0f, 12.0f, -55.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 15.0f, vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(marketModel, vec3(50.0f, 12.0f, -55.0f), vec3(2.0f, 2.0f, 2.0f));
 				marketModel.draw(shader);
 			}
 			//market2
@@ -1811,13 +1750,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(95.0f, 12.0f, -30.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(marketModel, vec3(95.0f, 12.0f, -30.0f), vec3(3.0f, 2.0f, 2.0f));
 				marketModel.draw(shader);
 			}
 			//market3
@@ -1833,13 +1771,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(65.0f, 12.0f, -5.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 190.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
 				marketModel.draw(shader);
 			}
 			//campfire
@@ -1855,13 +1791,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(60.0f, 10.0f, -30.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 15.0f, vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(campfireModel, vec3(60.0f, 10.0f, -30.0f), vec3(4.0f, 4.0f, 4.0f));
 				campfireModel.draw(shader);
 			}
 			//woodpile
@@ -1877,13 +1811,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(90.0f, 10.0f, 0.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 190.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(woodpileModel, vec3(90.0f, 10.0f, 0.0f), vec3(7.0f, 7.0f, 7.0f));
 				woodpileModel.draw(shader);
 			}
 			//marketstall
@@ -1899,13 +1831,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(35.0f, 10.0f, -20.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(marketstallModel, vec3(35.0f, 10.0f, -20.0f), vec3(5.0f, 5.0f, 5.0f));
 				marketstallModel.draw(shader);
 			}
 			//villagers
@@ -1925,7 +1856,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+					registerCollide(king_bobModel, vec3(35.0f, 12.5f, -20.0f), vec3(0.75f, 0.75f, 0.75f));
 					king_bobModel.draw(shader);
 				}
 				//villager2
@@ -1943,7 +1874,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+					registerCollide(king_bobModel, vec3(55.0f, 12.5f, -45.0f), vec3(0.75f, 0.75f, 0.75f));
 					king_bobModel.draw(shader);
 				}
 				//villager3
@@ -1961,7 +1892,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+					registerCollide(king_bobModel, vec3(85.0f, 12.5f, -25.0f), vec3(0.75f, 0.75f, 0.75f));
 					king_bobModel.draw(shader);
 				}
 				//villager_caruta
@@ -2010,12 +1941,11 @@ int main()
 
 					ModelMatrix = glm::mat4(1.0);
 					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-20.0f, 12.5f, -235.0f));
-					//ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
 					ModelMatrix = scale(ModelMatrix, glm::vec3(0.75f, 0.75f, 0.75f));
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+					registerCollide(king_bobModel, vec3(-20.0f, 12.5f, -235.0f), vec3(0.75f, 0.75f, 0.75f));
 					king_bobModel.draw(shader);
 				}
 				//villager7_copil2
@@ -2028,12 +1958,11 @@ int main()
 
 					ModelMatrix = glm::mat4(1.0);
 					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-15.0f, 12.5f, -235.0f));
-					//ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
 					ModelMatrix = scale(ModelMatrix, glm::vec3(0.75f, 0.75f, 0.75f));
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+					registerCollide(king_bobModel, vec3(-15.0f, 12.5f, -235.0f), vec3(0.75f, 0.75f, 0.75f));
 					king_bobModel.draw(shader);
 				}
 				//villager_turn1
@@ -2046,7 +1975,6 @@ int main()
 
 					ModelMatrix = glm::mat4(1.0);
 					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-75.0f, 90.0f, 70.0f));
-					//ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
 					ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -2064,7 +1992,6 @@ int main()
 
 					ModelMatrix = glm::mat4(1.0);
 					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(25.0f, 90.0f, 70.0f));
-					//ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
 					ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -2075,619 +2002,665 @@ int main()
 
 			}
 			//gaini
+			{}
 			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-50.0f, 9.0f, -82.0f));
-				//ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-53.0f, 9.0f, -91.0f));
-				ModelMatrix = rotate(ModelMatrix, 40.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-47.0f, 9.0f, -99.0f));
-				ModelMatrix = rotate(ModelMatrix, 62.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-69.0f, 9.0f, -82.0f));
-				ModelMatrix = rotate(ModelMatrix, 120.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-83.0f, 9.0f, -91.0f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-80.0f, 9.0f, -81.0f));
-				ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-69.0f, 9.0f, -97.0f));
-				ModelMatrix = rotate(ModelMatrix, -110.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-47.0f, 9.0f, -72.0f));
-				ModelMatrix = rotate(ModelMatrix, -40.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-53.0f, 9.0f, -70.0f));
-				ModelMatrix = rotate(ModelMatrix, 110.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-42.0f, 9.0f, -91.0f));
-				ModelMatrix = rotate(ModelMatrix, 80.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-42.0f, 9.0f, -86.0f));
-				ModelMatrix = rotate(ModelMatrix, 100.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-65.0f, 9.0f, -60.0f));
-				ModelMatrix = rotate(ModelMatrix, -40.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-73.0f, 9.0f, -72.0f));
-				ModelMatrix = rotate(ModelMatrix, -100.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-75.0f, 9.0f, -62.0f));
-				ModelMatrix = rotate(ModelMatrix, -100.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-83.0f, 9.0f, -65.0f));
-				ModelMatrix = rotate(ModelMatrix, 100.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-80.0f, 9.0f, -47.0f));
-				ModelMatrix = rotate(ModelMatrix, 40.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-72.0f, 9.0f, -45.0f));
-				ModelMatrix = rotate(ModelMatrix, -100.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-55.0f, 9.0f, -43.0f));
-				//ModelMatrix = rotate(ModelMatrix, 100.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-50.0f, 9.0f, -50.0f));
-				ModelMatrix = rotate(ModelMatrix, -80.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gaina_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-46.0f, 9.0f, -55.0f));
-				ModelMatrix = rotate(ModelMatrix, 125.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gaina.draw(shader);
+				{
+				}
+				//gaina1
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-50.0f, 9.0f, -82.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina2
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-53.0f, 9.0f, -91.0f));
+					ModelMatrix = rotate(ModelMatrix, 40.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina3
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-47.0f, 9.0f, -99.0f));
+					ModelMatrix = rotate(ModelMatrix, 62.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina4
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-69.0f, 9.0f, -82.0f));
+					ModelMatrix = rotate(ModelMatrix, 120.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina5
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-83.0f, 9.0f, -91.0f));
+					ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina6
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-80.0f, 9.0f, -81.0f));
+					ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina7
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-69.0f, 9.0f, -97.0f));
+					ModelMatrix = rotate(ModelMatrix, -110.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina8
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-47.0f, 9.0f, -72.0f));
+					ModelMatrix = rotate(ModelMatrix, -40.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina9
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-53.0f, 9.0f, -70.0f));
+					ModelMatrix = rotate(ModelMatrix, 110.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina10
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-42.0f, 9.0f, -91.0f));
+					ModelMatrix = rotate(ModelMatrix, 80.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina11
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-42.0f, 9.0f, -86.0f));
+					ModelMatrix = rotate(ModelMatrix, 100.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina12
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-65.0f, 9.0f, -60.0f));
+					ModelMatrix = rotate(ModelMatrix, -40.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina13
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-73.0f, 9.0f, -72.0f));
+					ModelMatrix = rotate(ModelMatrix, -100.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina14
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-75.0f, 9.0f, -62.0f));
+					ModelMatrix = rotate(ModelMatrix, -100.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina15
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-83.0f, 9.0f, -65.0f));
+					ModelMatrix = rotate(ModelMatrix, 100.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina16
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-80.0f, 9.0f, -47.0f));
+					ModelMatrix = rotate(ModelMatrix, 40.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina17
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-72.0f, 9.0f, -45.0f));
+					ModelMatrix = rotate(ModelMatrix, -100.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina18
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-55.0f, 9.0f, -43.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina19
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-50.0f, 9.0f, -50.0f));
+					ModelMatrix = rotate(ModelMatrix, -80.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+				//gaina20
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-46.0f, 9.0f, -55.0f));
+					ModelMatrix = rotate(ModelMatrix, 125.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
 			}
 			//gard gaini nord
+			{}
 			{
-				shader.use();
+				{
+				}
+				{
+					shader.use();
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-83.0f, 9.0f, -104.0f));
-				//ModelMatrix = rotate(ModelMatrix, 100.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-83.0f, 9.0f, -104.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				gard.draw(shader);
+					gard.draw(shader);
+				}
+				{
+					shader.use();
 
-				shader.use();
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-73.0f, 9.0f, -104.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-73.0f, 9.0f, -104.0f));
-				//ModelMatrix = rotate(ModelMatrix, 100.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					gard.draw(shader);
+				}
+				{
+					shader.use();
 
-				gard.draw(shader);
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				shader.use();
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-63.0f, 9.0f, -104.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+					gard.draw(shader);
+				}
+				{
+					shader.use();
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-63.0f, 9.0f, -104.0f));
-				//ModelMatrix = rotate(ModelMatrix, 100.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				gard.draw(shader);
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-53.0f, 9.0f, -104.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				shader.use();
+					gard.draw(shader);
+				}
+				{
+					shader.use();
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-53.0f, 9.0f, -104.0f));
-				//ModelMatrix = rotate(ModelMatrix, 100.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-43.0f, 9.0f, -104.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				gard.draw(shader);
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-43.0f, 9.0f, -104.0f));
-				//ModelMatrix = rotate(ModelMatrix, 100.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gard.draw(shader);
-
+					gard.draw(shader);
+				}
 			}
 			//gard gaini vest
 			{
-				shader.use();
+				{
+					shader.use();
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-90.0f, 9.0f, -98.0f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-90.0f, 9.0f, -98.0f));
+					ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				gard.draw(shader);
+					gard.draw(shader);
+				}
+				{
+					shader.use();
 
-				shader.use();
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-90.0f, 9.0f, -88.0f));
+					ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-90.0f, 9.0f, -88.0f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					gard.draw(shader);
+				}
+				{
+					shader.use();
 
-				gard.draw(shader);
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				shader.use();
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-90.0f, 9.0f, -78.0f));
+					ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+					gard.draw(shader);
+				}
+				{
+					shader.use();
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-90.0f, 9.0f, -78.0f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				gard.draw(shader);
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-90.0f, 9.0f, -68.0f));
+					ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				shader.use();
+					gard.draw(shader);
+				}
+				{
+					shader.use();
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-90.0f, 9.0f, -68.0f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-90.0f, 9.0f, -58.0f));
+					ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				gard.draw(shader);
+					gard.draw(shader);
+				}
+				{
+					shader.use();
 
-				shader.use();
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-90.0f, 9.0f, -48.0f));
+					ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-90.0f, 9.0f, -58.0f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gard.draw(shader);
-
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-90.0f, 9.0f, -48.0f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gard.draw(shader);
+					gard.draw(shader);
+				}
 			}
 			//gard gaini est
-			{
-				shader.use();
+			{}
+				{
+					shader.use();
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-36.0f, 9.0f, -98.0f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-36.0f, 9.0f, -98.0f));
+					ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				gard.draw(shader);
+					gard.draw(shader);
+				}
+				{
+					shader.use();
 
-				shader.use();
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-36.0f, 9.0f, -88.0f));
+					ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-36.0f, 9.0f, -88.0f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					gard.draw(shader);
+				}
+				{
+					shader.use();
 
-				gard.draw(shader);
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				shader.use();
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-36.0f, 9.0f, -78.0f));
+					ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+					gard.draw(shader);
+				}
+				{
+					shader.use();
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-36.0f, 9.0f, -78.0f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				gard.draw(shader);
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-36.0f, 9.0f, -68.0f));
+					ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				shader.use();
+					gard.draw(shader);
+				}
+				{
+					shader.use();
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-36.0f, 9.0f, -68.0f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-36.0f, 9.0f, -58.0f));
+					ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				gard.draw(shader);
+					gard.draw(shader);
+				}
+				{
+					shader.use();
 
-				shader.use();
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gard_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-36.0f, 9.0f, -48.0f));
+					ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-36.0f, 9.0f, -58.0f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gard.draw(shader);
-
-
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, gard_texture);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-36.0f, 9.0f, -48.0f));
-				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				gard.draw(shader);
-			}
+					gard.draw(shader);
+				}
+			
 			//gard gaini sud
 			{
 				shader.use();
@@ -2797,7 +2770,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-42.0f, 11.0f, -45.0f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.4f, 0.4f, 0.4f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -2813,7 +2785,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-55.0f, 11.0f, -48.0f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.4f, 0.4f, 0.4f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -2829,7 +2800,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-70.0f, 11.0f, -52.0f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.4f, 0.4f, 0.4f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -2845,7 +2815,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-58.0f, 11.0f, -81.0f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.4f, 0.4f, 0.4f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -2861,7 +2830,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-55.0f, 11.0f, -98.0f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.4f, 0.4f, 0.4f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -2869,8 +2837,110 @@ int main()
 
 				nest.draw(shader);
 			}
+			//cusca gaini 1
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, cusca_gaini_text);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(20.0f, 6.5f, -30.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.5f, 5.5f, 5.5f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				cusca_gaini.draw(shader);
+				//gaini din cusca
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(19.0f, 9.5f, -29.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(22.0f, 9.5f, -32.0f));
+					ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+			}
+			//cusca gaini 2
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, cusca_gaini_text);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(5.0f, 6.5f, -30.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.5f, 5.5f, 5.5f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+				cusca_gaini.draw(shader);
+
+				//gaini din cusca
+				{
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(7.0f, 9.5f, -29.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+
+					shader.use();
+
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, gaina_texture);
+					glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(3.0f, 9.5f, -32.0f));
+					ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					gaina.draw(shader);
+				}
+			}
 		}
 		//Church
+		{}
 		{
 			shader.use();
 
@@ -2883,13 +2953,12 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-200.0f, 10.0f, -240.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, -50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(churchModel, vec3(-200.0f, 10.0f, -240.0f), vec3(5.0f, 5.0f, 5.0f));
 			churchModel.draw(shader);
 		}
 		//hambar
@@ -2905,13 +2974,12 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(90.0f, 10.0f, -107.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(4.0f, 4.0f, 4.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(hambar, vec3(90.0f, 10.0f, -107.0f), vec3(4.0f, 4.0f, 4.0f));
 			hambar.draw(shader);
 		}
 		//cai hambar
@@ -2924,7 +2992,6 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(18.0f, 11.0f, -140.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -2940,7 +3007,6 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(34.0f, 11.0f, -140.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -2956,7 +3022,6 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(50.0f, 11.0f, -140.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -2974,8 +3039,6 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(85.0f, 10.0f, -142.5f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -2991,8 +3054,6 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(85.0f, 12.0f, -142.5f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -3008,8 +3069,6 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(80.0f, 10.0f, -142.5f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -3025,8 +3084,6 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(80.0f, 12.0f, -142.5f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -3042,8 +3099,6 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(80.0f, 10.0f, -147.5f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -3059,8 +3114,6 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(80.0f, 12.0f, -147.5f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -3077,8 +3130,6 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(85.0f, 10.0f, -147.5f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -3094,8 +3145,6 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(85.0f, 12.0f, -147.5f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -3104,7 +3153,9 @@ int main()
 			fan.draw(shader);
 		}
 		//taverns
+		{}
 		{
+			{}
 			//tavern1
 			{
 				shader.use();
@@ -3118,13 +3169,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-120.0f, 10.0f, 45.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.5f, 3.5f, 3.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(tavernModel, vec3(-120.0f, 10.0f, 45.0f), vec3(3.5f, 3.5f, 3.5f));
 				tavernModel.draw(shader);
 			}
 			//tavern2
@@ -3140,13 +3190,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(120.0f, 10.0f, 47.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(tavernModel, vec3(120.0f, 10.0f, 47.0f), vec3(2.5f, 2.5f, 2.5f));
 				tavernModel.draw(shader);
 			}
 			//tavern3
@@ -3162,13 +3211,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(80.0f, 10.0f, 47.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(tavernModel, vec3(80.0f, 10.0f, 47.0f), vec3(2.5f, 2.5f, 2.5f));
 				tavernModel.draw(shader);
 			}
 		}
@@ -3186,13 +3234,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(178.0f, 14.0f, 38.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(wooden_box, vec3(178.0f, 14.0f, 38.0f), vec3(7.0f, 7.0f, 7.0f));
 			wooden_box.draw(shader);
 
 			shader.use();
@@ -3206,13 +3252,12 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(185.0f, 14.0f, 32.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 45.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(wooden_box, vec3(185.0f, 14.0f, 32.0f), vec3(7.0f, 7.0f, 7.0f));
 			wooden_box.draw(shader);
 
 			shader.use();
@@ -3226,13 +3271,12 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(180.0f, 21.0f, 35.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(wooden_box, vec3(180.0f, 21.0f, 35.0f), vec3(7.0f, 7.0f, 7.0f));
 			wooden_box.draw(shader);
 
 			//cutii piata
@@ -3248,13 +3292,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(18.0f, 14.0f,-58.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(wooden_box, vec3(18.0f, 14.0f, -58.0f), vec3(7.0f, 7.0f, 7.0f));
 			wooden_box.draw(shader);
 
 			shader.use();
@@ -3268,13 +3310,12 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(25.0f, 14.0f,-52.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 45.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(wooden_box, vec3(25.0f, 14.0f, -52.0f), vec3(7.0f, 7.0f, 7.0f));
 			wooden_box.draw(shader);
 
 			shader.use();
@@ -3288,13 +3329,12 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(20.0f, 21.0f, -55.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(wooden_box, vec3(20.0f, 21.0f, -55.0f), vec3(7.0f, 7.0f, 7.0f));
 			wooden_box.draw(shader);
 
 			shader.use();
@@ -3308,13 +3348,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 14.0f, -63.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(wooden_box, vec3(0.0f, 14.0f, -63.0f), vec3(7.0f, 7.0f, 7.0f));
 			wooden_box.draw(shader);
 
 			shader.use();
@@ -3328,13 +3366,12 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(8.0f, 14.0f, -57.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 45.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(wooden_box, vec3(8.0f, 14.0f, -57.0f), vec3(7.0f, 7.0f, 7.0f));
 			wooden_box.draw(shader);
 
 			shader.use();
@@ -3348,13 +3385,12 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(2.0f, 21.0f, -60.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(wooden_box, vec3(2.0f, 21.0f, -60.0f), vec3(7.0f, 7.0f, 7.0f));
 			wooden_box.draw(shader);
 		}
 		//sign
@@ -3370,13 +3406,12 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-60.0f, 10.0f, 103.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 75.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(8.0f, 8.0f, 8.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(signModel, vec3(-60.0f, 10.0f, 103.0f), vec3(8.0f, 8.0f, 8.0f));
 			signModel.draw(shader);
 		}
 		//witchhouse
@@ -3392,15 +3427,13 @@ int main()
 				glBindTexture(GL_TEXTURE_2D, witchroomN);
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
-			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-225.0f, 10.0f, 200.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, -45.0f, vec3(0.0f, 1.0f, 0.0f));
-			ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
-			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-225.0f, 10.0f, 200.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(witchroomModel, vec3 ( - 225.0f, 10.0f, 200.0f), vec3(7.0f, 7.0f, 7.0f));
 				witchroomModel.draw(shader);
 			}
 			//witch
@@ -3421,7 +3454,7 @@ int main()
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(vraji, vec3(-210.0f, 10.0f, 185.0f), vec3(0.75f, 0.75f, 0.75f));
 				vraji.draw(shader);
 			}
 		}
@@ -3439,7 +3472,6 @@ int main()
 			float bobbingOffset = sin(currentFrame * 2.0f) * 0.5f;
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-205.0f, 10.0f + bobbingOffset, 200.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			float rotationAngle = currentFrame * 150.0f;
 			ModelMatrix = rotate(ModelMatrix, radians(rotationAngle), vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
@@ -3464,13 +3496,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-230.0f, 10.0f, 230.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(tombstoneModel, vec3(-230.0f, 10.0f, 230.0f), vec3(5.0f, 5.0f, 5.0f));
 				tombstoneModel.draw(shader);
 			}
 			//tombstone2
@@ -3486,13 +3517,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-230.0f, 10.0f, 180.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(tombstoneModel, vec3(-230.0f, 10.0f, 180.0f), vec3(5.0f, 5.0f, 5.0f));
 				tombstoneModel.draw(shader);
 			}
 			//tombstone3
@@ -3508,13 +3538,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-230.0f, 10.0f, 160.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(tombstoneModel, vec3(-230.0f, 10.0f, 160.0f), vec3(5.0f, 5.0f, 5.0f));
 				tombstoneModel.draw(shader);
 			}
 			//tombstone4
@@ -3530,13 +3559,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-250.0f, 10.0f, 230.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(tombstoneModel, vec3(-250.0f, 10.0f, 230.0f), vec3(5.0f, 5.0f, 5.0f));
 				tombstoneModel.draw(shader);
 			}
 			//tombstone5
@@ -3552,13 +3580,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-250.0f, 10.0f, 210.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(tombstoneModel, vec3(-250.0f, 10.0f, 210.0f), vec3(5.0f, 5.0f, 5.0f));
 				tombstoneModel.draw(shader);
 			}
 			//tombstone6
@@ -3574,13 +3601,12 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-250.0f, 10.0f, 190.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(tombstoneModel, vec3(-250.0f, 10.0f, 190.0f), vec3(5.0f, 5.0f, 5.0f));
 				tombstoneModel.draw(shader);
 			}
 			//tombstone7
@@ -3596,17 +3622,17 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-250.0f, 10.0f, 170.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+				registerCollide(tombstoneModel, vec3(-250.0f, 10.0f, 170.0f), vec3(5.0f, 5.0f, 5.0f));
 				tombstoneModel.draw(shader);
 			}
 		}
 		//Fences
+		{}
 		{
 			//fence1
 			{
@@ -3621,8 +3647,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-245.0f, 10.0f, 240.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -3643,7 +3667,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-273.0f, 10.0f, 212.5f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -3665,7 +3688,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-273.0f, 10.0f, 180.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -3687,8 +3709,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-245.0f, 10.0f, 152.5f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.5f, 0.5f, 0.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -3709,8 +3729,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-224.0f, 10.0f, -142.5f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -3728,7 +3746,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-207.0f, 10.0f, -169.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -3746,7 +3763,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-183.0f, 10.0f, -144.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -10.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(7.0f, 7.0f, 7.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -3768,7 +3784,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-215.0f, 13.0f, -169.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				//ModelMatrix = rotate(ModelMatrix, -70.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(9.0f, 9.0f, 9.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -3785,7 +3800,6 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-183.0f, 13.0f, -130.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 30.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(10.0f, 10.0f, 10.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -3801,7 +3815,6 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-169.0f, 13.0f, -130.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 120.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(9.0f, 9.0f, 9.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -3817,7 +3830,6 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-189.0f, 13.0f, -160.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 100.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(10.0f, 10.0f, 10.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -3833,7 +3845,6 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-199.0f, 13.0f, -148.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -120.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(9.0f, 9.0f, 9.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -3849,7 +3860,6 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-203.0f, 13.0f, -136.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -120.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(10.0f, 10.0f, 10.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -3865,7 +3875,6 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-195.0f, 13.0f, -124.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 120.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(9.0f, 9.0f, 9.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -3881,7 +3890,6 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-224.0f, 13.0f, -152.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(10.0f, 10.0f, 10.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -3897,7 +3905,6 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-224.0f, 13.0f, -133.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(9.0f, 9.0f, 9.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -3913,7 +3920,6 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-178.0f, 13.0f, -158.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 				ModelMatrix = rotate(ModelMatrix, -85.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(10.0f, 10.0f, 10.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -3922,6 +3928,7 @@ int main()
 				cow.draw(shader);
 			}
 		}
+
 		//gard vaci nord
 		{
 			shader.use();
@@ -3930,8 +3937,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-223.0f, 9.0f, -174.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -3944,8 +3949,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-213.0f, 9.0f, -174.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -3958,8 +3961,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-203.0f, 9.0f, -174.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -3972,8 +3973,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-193.0f, 9.0f, -174.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -3986,8 +3985,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-183.0f, 9.0f, -174.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -4000,8 +3997,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-173.0f, 9.0f, -174.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -4014,8 +4009,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-163.0f, 9.0f, -174.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -4030,7 +4023,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-156.0f, 9.0f, -168.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4044,7 +4036,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-156.0f, 9.0f, -158.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4058,7 +4049,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-156.0f, 9.0f, -148.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4072,7 +4062,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-156.0f, 9.0f, -138.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4086,7 +4075,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-156.0f, 9.0f, -128.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4100,7 +4088,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-156.0f, 9.0f, -123.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4116,7 +4103,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-230.0f, 9.0f, -168.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4130,7 +4116,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-230.0f, 9.0f, -158.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4144,7 +4129,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-230.0f, 9.0f, -148.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4158,7 +4142,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-230.0f, 9.0f, -138.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4172,7 +4155,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-230.0f, 9.0f, -124.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4188,7 +4170,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-223.0f, 9.0f, -118.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4202,7 +4183,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-213.0f, 9.0f, -118.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4216,7 +4196,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-203.0f, 9.0f, -118.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4230,7 +4209,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-193.0f, 9.0f, -118.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4244,7 +4222,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-183.0f, 9.0f, -118.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4258,7 +4235,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-173.0f, 9.0f, -118.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4272,7 +4248,6 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-163.0f, 9.0f, -118.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
@@ -4611,7 +4586,6 @@ int main()
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-45.0f, 9.0f, -27.5f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -4632,7 +4606,6 @@ int main()
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-75.0f, 9.0f, -27.5f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -4653,7 +4626,6 @@ int main()
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-105.0f, 9.0f, -27.5f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -4674,7 +4646,6 @@ int main()
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(5.0f, 9.0f, 25.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -4695,7 +4666,6 @@ int main()
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(35.0f, 9.0f, 25.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -4716,7 +4686,6 @@ int main()
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(65.0f, 9.0f, 25.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -4737,7 +4706,6 @@ int main()
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(95.0f, 9.0f, 25.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -4758,7 +4726,6 @@ int main()
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(125.0f, 9.0f, 25.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -4842,7 +4809,6 @@ int main()
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(125.0f, 9.0f, -85.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -4863,7 +4829,6 @@ int main()
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(95.0f, 9.0f, -85.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -4884,7 +4849,6 @@ int main()
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(65.0f, 9.0f, -85.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -4905,7 +4869,6 @@ int main()
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(35.0f, 9.0f, -85.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -4926,7 +4889,6 @@ int main()
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(05.0f, 9.0f, -85.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.01f, 0.01f, 0.01f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
@@ -5050,12 +5012,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(261.0f, 10.0f, -293.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(261.0f, 10.0f, -293.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
@@ -5065,12 +5026,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(174.0f, 10.0f, -272.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(174.0f, 10.0f, -272.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
@@ -5080,12 +5040,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(229.0f, 10.0f, -329.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(229.0f, 10.0f, -329.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
@@ -5095,12 +5054,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(270.0f, 10.0f, -210.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(270.0f, 10.0f, -210.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
@@ -5110,12 +5068,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(161.0f, 10.0f, -289.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(161.0f, 10.0f, -289.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
@@ -5125,33 +5082,20 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(151.0f, 10.0f, -330.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(151.0f, 10.0f, -330.0f), vec3(2.1f, 2.1f, 2.1f));
 
-			tree3.draw(shader);
-
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, gold);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-			shader.use();
-
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, gold);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(190.0f, 10.0f, -311.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(190.0f, 10.0f, -311.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
@@ -5163,12 +5107,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(173.0f, 10.0f, -342.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(173.0f, 10.0f, -342.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
@@ -5178,12 +5121,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(210.0f, 10.0f, -281.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(210.0f, 10.0f, -281.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
@@ -5193,12 +5135,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(140.0f, 10.0f, -311.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(140.0f, 10.0f, -311.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
@@ -5208,12 +5149,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(245.0f, 10.0f, -230.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(245.0f, 10.0f, -230.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
@@ -5223,12 +5163,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(140.0f, 10.0f, -272.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(140.0f, 10.0f, -272.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
@@ -5238,12 +5177,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(132.0f, 10.0f, -290.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(132.0f, 10.0f, -290.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, gold);
@@ -5251,194 +5189,176 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(245.0f, 10.0f, -272.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(245.0f, 10.0f, -272.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(215.0f, 10.0f, -237.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(215.0f, 10.0f, -237.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(255.0f, 10.0f, -245.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(255.0f, 10.0f, -245.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(245.0f, 10.0f, -272.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(245.0f, 10.0f, -272.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(200.0f, 10.0f, -260.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(200.0f, 10.0f, -260.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(145.0f, 10.0f, -350.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(145.0f, 10.0f, -350.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(270.0f, 10.0f, -260.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(270.0f, 10.0f, -260.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(275.0f, 10.0f, -235.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(275.0f, 10.0f, -235.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(190.0f, 10.0f, -285.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(tree3, vec3(190.0f, 10.0f, -285.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(215.0f, 10.0f, -305.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(215.0f, 10.0f, -305.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(205.0f, 10.0f, -320.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(205.0f, 10.0f, -320.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(165.0f, 10.0f, -370.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(165.0f, 10.0f, -370.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(202.0f, 10.0f, -335.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(202.0f, 10.0f, -335.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(115.0f, 10.0f, -305.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(115.0f, 10.0f, -305.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(120.0f, 10.0f, -325.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(120.0f, 10.0f, -325.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(185.0f, 10.0f, -355.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(185.0f, 10.0f, -355.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(203.0f, 10.0f, -375.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(203.0f, 10.0f, -375.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
@@ -5446,165 +5366,148 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(257.0f, 10.0f, -307.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(203.0f, 10.0f, -375.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(293.0f, 10.0f, -240.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(293.0f, 10.0f, -240.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(285.0f, 10.0f, -315.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(285.0f, 10.0f, -315.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(310.0f, 10.0f, -275.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(310.0f, 10.0f, -275.0f), vec3(2.1f, 2.1f, 2.1f));
 
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(135.0f, 10.0f, -360.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(135.0f, 10.0f, -360.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(147.0f, 10.0f, -380.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(tree3, vec3(147.0f, 10.0f, -380.0f), vec3(2.1f, 2.1f, 2.1f));
 
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(117.0f, 10.0f, -384.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
+			registerCollide(tree3, vec3(117.0f, 10.0f, -384.0f), vec3(2.1f, 2.1f, 2.1f));
 
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(300.0f, 10.0f, -306.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(300.0f, 10.0f, -306.0f), vec3(2.1f, 2.1f, 2.1f));
 
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(220.0f, 10.0f, -386.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(220.0f, 10.0f, -386.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(212.0f, 10.0f, -352.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(212.0f, 10.0f, -352.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(300.0f, 10.0f, -380.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(300.0f, 10.0f, -380.0f), vec3(2.1f, 2.1f, 2.1f));
 
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(312.0f, 10.0f, -361.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(312.0f, 10.0f, -361.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(317.0f, 10.0f, -393.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(317.0f, 10.0f, -393.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(308.0f, 10.0f, -408.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(308.0f, 10.0f, -408.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(330.0f, 10.0f, -420.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(330.0f, 10.0f, -420.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			//parcela1
 			{
@@ -5615,12 +5518,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(15.0f, 10.0f, 131.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.8f, 2.8f, 2.8f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(15.0f, 10.0f, 131.0f), vec3(2.8f, 2.8f, 2.8f));
 
 				tree3.draw(shader);
 				
@@ -5632,12 +5534,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(13.0f, 10.0f, 150.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(13.0f, 10.0f, 150.0f), vec3(2.9f, 2.9f, 2.9f));
 
 				tree3.draw(shader);
 
@@ -5650,12 +5551,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(55.0f, 10.0f, 120.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(55.0f, 10.0f, 120.0f), vec3(2.1f, 2.1f, 2.1f));
 
 				tree3.draw(shader);
 
@@ -5668,12 +5568,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(79.0f, 10.0f, 138.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(79.0f, 10.0f, 138.0f), vec3(2.1f, 2.1f, 2.1f));
 
 				tree3.draw(shader);
 
@@ -5686,12 +5585,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(39.0f, 10.0f, 109.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(39.0f, 10.0f, 109.0f), vec3(2.5f, 2.5f, 2.5f));
 
 				tree3.draw(shader);
 
@@ -5704,12 +5602,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(42.0f, 10.0f, 121.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(42.0f, 10.0f, 121.0f), vec3(2.9f, 2.9f, 2.9f));
 
 				tree3.draw(shader);
 
@@ -5722,12 +5619,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(63.0f, 10.0f, 109.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(63.0f, 10.0f, 109.0f), vec3(2.0f, 2.0f, 2.0f));
 
 				tree3.draw(shader);
 				//alt copac cu mere
@@ -5745,6 +5641,7 @@ int main()
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(25.0f, 10.0f, 250.0f), vec3(3.0f, 3.0f, 3.0f));
 
 				tree3.draw(shader);
 
@@ -5757,12 +5654,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(45.0f, 10.0f, 275.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.4f, 2.4f, 2.4f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(45.0f, 10.0f, 275.0f), vec3(2.4f, 2.4f, 2.4f));
 
 				tree3.draw(shader);
 
@@ -5776,12 +5672,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(56.0f, 10.0f, 299.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(56.0f, 10.0f, 299.0f), vec3(3.0f, 3.0f, 3.0f));
 
 				tree3.draw(shader);
 
@@ -5794,12 +5689,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(30.0f, 10.0f, 200.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(30.0f, 10.0f, 200.0f), vec3(3.0f, 3.0f, 3.0f));
 
 				tree3.draw(shader);
 
@@ -5812,12 +5706,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(10.0f, 10.0f, 220.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(10.0f, 10.0f, 220.0f), vec3(3.0f, 3.0f, 3.0f));
 
 				tree3.draw(shader);
 
@@ -5831,12 +5724,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(77.0f, 10.0f, 193.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(77.0f, 10.0f, 193.0f), vec3(3.0f, 3.0f, 3.0f));
 
 				tree3.draw(shader);
 
@@ -5849,12 +5741,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(33.0f, 10.0f, 162.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(33.0f, 10.0f, 162.0f), vec3(3.0f, 3.0f, 3.0f));
 
 				tree3.draw(shader);
 
@@ -5867,12 +5758,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(54.0f, 10.0f, 188.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.7f, 1.7f, 1.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(54.0f, 10.0f, 188.0f), vec3(1.7f, 1.7f, 1.7f));
 
 				tree3.draw(shader);
 
@@ -5886,12 +5776,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(98.0f, 10.0f, 188.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(98.0f, 10.0f, 188.0f), vec3(2.1f, 2.1f, 2.1f));
 
 				tree3.draw(shader);
 
@@ -5905,12 +5794,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(17.0f, 10.0f, 255.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(17.0f, 10.0f, 255.0f), vec3(2.7f, 2.7f, 2.7f));
 
 				tree3.draw(shader);
 
@@ -5923,12 +5811,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(75.0f, 10.0f, 110.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(75.0f, 10.0f, 110.0f), vec3(3.0f, 3.0f, 3.0f));
 
 				tree3.draw(shader);
 
@@ -5941,12 +5828,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(8.0f, 10.0f, 121.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(8.0f, 10.0f, 121.0f), vec3(2.0f, 2.0f, 2.0f));
 
 				tree3.draw(shader);
 
@@ -5959,12 +5845,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(68.0f, 10.0f, 125.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.66f, 1.66f, 1.66f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(68.0f, 10.0f, 125.0f), vec3(1.66f, 1.66f, 1.66f));
 
 				tree3.draw(shader);
 
@@ -5977,12 +5862,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(34.0f, 10.0f, 100.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(34.0f, 10.0f, 100.0f), vec3(2.7f, 2.7f, 2.7f));
 
 				tree3.draw(shader);
 
@@ -5995,12 +5879,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(99.0f, 10.0f, 193.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.6f, 1.6f, 1.6f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(99.0f, 10.0f, 193.0f), vec3(1.6f, 1.6f, 1.6f));
 
 				tree3.draw(shader);
 
@@ -6013,12 +5896,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(53.0f, 10.0f, 200.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(53.0f, 10.0f, 200.0f), vec3(2.2f, 2.2f, 2.2f));
 
 				tree3.draw(shader);
 
@@ -6031,12 +5913,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(108.0f, 10.0f, 110.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(108.0f, 10.0f, 110.0f), vec3(3.0f, 3.0f, 3.0f));
 
 				tree3.draw(shader);
 
@@ -6049,12 +5930,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(63.0f, 10.0f, 130.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.5f, 1.5f, 1.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(63.0f, 10.0f, 130.0f), vec3(1.5f, 1.5f, 1.5f));
 
 				tree3.draw(shader);
 
@@ -6067,12 +5947,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(53.0f, 10.0f, 200.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.7f, 1.7f, 1.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(53.0f, 10.0f, 200.0f), vec3(1.7f, 1.7f, 1.7f));
 
 				tree3.draw(shader);
 
@@ -6086,12 +5965,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(33.0f, 10.0f, 259.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(33.0f, 10.0f, 259.0f), vec3(1.0f, 1.0f, 1.0f));
 
 				tree3.draw(shader);
 
@@ -6105,12 +5983,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(80.0f, 10.0f, 210.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(80.0f, 10.0f, 210.0f), vec3(1.0f, 1.0f, 1.0f));
 
 				tree3.draw(shader);
 
@@ -6124,34 +6001,13 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(100.0f, 10.0f, 283.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(100.0f, 10.0f, 283.0f), vec3(2.0f, 2.0f, 2.0f));
 
 				tree3.draw(shader);
-
-
-				//alt copac cu mere
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, culoareCopac3);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(79.0f, 10.0f, 250.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(1.9f, 1.9f, 1.9f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				tree3.draw(shader);
-
 
 				//alt copac cu mere
 				shader.use();
@@ -6162,12 +6018,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(100.0f, 10.0f, 239.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(100.0f, 10.0f, 239.0f), vec3(2.7f, 2.7f, 2.7f));
 
 				tree3.draw(shader);
 
@@ -6181,12 +6036,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(95.0f, 10.0f, 214.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(95.0f, 10.0f, 214.0f), vec3(2.7f, 2.7f, 2.7f));
 
 				tree3.draw(shader);
 
@@ -6200,12 +6054,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(110.0f, 10.0f, 205.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.3f, 2.3f, 2.3f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(110.0f, 10.0f, 205.0f), vec3(2.3f, 2.3f, 2.3f));
 
 				tree3.draw(shader);
 
@@ -6220,12 +6073,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(79.0f, 10.0f, 205.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.8f, 2.8f, 2.8f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(79.0f, 10.0f, 205.0f), vec3(2.8f, 2.8f, 2.8f));
 
 				tree3.draw(shader);
 
@@ -6239,12 +6091,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(67.0f, 10.0f, 199.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(67.0f, 10.0f, 199.0f), vec3(2.9f, 2.9f, 2.9f));
 
 				tree3.draw(shader);
 
@@ -6258,12 +6109,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(84.0f, 10.0f, 180.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(84.0f, 10.0f, 180.0f), vec3(3.0f, 3.0f, 3.0f));
 
 				tree3.draw(shader);
 
@@ -6277,12 +6127,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(55.0f, 10.0f, 167.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(55.0f, 10.0f, 167.0f), vec3(2.0f, 2.0f, 2.0f));
 
 				tree3.draw(shader);
 
@@ -6296,12 +6145,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(103.0f, 10.0f, 195.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(103.0f, 10.0f, 195.0f), vec3(2.7f, 2.7f, 2.7f));
 
 				tree3.draw(shader);
 
@@ -6316,12 +6164,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(88.0f, 10.0f, 177.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(88.0f, 10.0f, 177.0f), vec3(2.2f, 2.2f, 2.2f));
 
 				tree3.draw(shader);
 
@@ -6335,12 +6182,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(100.0f, 10.0f, 170.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.8f, 2.8f, 2.8f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(100.0f, 10.0f, 170.0f), vec3(2.8f, 2.8f, 2.8f));
 
 				tree3.draw(shader);
 
@@ -6354,12 +6200,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(50.0f, 10.0f, 170.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(50.0f, 10.0f, 170.0f), vec3(2.0f, 2.0f, 2.0f));
 
 				tree3.draw(shader);
 
@@ -6373,12 +6218,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(85.0f, 10.0f, 190.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(85.0f, 10.0f, 190.0f), vec3(2.5f, 2.5f, 2.5f));
 
 				tree3.draw(shader);
 
@@ -6392,12 +6236,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(60.0f, 10.0f, 160.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(60.0f, 10.0f, 160.0f), vec3(2.9f, 2.9f, 2.9f));
 
 				tree3.draw(shader);
 
@@ -6411,15 +6254,13 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(60.0f, 10.0f, 245.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(60.0f, 10.0f, 245.0f), vec3(2.9f, 2.9f, 2.9f));
 
 				tree3.draw(shader);
-
 
 				//alt copac cu mere
 				shader.use();
@@ -6430,16 +6271,13 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(75.0f, 10.0f, 233.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(75.0f, 10.0f, 233.0f), vec3(2.5f, 2.5f, 2.5f));
 
 				tree3.draw(shader);
-
-
 
 				//alt copac cu mere
 				shader.use();
@@ -6450,16 +6288,14 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(96.0f, 10.0f, 229.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(96.0f, 10.0f, 229.0f), vec3(2.9f, 2.9f, 2.9f));
 
 				tree3.draw(shader);
-
-
+				
 				//alt copac cu mere
 				shader.use();
 
@@ -6469,15 +6305,13 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(30.0f, 10.0f, 245.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(30.0f, 10.0f, 245.0f), vec3(2.9f, 2.9f, 2.9f));
 
 				tree3.draw(shader);
-
 
 				//alt copac cu mere
 				shader.use();
@@ -6488,16 +6322,13 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(20.0f, 10.0f, 232.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(20.0f, 10.0f, 232.0f), vec3(2.2f, 2.2f, 2.2f));
 
 				tree3.draw(shader);
-
-
 
 				//alt copac cu mere
 				shader.use();
@@ -6508,12 +6339,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(23.0f, 10.0f, 220.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(23.0f, 10.0f, 220.0f), vec3(2.9f, 2.9f, 2.9f));
 
 				tree3.draw(shader);
 
@@ -6528,16 +6358,13 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(33.0f, 10.0f, 210.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(33.0f, 10.0f, 210.0f), vec3(2.9f, 2.9f, 2.9f));
 
 				tree3.draw(shader);
-
-
 
 				//alt copac cu mere
 				shader.use();
@@ -6548,15 +6375,13 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(34.0f, 10.0f, 263.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(34.0f, 10.0f, 263.0f), vec3(2.9f, 2.9f, 2.9f));
 
 				tree3.draw(shader);
-
 
 				//alt copac cu mere
 				shader.use();
@@ -6567,15 +6392,13 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(40.0f, 10.0f, 222.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(40.0f, 10.0f, 222.0f), vec3(2.2f, 2.2f, 2.2f));
 
 				tree3.draw(shader);
-
 
 				//alt copac cu mere
 				shader.use();
@@ -6586,22 +6409,17 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(28.0f, 10.0f, 230.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.6f, 2.6f, 2.6f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(28.0f, 10.0f, 230.0f), vec3(2.6f, 2.6f, 2.6f));
 
 				tree3.draw(shader);
 			}
 
 			//parcela2
 			{	int a = 100;
-			//alt copac cu mere
-			shader.use();
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -6610,12 +6428,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 55.0f, 10.0f, 121.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 55.0f, 10.0f, 121.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
@@ -6628,12 +6445,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 89.0f, 10.0f, 109.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 89.0f, 10.0f, 109.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
@@ -6643,15 +6459,13 @@ int main()
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, culoareCopac2);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 67.0f, 10.0f, 116.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 67.0f, 10.0f, 116.0f), vec3(2.5f, 2.5f, 2.5f));
 
 			tree3.draw(shader);
 
@@ -6664,12 +6478,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 52.0f, 10.0f, 142.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 52.0f, 10.0f, 142.0f), vec3(2.9f, 2.9f, 2.9f));
 
 			tree3.draw(shader);
 
@@ -6679,29 +6492,25 @@ int main()
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, culoareCopac2);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 53.0f, 10.0f, 108.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 53.0f, 10.0f, 108.0f), vec3(2.0f, 2.0f, 2.0f));
 
 			tree3.draw(shader);
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, culoareCopac1);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 35.0f, 10.0f, 250.0f));
-			ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 35.0f, 10.0f, 250.0f), vec3(3.0f, 3.0f, 3.0f));
 
 			tree3.draw(shader);
 
@@ -6714,15 +6523,13 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 45.0f, 10.0f, 275.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.4f, 2.4f, 2.4f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 45.0f, 10.0f, 275.0f), vec3(2.4f, 2.4f, 2.4f));
 
 			tree3.draw(shader);
-
 
 			//alt copac cu mere
 			shader.use();
@@ -6730,15 +6537,13 @@ int main()
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, culoareCopac2);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 56.0f, 10.0f, 299.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 56.0f, 10.0f, 299.0f), vec3(3.0f, 3.0f, 3.0f));
 
 			tree3.draw(shader);
 
@@ -6748,15 +6553,13 @@ int main()
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, culoareCopac2);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 30.0f, 10.0f, 200.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 30.0f, 10.0f, 200.0f), vec3(3.0f, 3.0f, 3.0f));
 
 			tree3.draw(shader);
 
@@ -6769,15 +6572,13 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 10.0f, 10.0f, 220.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 10.0f, 10.0f, 220.0f), vec3(3.0f, 3.0f, 3.0f));
 
 			tree3.draw(shader);
-
 
 			//alt copac cu mere
 			shader.use();
@@ -6788,12 +6589,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 77.0f, 10.0f, 193.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 77.0f, 10.0f, 193.0f), vec3(3.0f, 3.0f, 3.0f));
 
 			tree3.draw(shader);
 
@@ -6806,12 +6606,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 33.0f, 10.0f, 162.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 33.0f, 10.0f, 162.0f), vec3(3.0f, 3.0f, 3.0f));
 
 			tree3.draw(shader);
 
@@ -6824,12 +6623,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 54.0f, 10.0f, 188.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(1.7f, 1.7f, 1.7f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 54.0f, 10.0f, 188.0f), vec3(1.7f, 1.7f, 1.7f));
 
 			tree3.draw(shader);
 
@@ -6843,12 +6641,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 98.0f, 10.0f, 188.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 98.0f, 10.0f, 188.0f), vec3(2.1f, 2.1f, 2.1f));
 
 			tree3.draw(shader);
 
@@ -6862,12 +6659,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 17.0f, 10.0f, 255.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 17.0f, 10.0f, 255.0f), vec3(2.7f, 2.7f, 2.7f));
 
 			tree3.draw(shader);
 
@@ -6880,12 +6676,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 75.0f, 10.0f, 110.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 75.0f, 10.0f, 110.0f), vec3(3.0f, 3.0f, 3.0f));
 
 			tree3.draw(shader);
 
@@ -6898,12 +6693,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 8.0f, 10.0f, 121.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 8.0f, 10.0f, 121.0f), vec3(2.0f, 2.0f, 2.0f));
 
 			tree3.draw(shader);
 
@@ -6916,12 +6710,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 68.0f, 10.0f, 125.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(1.66f, 1.66f, 1.66f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 68.0f, 10.0f, 125.0f), vec3(1.66f, 1.66f, 1.66f));
 
 			tree3.draw(shader);
 
@@ -6934,12 +6727,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 34.0f, 10.0f, 100.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 34.0f, 10.0f, 100.0f), vec3(2.7f, 2.7f, 2.7f));
 
 			tree3.draw(shader);
 
@@ -6952,12 +6744,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 99.0f, 10.0f, 193.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(1.6f, 1.6f, 1.6f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 99.0f, 10.0f, 193.0f), vec3(1.6f, 1.6f, 1.6f));
 
 			tree3.draw(shader);
 
@@ -6970,12 +6761,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 53.0f, 10.0f, 200.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 53.0f, 10.0f, 200.0f), vec3(2.2f, 2.2f, 2.2f));
 
 			tree3.draw(shader);
 
@@ -6988,12 +6778,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 108.0f, 10.0f, 110.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 108.0f, 10.0f, 110.0f), vec3(3.0f, 3.0f, 3.0f));
 
 			tree3.draw(shader);
 
@@ -7006,12 +6795,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 63.0f, 10.0f, 130.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(1.5f, 1.5f, 1.5f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 63.0f, 10.0f, 130.0f), vec3(1.5f, 1.5f, 1.5f));
 
 			tree3.draw(shader);
 
@@ -7024,12 +6812,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 53.0f, 10.0f, 200.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(1.7f, 1.7f, 1.7f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 53.0f, 10.0f, 200.0f), vec3(1.7f, 1.7f, 1.7f));
 
 			tree3.draw(shader);
 
@@ -7043,12 +6830,11 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 33.0f, 10.0f, 259.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 33.0f, 10.0f, 259.0f), vec3(1.0f, 1.0f, 1.0f));
 
 			tree3.draw(shader);
 
@@ -7062,15 +6848,13 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 80.0f, 10.0f, 210.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 80.0f, 10.0f, 210.0f), vec3(1.0f, 1.0f, 1.0f));
 
 			tree3.draw(shader);
-
 
 			//alt copac cu mere
 			shader.use();
@@ -7081,15 +6865,13 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 100.0f, 10.0f, 283.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 100.0f, 10.0f, 283.0f), vec3(2.0f, 2.0f, 2.0f));
 
 			tree3.draw(shader);
-
 
 			//alt copac cu mere
 			shader.use();
@@ -7100,17 +6882,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 79.0f, 10.0f, 250.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(1.9f, 1.9f, 1.9f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 79.0f, 10.0f, 250.0f), vec3(1.9f, 1.9f, 1.9f));
 
 			tree3.draw(shader);
 
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7119,17 +6898,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 100.0f, 10.0f, 239.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 100.0f, 10.0f, 239.0f), vec3(2.7f, 2.7f, 2.7f));
 
 			tree3.draw(shader);
 
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7138,17 +6914,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 95.0f, 10.0f, 214.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 95.0f, 10.0f, 214.0f), vec3(2.7f, 2.7f, 2.7f));
 
 			tree3.draw(shader);
 
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7157,18 +6930,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 110.0f, 10.0f, 205.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.3f, 2.3f, 2.3f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 110.0f, 10.0f, 205.0f), vec3(2.3f, 2.3f, 2.3f));
 
 			tree3.draw(shader);
 
-
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7177,15 +6946,13 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 79.0f, 10.0f, 205.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.8f, 2.8f, 2.8f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 79.0f, 10.0f, 205.0f), vec3(2.8f, 2.8f, 2.8f));
 
 			tree3.draw(shader);
-
 
 			//alt copac cu mere
 			shader.use();
@@ -7196,17 +6963,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 67.0f, 10.0f, 199.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 67.0f, 10.0f, 199.0f), vec3(2.9f, 2.9f, 2.9f));
 
 			tree3.draw(shader);
 
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7215,17 +6979,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 84.0f, 10.0f, 180.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 84.0f, 10.0f, 180.0f), vec3(3.0f, 3.0f, 3.0f));
 
 			tree3.draw(shader);
 
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7234,17 +6995,15 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 55.0f, 10.0f, 167.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 55.0f, 10.0f, 167.0f), vec3(2.0f, 2.0f, 2.0f));
 
 			tree3.draw(shader);
 
 
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7253,18 +7012,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 103.0f, 10.0f, 195.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 103.0f, 10.0f, 195.0f), vec3(2.7f, 2.7f, 2.7f));
 
 			tree3.draw(shader);
 
-
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7273,17 +7028,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 88.0f, 10.0f, 177.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 88.0f, 10.0f, 177.0f), vec3(2.2f, 2.2f, 2.2f));
 
 			tree3.draw(shader);
 
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7292,17 +7044,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 100.0f, 10.0f, 170.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.8f, 2.8f, 2.8f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 100.0f, 10.0f, 170.0f), vec3(2.8f, 2.8f, 2.8f));
 
 			tree3.draw(shader);
 
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7311,17 +7060,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 50.0f, 10.0f, 170.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 50.0f, 10.0f, 170.0f), vec3(2.0f, 2.0f, 2.0f));
 
 			tree3.draw(shader);
 
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7330,17 +7076,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 85.0f, 10.0f, 190.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 85.0f, 10.0f, 190.0f), vec3(2.5f, 2.5f, 2.5f));
 
 			tree3.draw(shader);
 
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7349,17 +7092,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 60.0f, 10.0f, 160.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 60.0f, 10.0f, 160.0f), vec3(2.9f, 2.9f, 2.9f));
 
 			tree3.draw(shader);
 
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7368,17 +7108,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 60.0f, 10.0f, 245.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 60.0f, 10.0f, 245.0f), vec3(2.9f, 2.9f, 2.9f));
 
 			tree3.draw(shader);
 
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7387,18 +7124,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 75.0f, 10.0f, 233.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 75.0f, 10.0f, 233.0f), vec3(2.5f, 2.5f, 2.5f));
 
 			tree3.draw(shader);
-
-
-
-			//alt copac cu mere
+			
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7407,17 +7140,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 96.0f, 10.0f, 229.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 96.0f, 10.0f, 229.0f), vec3(2.9f, 2.9f, 2.9f));
 
 			tree3.draw(shader);
 
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7426,17 +7156,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 30.0f, 10.0f, 245.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 30.0f, 10.0f, 245.0f), vec3(2.9f, 2.9f, 2.9f));
 
 			tree3.draw(shader);
 
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7445,18 +7172,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 20.0f, 10.0f, 232.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 20.0f, 10.0f, 232.0f), vec3(2.2f, 2.2f, 2.2f));
 
 			tree3.draw(shader);
 
-
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7465,18 +7188,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 23.0f, 10.0f, 220.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 23.0f, 10.0f, 220.0f), vec3(2.9f, 2.9f, 2.9f));
 
 			tree3.draw(shader);
 
-
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7485,18 +7204,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 33.0f, 10.0f, 210.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 33.0f, 10.0f, 210.0f), vec3(2.9f, 2.9f, 2.9f));
 
 			tree3.draw(shader);
 
-
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7505,17 +7220,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 34.0f, 10.0f, 263.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 34.0f, 10.0f, 263.0f), vec3(2.9f, 2.9f, 2.9f));
 
 			tree3.draw(shader);
 
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7524,17 +7236,14 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 40.0f, 10.0f, 222.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 40.0f, 10.0f, 222.0f), vec3(2.2f, 2.2f, 2.2f));
 
 			tree3.draw(shader);
 
-
-			//alt copac cu mere
 			shader.use();
 
 			glActiveTexture(GL_TEXTURE0);
@@ -7543,21 +7252,17 @@ int main()
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 28.0f, 10.0f, 230.0f));
-			//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-			//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(2.6f, 2.6f, 2.6f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(tree3, vec3(a + 28.0f, 10.0f, 230.0f), vec3(2.6f, 2.6f, 2.6f));
 
 			tree3.draw(shader);
 			}
 			//parcela3
 			{
 				int a = 200;
-				//alt copac cu mere
-				shader.use();
-				//alt copac cu mere
 				shader.use();
 
 				glActiveTexture(GL_TEXTURE0);
@@ -7566,12 +7271,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 55.0f, 10.0f, 105.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(tree3, vec3(a + 55.0f, 10.0f, 105.0f), vec3(2.1f, 2.1f, 2.1f));
 
 				tree3.draw(shader);
 
@@ -7584,8 +7288,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 89.0f, 10.0f, 119.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7602,8 +7304,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 67.0f, 10.0f, 128.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7620,8 +7320,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 32.0f, 10.0f, 121.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7638,8 +7336,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 63.0f, 10.0f, 135.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7670,8 +7366,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 45.0f, 10.0f, 275.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.4f, 2.4f, 2.4f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7689,8 +7383,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 56.0f, 10.0f, 299.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7707,8 +7399,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 30.0f, 10.0f, 200.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7725,8 +7415,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 10.0f, 10.0f, 220.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7744,8 +7432,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 77.0f, 10.0f, 193.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7762,8 +7448,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 33.0f, 10.0f, 162.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7780,8 +7464,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 54.0f, 10.0f, 188.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.7f, 1.7f, 1.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7799,8 +7481,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 98.0f, 10.0f, 188.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7818,8 +7498,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 17.0f, 10.0f, 255.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7836,8 +7514,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 75.0f, 10.0f, 110.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7854,8 +7530,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 8.0f, 10.0f, 121.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7872,8 +7546,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 68.0f, 10.0f, 125.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.66f, 1.66f, 1.66f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7890,8 +7562,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 34.0f, 10.0f, 100.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7908,8 +7578,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 99.0f, 10.0f, 193.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.6f, 1.6f, 1.6f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7926,8 +7594,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 53.0f, 10.0f, 200.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7944,8 +7610,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 108.0f, 10.0f, 110.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7962,8 +7626,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 63.0f, 10.0f, 130.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.5f, 1.5f, 1.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7980,8 +7642,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 53.0f, 10.0f, 200.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.7f, 1.7f, 1.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -7999,8 +7659,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 33.0f, 10.0f, 259.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8018,8 +7676,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 80.0f, 10.0f, 210.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8037,8 +7693,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 100.0f, 10.0f, 283.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8056,8 +7710,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 79.0f, 10.0f, 250.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.9f, 1.9f, 1.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8075,8 +7727,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 100.0f, 10.0f, 239.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8094,8 +7744,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 95.0f, 10.0f, 214.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8113,8 +7761,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 110.0f, 10.0f, 205.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.3f, 2.3f, 2.3f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8133,8 +7779,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 79.0f, 10.0f, 205.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.8f, 2.8f, 2.8f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8152,8 +7796,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 67.0f, 10.0f, 199.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8171,8 +7813,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 84.0f, 10.0f, 180.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8190,8 +7830,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 55.0f, 10.0f, 167.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8209,8 +7847,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 103.0f, 10.0f, 195.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8229,8 +7865,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 88.0f, 10.0f, 177.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8248,8 +7882,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 100.0f, 10.0f, 170.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.8f, 2.8f, 2.8f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8267,8 +7899,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 50.0f, 10.0f, 170.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8286,8 +7916,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 85.0f, 10.0f, 190.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8305,8 +7933,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 60.0f, 10.0f, 160.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8324,8 +7950,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 60.0f, 10.0f, 245.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8343,8 +7967,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 75.0f, 10.0f, 233.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8363,8 +7985,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 96.0f, 10.0f, 229.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8382,8 +8002,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 30.0f, 10.0f, 245.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8401,8 +8019,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 20.0f, 10.0f, 232.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8421,8 +8037,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 23.0f, 10.0f, 220.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8441,8 +8055,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 33.0f, 10.0f, 210.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8461,8 +8073,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 34.0f, 10.0f, 263.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8480,8 +8090,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 40.0f, 10.0f, 222.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8499,8 +8107,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 28.0f, 10.0f, 230.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.6f, 2.6f, 2.6f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8520,8 +8126,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-69.0f, 10.0f, 129.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8538,8 +8142,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-56.0f, 10.0f, 299.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8557,8 +8159,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-77.0f, 10.0f, 193.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8575,8 +8175,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-98.0f, 10.0f, 188.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8595,8 +8193,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-75.0f, 10.0f, 110.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8613,8 +8209,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-68.0f, 10.0f, 125.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.66f, 1.66f, 1.66f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8631,8 +8225,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-99.0f, 10.0f, 193.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.6f, 1.6f, 1.6f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8649,8 +8241,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-108.0f, 10.0f, 110.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8667,8 +8257,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-63.0f, 10.0f, 130.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.5f, 1.5f, 1.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8686,8 +8274,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-80.0f, 10.0f, 210.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.0f, 1.0f, 1.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8705,8 +8291,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-100.0f, 10.0f, 283.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8724,8 +8308,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-79.0f, 10.0f, 250.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.9f, 1.9f, 1.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8743,8 +8325,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-100.0f, 10.0f, 239.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8762,8 +8342,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-95.0f, 10.0f, 214.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8781,8 +8359,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-110.0f, 10.0f, 205.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.3f, 2.3f, 2.3f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8801,8 +8377,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-79.0f, 10.0f, 205.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.8f, 2.8f, 2.8f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8820,8 +8394,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-67.0f, 10.0f, 199.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8839,8 +8411,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-84.0f, 10.0f, 180.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8858,8 +8428,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-103.0f, 10.0f, 195.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8878,8 +8446,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-88.0f, 10.0f, 177.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8897,8 +8463,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-100.0f, 10.0f, 170.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.8f, 2.8f, 2.8f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8916,8 +8480,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-50.0f, 10.0f, 170.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8935,8 +8497,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-85.0f, 10.0f, 190.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8954,8 +8514,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-60.0f, 10.0f, 160.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8973,8 +8531,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-60.0f, 10.0f, 245.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -8992,8 +8548,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-75.0f, 10.0f, 233.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9012,8 +8566,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-96.0f, 10.0f, 229.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9034,8 +8586,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 89.0f, 10.0f, 139.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9052,8 +8602,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 67.0f, 10.0f, 108.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9071,8 +8619,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 23.0f, 10.0f, 129.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9103,8 +8649,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 45.0f, 10.0f, 275.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.4f, 2.4f, 2.4f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9122,8 +8666,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 56.0f, 10.0f, 299.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9140,8 +8682,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 77.0f, 10.0f, 193.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9159,8 +8699,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 98.0f, 10.0f, 188.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9178,8 +8716,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 17.0f, 10.0f, 255.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9196,8 +8732,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 75.0f, 10.0f, 110.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9214,8 +8748,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 68.0f, 10.0f, 125.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.66f, 1.66f, 1.66f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9232,8 +8764,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 34.0f, 10.0f, 100.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9250,8 +8780,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 99.0f, 10.0f, 193.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.6f, 1.6f, 1.6f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9268,8 +8796,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 108.0f, 10.0f, 110.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9286,8 +8812,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 63.0f, 10.0f, 130.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.5f, 1.5f, 1.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9305,8 +8829,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 33.0f, 10.0f, 259.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9324,8 +8846,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 80.0f, 10.0f, 210.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9343,8 +8863,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 100.0f, 10.0f, 283.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9362,8 +8880,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 79.0f, 10.0f, 250.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.9f, 1.9f, 1.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9381,8 +8897,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 100.0f, 10.0f, 239.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9400,8 +8914,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 95.0f, 10.0f, 214.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9419,8 +8931,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 110.0f, 10.0f, 205.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.3f, 2.3f, 2.3f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9439,8 +8949,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 79.0f, 10.0f, 205.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.8f, 2.8f, 2.8f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9458,8 +8966,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 67.0f, 10.0f, 199.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9477,8 +8983,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 84.0f, 10.0f, 180.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9496,8 +9000,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 103.0f, 10.0f, 195.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9516,8 +9018,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 88.0f, 10.0f, 177.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9535,8 +9035,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 100.0f, 10.0f, 170.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.8f, 2.8f, 2.8f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9554,8 +9052,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 85.0f, 10.0f, 190.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9573,8 +9069,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 75.0f, 10.0f, 233.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9593,8 +9087,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 96.0f, 10.0f, 229.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9611,8 +9103,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 20.0f, 10.0f, 232.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9631,8 +9121,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 23.0f, 10.0f, 220.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9651,8 +9139,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 33.0f, 10.0f, 210.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9671,8 +9157,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 34.0f, 10.0f, 263.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.2f, 3.2f, 3.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9690,8 +9174,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 40.0f, 10.0f, 222.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9709,8 +9191,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 28.0f, 10.0f, 230.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.6f, 2.6f, 2.6f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9731,8 +9211,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 52.0f, 10.0f, 112.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9749,8 +9227,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 77.0f, 10.0f, 134.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.5f, 2.5f, 2.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9767,8 +9243,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 42.0f, 10.0f, 131.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9785,8 +9259,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 29.0f, 10.0f, 110.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9802,8 +9274,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 45.0f, 10.0f, 289.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.4f, 2.4f, 2.4f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9821,8 +9291,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 56.0f, 10.0f, 299.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9840,8 +9308,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 10.0f, 10.0f, 220.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9858,8 +9324,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 17.0f, 10.0f, 255.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9876,8 +9340,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 75.0f, 10.0f, 120.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9894,8 +9356,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 8.0f, 10.0f, 121.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9912,8 +9372,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 68.0f, 10.0f, 145.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.66f, 1.66f, 1.66f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9930,8 +9388,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 34.0f, 10.0f, 100.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.7f, 2.7f, 2.7f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9948,8 +9404,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 108.0f, 10.0f, 110.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.0f, 3.0f, 3.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9966,8 +9420,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 73.0f, 10.0f, 130.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.5f, 1.5f, 1.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -9984,8 +9436,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 33.0f, 10.0f, 249.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -10002,8 +9452,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 100.0f, 10.0f, 283.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -10020,8 +9468,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 79.0f, 10.0f, 250.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.9f, 1.9f, 1.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -10038,8 +9484,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 60.0f, 10.0f, 140.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -10057,8 +9501,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 75.0f, 10.0f, 263.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.0f, 2.0f, 2.0f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -10075,8 +9517,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 20.0f, 10.0f, 232.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.2f, 2.2f, 2.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -10095,8 +9535,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 23.0f, 10.0f, 220.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.9f, 2.9f, 2.9f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -10114,8 +9552,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 34.0f, 10.0f, 263.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(3.2f, 3.2f, 3.2f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -10133,8 +9569,6 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(a + 28.0f, 10.0f, 230.0f));
-				//ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-				//ModelMatrix = rotate(ModelMatrix, 50.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(2.1f, 2.1f, 2.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
@@ -10146,17 +9580,73 @@ int main()
 			registerCollide(castle, vec3(-45.0f, 9.0f, -300.0f), vec3(0.04f, 0.04f, 0.04f));
 			registerCollide(wall, vec3(0.0f, -28.0f, -180.0f), vec3(0.3f, 0.3f, 0.2f));
 		}
-
-		/*ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
+		if (showStory) {
+			ImGui::SetNextWindowPos(ImVec2(window.getWidth() / 2.0f - 200, window.getHeight() / 2.0f - 100));
+			ImGui::SetNextWindowSize(ImVec2(400, 200));
+			ImGui::Begin("Headquarters of the Time Travelers", &showStory, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+			ImGui::TextWrapped("Hello Marian! So you've finished the training I see. I hope you did well in the Time Travelers academy.");
+			ImGui::Separator();
+			ImGui::TextWrapped("This is your very first mission. You must travel back in time to the 17th century and save the Princess of Luminara from the gypsy goblins.");
+			ImGui::TextWrapped("It will not be an easy mission, be careful the past is unforgiving, and danger lurks at every step.");
+			ImGui::TextWrapped("I wish you goodluck. As soon as you arrive in the Kingdom of Luminara the Omnitrix will guide.");
 
-		ImGui::Begin("Info Window");
-		ImGui::Text("Camera position: X: %.2f Y: %.2f Z: %.2f", camera.getCameraPosition().x, camera.getCameraPosition().y, camera.getCameraPosition().z);
-		ImGui::End();
+			ImGui::Spacing();
+			if (ImGui::Button("Travel?", ImVec2(120, 0))) {
+				showStory = false;
+				showHelloApple = true;
+				playerPos = vec3(-20.0f, 15.0f, 250.0f);
+			}
+			ImGui::End();
+		}
+		else if (showHelloApple) {
+			ImGui::SetNextWindowPos(ImVec2(window.getWidth() - 400.0f, 30.0f));
+			ImGui::SetNextWindowSize(ImVec2(400.0f, 320.0f));
+			ImGui::Begin("Kingdom Arrival", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
+			ImGui::TextColored(ImVec4(1, 0.8f, 0, 1), "WELCOME TO THE KINGDOM");
+			ImGui::Separator();
+			ImGui::TextWrapped("You have arrived in the 17th century at the village gates.\n Use the WASD keys to move and the Right Mouse to look around. In order to interact with other objects use E.");
+			ImGui::Separator();
+			ImGui::TextWrapped("Your first journey through time did not go as planned. The trip through time has weakened you, and your health is low. Search for apples and eat them to restore your strength before continuing your mission");
+			ImGui::Separator();
+
+			if (playerHealth == 100.0f && applecnt>=4) {
+				showHelloApple = false;
+				questKing1 = true;
+			}
+
+			ImGui::End();
+
+		}
+		if(!showStory && !showHelloApple) {
+			ImGui::SetNextWindowPos(ImVec2(window.getWidth() - 400.0f, 30.0f));
+			ImGui::SetNextWindowSize(ImVec2(400.0f, 320.0f));
+			if (questKing1) {
+				ImGui::Begin("King Bob", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+				ImGui::TextColored(ImVec4(1, 0.9f, 0, 1), "ACTIVE MISSION:");
+				ImGui::Separator();
+				ImGui::TextWrapped("Now that you have restored your health go look for the King.");
+				ImGui::BulletText("HINT! Look for the castle.");
+				if (abs(playerPos.x - kingBobPos.x) < 15.0f) {
+					ImGui::Spacing();
+					ImGui::Separator();
+					if (ImGui::Button("Talk to King Bob", ImVec2(-1.0f, 40.0f))) {
+						questKing1 = false;
+						questArmour = true;
+					}
+				}
+				ImGui::End();
+
+
+			}
+
+			
+		}
 		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 		window.update();
 	}
@@ -10224,20 +9714,9 @@ void processKeyboardInput()
 		isMoving = true;
 	}
 
-	/*vec3 possiblePosX = vec3(nextPos.x, playerPos.y, playerPos.z);
-	if(!isColliding(possiblePosX)) {
-		playerPos.x = nextPos.x;
-		std::cout << "COLLISION DETECTED ON X!" << std::endl;
-	}
-
-	vec3 possiblePosZ = vec3(playerPos.x, playerPos.y, nextPos.z);
-	if (!isColliding(possiblePosZ)) {
-		playerPos.z = nextPos.z;
-	}*/
 
 	if (isMoving) {
-		//moveDir = normalize(moveDir);
-		//playerPos += moveDir * moveSpeed;
+
 		vec3 v = moveDir * moveSpeed;
 
 		vec3 nextPosx = playerPos + vec3(v.x, 0.0f, 0.0f);
@@ -10256,7 +9735,6 @@ void processKeyboardInput()
 			std::cout << "COLLISION ON Z!" << std::endl;
 		}
 
-		//playerRoataion = radians(atan2(moveDir.x, moveDir.z));
 		playerRoataion = atan2(moveDir.x, moveDir.z);
 	}
 
@@ -10266,6 +9744,8 @@ void processKeyboardInput()
 				float dist = distance(playerPos, mapApples[i].position);
 				if (dist < 5.0f) {
 					mapApples[i].isEaten = true;
+					if (showHelloApple)
+						applecnt++;
 					playerHealth += 20.0f;
 					if (playerHealth > maxHealth) playerHealth = maxHealth;
 				}
@@ -10279,22 +9759,6 @@ void processKeyboardInput()
 		playerPos.y -= moveSpeed;
 	if (window.isPressed(GLFW_KEY_LEFT_SHIFT))
 		moveSpeed *= 2.0f;
-
-	//translation
-	/*if (window.isPressed(GLFW_KEY_W))
-		playerPos.z -= moveSpeed;
-	if (window.isPressed(GLFW_KEY_S))
-		playerPos.z += moveSpeed;
-	if (window.isPressed(GLFW_KEY_A))
-		playerPos.x -= moveSpeed;
-	if (window.isPressed(GLFW_KEY_D))
-		playerPos.x += moveSpeed;
-	if (window.isPressed(GLFW_KEY_R))
-		playerPos.y += moveSpeed;
-	if (window.isPressed(GLFW_KEY_F))
-		playerPos.y -= moveSpeed;
-	if (window.isPressed(GLFW_KEY_LEFT_SHIFT))
-		moveSpeed *= 2.0f;*/
 
 		//rotation
 	if (window.isPressed(GLFW_KEY_LEFT))
@@ -10335,15 +9799,10 @@ void registerCollide(Mesh& mesh, vec3 pos, vec3 scale) {
 	box.min = (mesh.minB * scale) + pos;
 	box.max = (mesh.maxB * scale) + pos;
 
-	/*int cx = (pos.x + offset) / square_size;
-	int cz = (pos.z + offset) / square_size;*/
 	int minX = (int)((box.min.x + offset) / square_size);
 	int maxX = (int)((box.max.x + offset) / square_size);
 	int minZ = (int)((box.min.z + offset) / square_size);
 	int maxZ = (int)((box.max.z + offset) / square_size);
-
-	/*if(cx >= 0 && cx < 100 && cz >= 0 && cz < 100)
-		grid[cx][cz].push_back(box);*/
 
 	for (int x = minX; x <= maxX; x++) {
 		for (int z = minZ; z <= maxZ; z++) {
