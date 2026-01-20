@@ -54,6 +54,8 @@ float goblin1Health = 100.0f;
 float goblin2Health = 100.0f;
 float goblin3Health = 100.0f;
 
+bool showStory = true;
+
 Window window("Marian - The time traveler", 1024, 960);
 Camera camera;
 
@@ -1089,6 +1091,7 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 			cube1Model.draw(shader);
+			//registerCollide(cube1Model, vec3(-145.0f, 46.0f, -500.0f), vec3(35.0f, 35.0f, 35.0f));
 		}
 		//portal
 		{
@@ -1111,7 +1114,30 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
 			portalModel.draw(shader);
+			registerCollide(portalModel, vec3(-145.0f, 17.0f, -520.0f), vec3(0.2f, 0.2f, 0.2f));
 		}
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		if (showStory) {
+			ImGui::SetNextWindowPos(ImVec2(window.getWidth() / 2.0f - 200, window.getHeight() / 2.0f - 100), ImGuiCond_FirstUseEver);
+			ImGui::SetNextWindowSize(ImVec2(400, 200));
+			ImGui::Begin("The Chrono-Log", &showStory, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+			ImGui::TextWrapped("Vedem ce punem aici");
+			ImGui::Separator();
+			ImGui::TextWrapped("Vedem ce punem aici");
+			ImGui::TextWrapped("Vedem ce punem aici");
+
+			ImGui::Spacing();
+			if (ImGui::Button("I understand", ImVec2(120, 0))) {
+				showStory = false;
+			}
+
+
+			ImGui::End();
+		}
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		//Castel
 		{
 			shader.use();
@@ -10121,7 +10147,7 @@ int main()
 			registerCollide(wall, vec3(0.0f, -28.0f, -180.0f), vec3(0.3f, 0.3f, 0.2f));
 		}
 
-		ImGui_ImplOpenGL3_NewFrame();
+		/*ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
@@ -10130,7 +10156,7 @@ int main()
 		ImGui::End();
 
 		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
 
 		window.update();
 	}
