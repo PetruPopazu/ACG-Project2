@@ -11,7 +11,6 @@
 //H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h -- Petru Calc
 //H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h -- Petru Calc
 //H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_openl3.h -- Petru Calc
-
 //D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h Petru laptop
 //D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h Petru Laptop
 //D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h Petru Laptop
@@ -59,6 +58,7 @@ float goblin2Health = 100.0f;
 float goblin3Health = 100.0f;
 
 bool showStory = true;
+bool startStory = false;
 
 Window window("Marian - The time traveler", 1024, 960);
 Camera camera;
@@ -1124,7 +1124,7 @@ int main()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		if (showStory) {
-			ImGui::SetNextWindowPos(ImVec2(window.getWidth() / 2.0f - 200, window.getHeight() / 2.0f - 100), ImGuiCond_FirstUseEver);
+			ImGui::SetNextWindowPos(ImVec2(window.getWidth() / 2.0f - 200, window.getHeight() / 2.0f - 100));
 			ImGui::SetNextWindowSize(ImVec2(400, 200));
 			ImGui::Begin("The Chrono-Log", &showStory, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 			ImGui::TextWrapped("Vedem ce punem aici");
@@ -1135,6 +1135,7 @@ int main()
 			ImGui::Spacing();
 			if (ImGui::Button("I understand", ImVec2(120, 0))) {
 				showStory = false;
+				playerPos = vec3(-20.0f, 15.0f, 250.0f);
 			}
 
 
@@ -1142,6 +1143,32 @@ int main()
 		}
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		/*ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		if(!showStory){
+			ImGui::SetNextWindowPos(ImVec2(window.getWidth() / 2.0f - 200, window.getHeight() / 2.0f - 100), ImGuiCond_FirstUseEver);
+			ImGui::SetNextWindowSize(ImVec2(400, 200));
+			ImGui::Begin("The Chrono-Log", &showStory, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+			ImGui::TextWrapped("Welcome to the Kingdom!");
+			ImGui::Separator();
+			ImGui::TextWrapped("Aici o sa scriem ceva legat de scena si de taskuri etc");
+			ImGui::TextWrapped("apoi punem buton let's begin ca sa inceapa sa ii scrie taskurile, frame-ul asta o sa fie pe centru si apoi restul le punem in colt in dreapta sus");
+
+			ImGui::Spacing();
+			
+			if (ImGui::Button("Let's begin", ImVec2(120, 0))) {
+				startStory = true;
+			}
+		}
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());*/
+		/*ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+		if (startStory) {
+
+		}*/
 		//Castel
 		{
 			shader.use();
