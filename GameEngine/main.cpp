@@ -1126,7 +1126,7 @@ int main()
 			ImGui::TextWrapped("Vedem ce punem aici");
 			ImGui::Separator();
 			ImGui::TextWrapped("Vedem ce punem aici");
-			ImGui::TextWrapped("Vedem ce punem aici");
+			ImGui::TextWrapped("Vedem ce punem aici ");
 
 			ImGui::Spacing();
 			if (ImGui::Button("I understand", ImVec2(120, 0))) {
