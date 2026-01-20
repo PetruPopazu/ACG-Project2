@@ -5,9 +5,9 @@
 #include "Model Loading\texture.h"
 #include "Model Loading\meshLoaderObj.h"
 
-//#include "C:\ECG\acg\Dependencies\imgui\imgui.h"// -- Alexutz
-//#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Alexutz
-//#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h"// -- Alexutz
+#include "C:\ECG\acg\Dependencies\imgui\imgui.h"// -- Alexutz
+#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Alexutz
+#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h"// -- Alexutz
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"// -- Petru Calc
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"// -- Petru Calc
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_openl3.h"// -- Petru Calc
@@ -17,9 +17,9 @@
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h" //-- Petru Calc
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Petru Calc
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_openl3.h" //-- Petru Calc
-#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h" //-- Alex
-#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Alex
-#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h" //--Alex
+//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h" //-- Alex
+//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Alex
+//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h" //--Alex
 
 //#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"
 //#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
@@ -2383,6 +2383,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-83.0f, 9.0f, -104.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2399,6 +2400,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-73.0f, 9.0f, -104.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2415,6 +2417,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-63.0f, 9.0f, -104.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2431,6 +2434,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-53.0f, 9.0f, -104.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2447,6 +2451,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-43.0f, 9.0f, -104.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2467,6 +2472,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-90.0f, 9.0f, -98.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2484,6 +2490,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-90.0f, 9.0f, -88.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2501,6 +2508,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-90.0f, 9.0f, -78.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2518,6 +2526,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-90.0f, 9.0f, -68.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2535,6 +2544,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-90.0f, 9.0f, -58.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2552,6 +2562,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-90.0f, 9.0f, -48.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2572,6 +2583,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-36.0f, 9.0f, -98.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2589,6 +2601,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-36.0f, 9.0f, -88.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2606,6 +2619,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-36.0f, 9.0f, -78.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2623,6 +2637,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-36.0f, 9.0f, -68.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2640,6 +2655,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-36.0f, 9.0f, -58.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2657,6 +2673,7 @@ int main()
 					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+					registerCollide(gard, vec3(-36.0f, 9.0f, -48.0f), vec3(0.1f, 0.1f, 0.1f));
 
 					gard.draw(shader);
 				}
@@ -2671,11 +2688,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-83.0f, 9.0f, -41.0f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(gard, vec3(-83.0f, 9.0f, -41.0f), vec3(0.1f, 0.1f, 0.1f));
 
 				gard.draw(shader);
 
@@ -2687,11 +2704,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-73.0f, 9.0f, -41.0f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(gard, vec3(-73.0f, 9.0f, -41.0f), vec3(0.1f, 0.1f, 0.1f));
 
 				gard.draw(shader);
 
@@ -2703,11 +2720,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-63.0f, 9.0f, -41.0f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(gard, vec3(-63.0f, 9.0f, -41.0f), vec3(0.1f, 0.1f, 0.1f));
 
 				gard.draw(shader);
 
@@ -2719,11 +2736,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-53.0f, 9.0f, -41.0f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(gard, vec3(-53.0f, 9.0f, -41.0f), vec3(0.1f, 0.1f, 0.1f));
 
 				gard.draw(shader);
 
@@ -2735,11 +2752,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-43.0f, 9.0f, -41.0f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(gard, vec3(-43.0f, 9.0f, -41.0f), vec3(0.1f, 0.1f, 0.1f));
 
 				gard.draw(shader);
 
@@ -2752,11 +2769,11 @@ int main()
 
 				ModelMatrix = glm::mat4(1.0);
 				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-43.0f, 9.0f, -41.0f));
-				//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+				registerCollide(gard, vec3(-43.0f, 9.0f, -41.0f), vec3(0.1f, 0.1f, 0.1f));
 
 				gard.draw(shader);
 			}
@@ -3941,6 +3958,8 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-223.0f, 9.0f, -174.0f), vec3(0.1f, 0.1f, 0.1f));
+			
 			gard.draw(shader);
 
 			shader.use();
@@ -3953,6 +3972,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-213.0f, 9.0f, -174.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -3965,6 +3985,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-203.0f, 9.0f, -174.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -3977,6 +3998,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-193.0f, 9.0f, -174.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -3989,6 +4011,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-183.0f, 9.0f, -174.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4001,6 +4024,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-173.0f, 9.0f, -174.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4013,6 +4037,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-163.0f, 9.0f, -174.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 		}
 		//gard vaci est
@@ -4028,6 +4053,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-156.0f, 9.0f, -168.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4041,6 +4067,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-156.0f, 9.0f, -158.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4054,6 +4081,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-156.0f, 9.0f, -148.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4067,6 +4095,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-156.0f, 9.0f, -138.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4080,6 +4109,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-156.0f, 9.0f, -128.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4093,6 +4123,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-156.0f, 9.0f, -123.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 		}
 		//gard vaci vest
@@ -4108,6 +4139,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-230.0f, 9.0f, -168.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4121,6 +4153,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-230.0f, 9.0f, -158.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4134,6 +4167,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-230.0f, 9.0f, -148.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4147,6 +4181,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-230.0f, 9.0f, -138.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4160,6 +4195,7 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-230.0f, 9.0f, -124.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 		}
 		// gard vaci sud
@@ -4170,11 +4206,11 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-223.0f, 9.0f, -118.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-223.0f, 9.0f, -118.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4183,11 +4219,11 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-213.0f, 9.0f, -118.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-213.0f, 9.0f, -118.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4196,11 +4232,11 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-203.0f, 9.0f, -118.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-203.0f, 9.0f, -118.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4209,11 +4245,11 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-193.0f, 9.0f, -118.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-193.0f, 9.0f, -118.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4222,11 +4258,11 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-183.0f, 9.0f, -118.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-183.0f, 9.0f, -118.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4235,11 +4271,11 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-173.0f, 9.0f, -118.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-173.0f, 9.0f, -118.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 
 			shader.use();
@@ -4248,11 +4284,11 @@ int main()
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-163.0f, 9.0f, -118.0f));
-			//ModelMatrix = rotate(ModelMatrix, 90.0f, vec3(0.0f, 1.0f, 0.0f));
 			ModelMatrix = scale(ModelMatrix, glm::vec3(0.1f, 0.1f, 0.1f));
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			registerCollide(gard, vec3(-163.0f, 9.0f, -118.0f), vec3(0.1f, 0.1f, 0.1f));
 			gard.draw(shader);
 		}
 		//Road1
