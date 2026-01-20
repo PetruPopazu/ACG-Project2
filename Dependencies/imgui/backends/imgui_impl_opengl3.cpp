@@ -120,15 +120,17 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-//D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h -- Petru
-//D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h -- Petru
-//C:\ECG\acg\Dependencies\imgui\imgui.h -- Alexutz
-//C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h -- Alexutz
-//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h -- Petru Calc
-//H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h -- Petru Calc
-#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"
+//#include D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h //-- Petru
+//#include D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h //-- Petru
+//#include C:\ECG\acg\Dependencies\imgui\imgui.h //-- Alexutz
+//#include C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h //-- Alexutz
+//#include H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h //-- Petru Calc
+//#include H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h //-- Petru Calc
+#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h" //Alex
+#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h" //Alex
+
 #ifndef IMGUI_DISABLE
-#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h"
+
 #include <stdio.h>
 #include <stdint.h>     // intptr_t
 #if defined(__APPLE__)

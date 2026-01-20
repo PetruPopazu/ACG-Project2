@@ -81,7 +81,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)\Dependencies\imgui;$(ProjectDir)\Dependencies\imgui\backends;$(ProjectDir)\Dependencies\GLEW\include;$(ProjectDir)\Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\GameEngine\External\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
