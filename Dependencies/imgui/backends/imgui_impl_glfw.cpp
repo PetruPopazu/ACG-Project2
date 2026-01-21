@@ -135,7 +135,7 @@
 
 //#include D:\ACG\ACG-Project2\Dependencies\GLFW\include\glfw3native.h -- Petru
 //#include C:\ECG\acg\Dependencies\GLFW\include\glfw3native.h -- Alexutz
-#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\GLFW\include\glfw3native.h" -- Petru calc
+//#include H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\GLFW\include\glfw3native.h -- Petru calc
 //#include C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\GLFW\include\glfw3native.h -- Alex
 //#include <C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\GLFW\include\glfw3native.h>
 #elif defined(__APPLE__)
