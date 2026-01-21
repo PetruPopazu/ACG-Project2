@@ -98,13 +98,13 @@
 //#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" -- Petru
 //#include "C:\ECG\acg\Dependencies\imgui\imgui.h -- Alexutz"
 //#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h" -- Alexutz
-#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h" //-- Petru calc
-#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Petru calc
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h" //-- Petru calc
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Petru calc
 //#include C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h -- Alex
 //#include C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h -- Alex
-//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h"
+#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h"
 #ifndef IMGUI_DISABLE
-//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
+#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
 
 
 // Clang warnings with -Weverything
@@ -124,9 +124,9 @@
 #endif
 //#include D:\ACG\ACG-Project2\Dependencies\GLFW\include\glfw3.h -- Petru
 //#include C:\ECG\acg\Dependencies\GLFW\include\glfw3.h -- Alexutz
-#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\GLFW\include\glfw3.h" -- Petru calc
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\GLFW\include\glfw3.h" -- Petru calc
 //#include C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\GLFW\include\glfw3.h -- Alex
-//#include <C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\GLFW\include\glfw3.h>
+#include <C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\GLFW\include\glfw3.h>
 #ifdef _WIN32
 #undef APIENTRY
 #ifndef GLFW_EXPOSE_NATIVE_WIN32    // for glfwGetWin32Window()
@@ -137,7 +137,7 @@
 //#include C:\ECG\acg\Dependencies\GLFW\include\glfw3native.h -- Alexutz
 //#include H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\GLFW\include\glfw3native.h -- Petru calc
 //#include C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\GLFW\include\glfw3native.h -- Alex
-//#include <C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\GLFW\include\glfw3native.h>
+#include <C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\GLFW\include\glfw3native.h>
 #elif defined(__APPLE__)
 #ifndef GLFW_EXPOSE_NATIVE_COCOA    // for glfwGetCocoaWindow()
 #define GLFW_EXPOSE_NATIVE_COCOA

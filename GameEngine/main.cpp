@@ -14,12 +14,12 @@
 //#include "C:\ECG\acg\Dependencies\imgui\imgui.h" //-- Alexutz
 //#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Alexutz
 //#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h" //-- Alexutz
-#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h" //-- Petru Calc
-#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Petru Calc
-#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h" //-- Petru Calc
-//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h" //-- Alex
-//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Alex
-//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h" //--Alex
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h" //-- Petru Calc
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Petru Calc
+//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h" //-- Petru Calc
+#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h" //-- Alex
+#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Alex
+#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h" //--Alex
 
 //#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"
 //#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
@@ -991,19 +991,22 @@ int main()
 			}*/
 		
 
+		//princess
+		{}
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, princessC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, princessC);
-		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-		mat4 princessModel = mat4(1.0f);
-		princessModel = translate(princessModel, vec3(0.0f, 0.0f, 1.5f));
-		//princessModel = rotate(princessModel, -70.0f, vec3(1.0f, 0.0f, 0.0f));
-		princessModel = scale(princessModel, vec3(15.0f, 40.0f, 15.0f));
-		mat4 princessMVP = ProjectionMatrix * ViewMatrix * princessModel;
-		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &princessMVP[0][0]);
-		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &princessModel[0][0]);
-		princess.draw(shader);
+			mat4 princessModel = mat4(1.0f);
+			princessModel = translate(princessModel, vec3(310.0f, 10.0f, -430.0f));
+			//princessModel = rotate(princessModel, -70.0f, vec3(1.0f, 0.0f, 0.0f));
+			princessModel = scale(princessModel, vec3(2.0f, 2.0f, 2.0f));
+			mat4 princessMVP = ProjectionMatrix * ViewMatrix * princessModel;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &princessMVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &princessModel[0][0]);
+			princess.draw(shader);
+		}
 		//apples
 		{}
 		{
@@ -1335,7 +1338,7 @@ int main()
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
 				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-30.0f, 22.5f, -235.0f));
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-30.0f, 20.5f, -235.0f));
 				ModelMatrix = scale(ModelMatrix, glm::vec3(1.5f, 1.5f, 1.5f));
 				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
