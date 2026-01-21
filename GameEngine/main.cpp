@@ -14,12 +14,12 @@
 //#include "C:\ECG\acg\Dependencies\imgui\imgui.h" //-- Alexutz
 //#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Alexutz
 //#include "C:\ECG\acg\Dependencies\imgui\backends\imgui_impl_opengl3.h" //-- Alexutz
-//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h" //-- Petru Calc
-//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Petru Calc
-//#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_openl3.h" //-- Petru Calc
-#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h" //-- Alex
-#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Alex
-#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h" //--Alex
+#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h" //-- Petru Calc
+#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Petru Calc
+#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h" //-- Petru Calc
+//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h" //-- Alex
+//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Alex
+//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h" //--Alex
 
 //#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"
 //#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
@@ -45,7 +45,6 @@ bool isColliding(vec3 playerPos);
 
 void processKeyboardInput();
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-unsigned int loadCubeMap(std::vector<std::string> faces);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
 bool firstMouse = true;
@@ -70,14 +69,30 @@ float goblin1Health = 100.0f;
 float goblin2Health = 100.0f;
 float goblin3Health = 100.0f;
 
+float goblinSpeed = 15.0f;
+float attackRange = 12.0f;
+float detectionRange = 100.0f;
+float g1SwingTimer = 0.0f; 
+bool g1IsSwinging = false;
+float g2SwingTimer = 0.0f; 
+bool g2IsSwinging = false;
+float g3SwingTimer = 0.0f; 
+bool g3IsSwinging = false;
+
 bool showStory = true;
 bool showHelloApple = false;
 bool questKing1 = false;
-bool questArmour = false;
+bool questArmor = false;
+bool equippedArmor = false;
+bool questArmorStarted = false;
 bool questKing2 = false;
 bool questWitch = false;
+bool questWitchStarted = false;
+bool talkToWitch = false;
+bool swordTaken = false;
 bool questKing3 = false;
 bool questFight = false;
+bool inFight = false;
 
 
 Window window("Marian - The time traveler", 1920, 1080);
@@ -86,6 +101,8 @@ Camera camera;
 //vec3 playerPos = vec3(-20.0f, 15.0f, 250.0f);
 vec3 playerPos = vec3(-145.0f, 15.0f, -500.0f);
 vec3 kingBobPos = vec3(-30.0f, 17.25f, -235.0f);
+vec3 armorPos = vec3(162.0f, 12.0f, 0.5f);
+vec3 witchPos = vec3(-210.0f, 10.0f, 185.0f);
 float playerRoataion = 0.0f;
 
 
@@ -103,9 +120,9 @@ std::vector<Apple> mapApples = {
 	{ vec3(-150.0f, 15.0f, 140.0f), false}
 };
 
-vec3 goblin1Pos = vec3(235.0f, 15.0f, -360.0f);
-vec3 goblin2Pos = vec3(265.0f, 15.0f, -380.0f);
-vec3 goblin3Pos = vec3(300.0f, 15.0f, -344.0f);
+vec3 goblin1Pos = vec3(225.0f, 15.0f, -360.0f);
+vec3 goblin2Pos = vec3(265.0f, 15.0f, -410.0f);
+vec3 goblin3Pos = vec3(320.0f, 15.0f, -390.0f);
 
 glm::vec3 lightColor = glm::vec3(1.0f);
 glm::vec3 lightPos = glm::vec3(180.0f, 200.0f, 350.0f);
@@ -133,7 +150,6 @@ int main()
 	GLuint gateTex = loadBMP("Resources/Textures/gate.bmp");
 	GLuint handNormal = loadBMP("Resources/Textures/hand_normal.bmp");
 	GLuint handDiffuse = loadBMP("Resources/Textures/hand_diffuse.bmp");
-	GLuint treeTex = loadBMP("Resources/Textures/Tree_Branch.bmp");
 	GLuint blacksmith = loadBMP("Resources/Textures/blacksmith.bmp");
 	GLuint tent = loadBMP("Resources/Textures/tent.bmp");
 	GLuint house = loadBMP("Resources/Textures/house.bmp");
@@ -150,9 +166,9 @@ int main()
 	GLuint fenceC = loadBMP("Resources/Textures/fenceC.bmp");
 	GLuint fenceN = loadBMP("Resources/Textures/fenceN.bmp");
 	GLuint churchC = loadBMP("Resources/Textures/churchC.bmp");
-	GLuint swordN = loadBMP("Resources/Textures/churchN.bmp");
+	GLuint swordN = loadBMP("Resources/Textures/swordN.bmp"); 
 	GLuint swordC = loadBMP("Resources/Textures/swordC.bmp");
-	GLuint churchN = loadBMP("Resources/Textures/swordN.bmp");
+	GLuint churchN = loadBMP("Resources/Textures/churchN.bmp");
 	GLuint signC = loadBMP("Resources/Textures/signC.bmp");
 	GLuint signN = loadBMP("Resources/Textures/signN.bmp");
 	GLuint tavernC = loadBMP("Resources/Textures/tavernC.bmp");
@@ -164,8 +180,6 @@ int main()
 	GLuint statue1 = loadBMP("Resources/Textures/statue1.bmp");
 	GLuint statue2C = loadBMP("Resources/Textures/statue2C.bmp");
 	GLuint statue2N = loadBMP("Resources/Textures/statue2N.bmp");
-	GLuint church_StatueC = loadBMP("Resources/Textures/church_StatueC.bmp");
-	GLuint church_StatueN = loadBMP("Resources/Textures/church_StatueN.bmp");
 	GLuint roadC = loadBMP("Resources/Textures/stoneC.bmp");
 	GLuint roadN = loadBMP("Resources/Textures/stoneN.bmp");
 	GLuint red = loadBMP("Resources/Textures/red.bmp");
@@ -184,7 +198,6 @@ int main()
 	GLuint cube1 = loadBMP("Resources/Textures/cube1.bmp");
 	GLuint portalN = loadBMP("Resources/Textures/portalN.bmp");
 	GLuint portalC = loadBMP("Resources/Textures/portalC.bmp");
-
 	GLuint gaina_texture = loadBMP("Resources/Textures/gaina_text.bmp");
 	GLuint gard_texture = loadBMP("Resources/Textures/gard_text.bmp");
 	GLuint helmetN = loadBMP("Resources/Textures/Helmet_NORM.bmp");
@@ -195,13 +208,9 @@ int main()
 	GLuint hambarN = loadBMP("Resources/Textures/hambarN.bmp");
 	GLuint horse_texture = loadBMP("Resources/Textures/hourse.bmp");
 	GLuint cusca_gaini_text = loadBMP("Resources/Textures/cusca_gaini_texture.bmp");
-	/*GLuint right = loadBMP("Resources/Textures/right.bmp");
-	GLuint left = loadBMP("Resources/Textures/left.bmp");
-	GLuint top = loadBMP("Resources/Textures/top.bmp");
-	GLuint bottom = loadBMP("Resources/Textures/bottom.bmp");
-	GLuint back = loadBMP("Resources/Textures/back.bmp");
-	GLuint front = loadBMP("Resources/Textures/front.bmp");*/
-	//GLuint tex5 = loadBMP("Resources/Textures/grass.bmp");
+	GLuint spearC = loadBMP("Resources/Textures/spear.bmp");
+	GLuint spearN = loadBMP("Resources/Textures/spearN.bmp");
+	GLuint princessC = loadBMP("Resources/Textures/front.bmp");
 
 	glEnable(GL_DEPTH_TEST);
 
@@ -293,7 +302,6 @@ int main()
 	Mesh fountainModel = loader.loadObj("Resources/Models/fountain.obj", emptyTextures);
 	Mesh statue1Model = loader.loadObj("Resources/Models/statue1.obj", emptyTextures);
 	Mesh statue2Model = loader.loadObj("Resources/Models/statue2.obj", emptyTextures);
-	Mesh church_StatueModel = loader.loadObj("Resources/Models/church_Statue.obj", emptyTextures);
 	Mesh tree3 = loader.loadObj("Resources/Models/tree3.obj", emptyTextures);
 	Mesh vraji = loader.loadObj("Resources/Models/vraji.obj", emptyTextures);
 	Mesh apple = loader.loadObj("Resources/Models/apple.obj", emptyTextures);
@@ -312,22 +320,9 @@ int main()
 	Mesh hambar = loader.loadObj("Resources/Models/hambar.obj", emptyTextures);
 	Mesh horse = loader.loadObj("Resources/Models/horse.obj", emptyTextures);
 	Mesh cusca_gaini = loader.loadObj("Resources/Models/cusca_gaini.obj", emptyTextures);
-	//Mesh hand = loader.loadObj("Resources/Models/hand2.obj", emptyTextures);
-	//Mesh skybox = loader.loadObj("Resources/Models/box.obj");
-	//Mesh terrain = loader.loadObj("Resources/Models/Terrain2k.obj", textures4);
-	//Mesh player = loader.loadObj("Resources/Models/knight.obj", textures2);
-	//Mesh terrain = loader.loadObj("Resources/Models/grass.obj", textures3);
+	Mesh spear = loader.loadObj("Resources/Models/spear.obj", emptyTextures);
+	Mesh princess = loader.loadObj("Resources/Models/princess.obj", emptyTextures);
 
-	std::vector<std::string> faces = {
-	"Resources/Textures/right.bmp",
-	"Resources/Textures/left.bmp",
-	"Resources/Textures/top.bmp",
-	"Resources/Textures/bottom.bmp",
-	"Resources/Textures/back.bmp",
-	"Resources/Textures/front.bmp"
-	};
-
-	unsigned int cubemapID = loadCubeMap(faces);
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -358,7 +353,7 @@ int main()
 			playerPos.y = floorLevel + characterHeight;
 		}
 
-		if (window.isMousePressed(GLFW_MOUSE_BUTTON_LEFT)) {
+		if (window.isMousePressed(GLFW_MOUSE_BUTTON_LEFT) && swordTaken) {
 			isSwinging = true;
 		}
 
@@ -412,14 +407,25 @@ int main()
 		//draw body parts
 		{
 			//firstly the torso
+			if (!equippedArmor) {
 
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, handDiffuse);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, handDiffuse);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, handNormal);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, handNormal);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+			}
+			else {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, armorC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, armorN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+			}
 
 			mat4 torsoModel = mat4(1.0f);
 			torsoModel = translate(torsoModel, playerPos);
@@ -431,14 +437,54 @@ int main()
 			torso.draw(shader);
 
 			//capul
-			mat4 capModel = torsoModel;
-			capModel = translate(capModel, vec3(0.0f, 1.0f, 0.0f));
-			capModel = rotate(capModel, 180.0f, vec3(0.0f, 1.0f, 0.0f));
-			capModel = scale(capModel, vec3(3.4f, 3.4f, 3.4f));
-			mat4 capMVP = ProjectionMatrix * ViewMatrix * capModel;
-			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &capMVP[0][0]);
-			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &capModel[0][0]);
-			cap.draw(shader);
+			if (!equippedArmor) {
+				mat4 capModel = torsoModel;
+				capModel = translate(capModel, vec3(0.0f, 0.9f, -0.1f));
+				capModel = rotate(capModel, 180.0f, vec3(0.0f, 1.0f, 0.0f));
+				capModel = scale(capModel, vec3(3.4f, 3.4f, 3.4f));
+				mat4 capMVP = ProjectionMatrix * ViewMatrix * capModel;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &capMVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &capModel[0][0]);
+				cap.draw(shader);
+			}
+			else {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, helmetC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, helmetN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				mat4 helmetModel = torsoModel;
+				helmetModel = translate(helmetModel, vec3(0.0f, 1.0f, 0.0f));
+				helmetModel = rotate(helmetModel, 180.0f, vec3(0.0f, 1.0f, 0.0f));
+				helmetModel = scale(helmetModel, vec3(0.8f, 0.8f, 0.8f));
+				mat4 helmetMVP = ProjectionMatrix * ViewMatrix * helmetModel;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &helmetMVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &helmetModel[0][0]);
+				helmet.draw(shader);
+			}
+
+			if (!equippedArmor) {
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, handDiffuse);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, handNormal);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+			}
+			else {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, armorC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, armorN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+			}
 
 			//then the right hand
 			mat4 rHandModel = torsoModel;
@@ -628,9 +674,35 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBarModel[0][0]);
 			glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.0f, 1.0f, 0.0f);
 			box.draw(shader);
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, helmetC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, helmetN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			mat4 helmetModel = torsoModel;
+			helmetModel = translate(helmetModel, vec3(0.0f, 1.0f, 0.0f));
+			helmetModel = rotate(helmetModel, 180.0f, vec3(0.0f, 0.9f, -0.1f));
+			helmetModel = scale(helmetModel, vec3(0.8f, 0.8f, 0.8f));
+			mat4 helmetMVP = ProjectionMatrix * ViewMatrix * helmetModel;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &helmetMVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &helmetModel[0][0]);
+			helmet.draw(shader);
+
 		}
 		//goblin2
-		{
+		{	
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, handDiffuse);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, handNormal);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
 			//firstly the torso
 			mat4 torsoModel = mat4(1.0f);
 			torsoModel = translate(torsoModel, goblin2Pos);
@@ -641,13 +713,7 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &torsoModel[0][0]);
 			torso.draw(shader);
 
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, handDiffuse);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, handNormal);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+			
 
 			//then the right hand
 			mat4 rHandModel = torsoModel;
@@ -725,6 +791,23 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBarModel[0][0]);
 			glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.0f, 1.0f, 0.0f);
 			box.draw(shader);
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, helmetC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, helmetN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			mat4 helmetModel = torsoModel;
+			helmetModel = translate(helmetModel, vec3(0.0f, 0.9f, -0.1f));
+			helmetModel = rotate(helmetModel, 180.0f, vec3(0.0f, 1.0f, 0.0f));
+			helmetModel = scale(helmetModel, vec3(0.8f, 0.8f, 0.8f));
+			mat4 helmetMVP = ProjectionMatrix * ViewMatrix * helmetModel;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &helmetMVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &helmetModel[0][0]);
+			helmet.draw(shader);
 		}
 		//goblin3
 		{
@@ -748,10 +831,10 @@ int main()
 
 			//then the right hand
 			mat4 rHandModel = torsoModel;
-			//if (isSwinging) {
-			//	float swingAngle = sin(swingTimer) * 90.0f;
-			//	rHandModel = rotate(rHandModel, swingAngle, vec3(1.0f, 0.0f, 0.0f));
-			//}
+			/*if (g3IsSwinging) {
+				float swingAngle = sin(g3SwingTimer) * 80.0f;
+				rHandModel = rotate(rHandModel, radians(swingAngle), vec3(1.0f, 0.0f, 0.0f));
+			}*/
 			rHandModel = translate(rHandModel, vec3(0.7f, 0.3f, 0.4f));
 			rHandModel = rotate(rHandModel, -80.0f, vec3(1.0f, 0.0f, 0.0f));
 			rHandModel = rotate(rHandModel, -20.0f, vec3(0.0f, 1.0f, 0.0f));
@@ -761,6 +844,8 @@ int main()
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &rHandMVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &rHandModel[0][0]);
 			box.draw(shader);
+
+			
 
 			//then the left hand
 			mat4 lHandModel = torsoModel;
@@ -836,7 +921,85 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &healthBarModel[0][0]);
 			glUniform3f(glGetUniformLocation(shader.getId(), "objectColor"), 0.0f, 1.0f, 0.0f);
 			box.draw(shader);
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, helmetC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, helmetN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			mat4 helmetModel = torsoModel;
+			helmetModel = translate(helmetModel, vec3(0.0f, 0.9f, -0.1f));
+			helmetModel = rotate(helmetModel, 180.0f, vec3(0.0f, 1.0f, 0.0f));
+			helmetModel = scale(helmetModel, vec3(0.8f, 0.8f, 0.8f));
+			mat4 helmetMVP = ProjectionMatrix * ViewMatrix * helmetModel;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &helmetMVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &helmetModel[0][0]);
+			helmet.draw(shader);
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, spearC);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, spearN);
+			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+			mat4 spearModel = rHandModel;
+			spearModel = translate(spearModel, vec3(0.0f, 0.0f, 1.5f));
+			spearModel = rotate(spearModel, -70.0f, vec3(1.0f, 0.0f, 0.0f));
+			spearModel = scale(spearModel, vec3(15.0f, 40.0f, 15.0f));
+			mat4 spearMVP = ProjectionMatrix * ViewMatrix * spearModel;
+			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &spearMVP[0][0]);
+			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &spearModel[0][0]);
+			spear.draw(shader);
 		}
+		/*if (inFight) {
+			vec3* gPositions[3] = { &goblin1Pos, &goblin2Pos, &goblin3Pos };
+			float* gHealths[3] = { &goblin1Health, &goblin2Health, &goblin3Health };
+			float* gTimers[3] = { &g1SwingTimer, &g2SwingTimer, &g3SwingTimer };
+			bool* gSwinging[3] = { &g1IsSwinging, &g2IsSwinging, &g3IsSwinging };
+			for (int i = 0; i < 3; i++) {
+				if (*gHealths[i] <= 0) continue;
+
+				float dist = distance(playerPos, *gPositions[i]);
+
+				if (dist < detectionRange && dist > attackRange) {
+					vec3 dir = normalize(playerPos - *gPositions[i]);
+					gPositions[i]->x += dir.x * goblinSpeed * deltaTime;
+					gPositions[i]->z += dir.z * goblinSpeed * deltaTime;
+				}
+
+				if (dist <= attackRange && !(*gSwinging[i])) {
+					*gSwinging[i] = true;
+					*gTimers[i] = 0.0f;
+				}
+
+				if (*gSwinging[i]) {
+					*gTimers[i] += deltaTime * 6.0f;
+					if (*gTimers[i] > 3.14f) {
+						*gSwinging[i] = false;
+						if (dist <= attackRange + 2.0f) playerHealth -= 5.0f;
+					}
+				}
+			}*/
+		
+
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, princessC);
+		glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+		mat4 princessModel = mat4(1.0f);
+		princessModel = translate(princessModel, vec3(0.0f, 0.0f, 1.5f));
+		//princessModel = rotate(princessModel, -70.0f, vec3(1.0f, 0.0f, 0.0f));
+		princessModel = scale(princessModel, vec3(15.0f, 40.0f, 15.0f));
+		mat4 princessMVP = ProjectionMatrix * ViewMatrix * princessModel;
+		glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &princessMVP[0][0]);
+		glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &princessModel[0][0]);
+		princess.draw(shader);
 		//apples
 		{}
 		{
@@ -1207,27 +1370,6 @@ int main()
 				registerCollide(statue2Model, vec3(80.0f, 10.0f, 50.0f), vec3(0.2f, 0.2f, 0.2f));
 				statue2Model.draw(shader);
 			}
-			//statue3
-			{
-				shader.use();
-
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, church_StatueC);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-
-				glActiveTexture(GL_TEXTURE1);
-				glBindTexture(GL_TEXTURE_2D, church_StatueN);
-				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-215.0f, 10.0f, -205.0f));
-				ModelMatrix = rotate(ModelMatrix, 130.0f, vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(0.7f, 0.7f, 0.7f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-				church_StatueModel.draw(shader);
-			}
 		}
 		//Tent
 		{
@@ -1285,8 +1427,8 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-			armorModel.draw(shader);
+			if(!equippedArmor)
+				armorModel.draw(shader);
 		}
 		//fountain
 		{
@@ -3411,7 +3553,6 @@ int main()
 			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-			registerCollide(signModel, vec3(-60.0f, 10.0f, 103.0f), vec3(8.0f, 8.0f, 8.0f));
 			signModel.draw(shader);
 		}
 		//witchhouse
@@ -3469,17 +3610,22 @@ int main()
 			glBindTexture(GL_TEXTURE_2D, swordN);
 			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
 
-			float bobbingOffset = sin(currentFrame * 2.0f) * 0.5f;
-			ModelMatrix = glm::mat4(1.0);
-			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-205.0f, 10.0f + bobbingOffset, 200.0f));
-			float rotationAngle = currentFrame * 150.0f;
-			ModelMatrix = rotate(ModelMatrix, radians(rotationAngle), vec3(0.0f, 1.0f, 0.0f));
-			ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
-			MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+			if (!swordTaken) {
+				float bobbingOffset = sin(currentFrame * 2.0f) * 0.5f;
+				ModelMatrix = glm::mat4(1.0);
+				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-205.0f, 10.0f + bobbingOffset, 200.0f));
+				float rotationAngle = currentFrame * 150.0f;
+				ModelMatrix = rotate(ModelMatrix, radians(rotationAngle), vec3(0.0f, 1.0f, 0.0f));
+				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-			swordModel.draw(shader);
+				swordModel.draw(shader);
+			}
+			else {
+
+			}
 		}
 		//tombstones
 		{
@@ -9591,7 +9737,7 @@ int main()
 			ImGui::Separator();
 			ImGui::TextWrapped("This is your very first mission. You must travel back in time to the 17th century and save the Princess of Luminara from the gypsy goblins.");
 			ImGui::TextWrapped("It will not be an easy mission, be careful the past is unforgiving, and danger lurks at every step.");
-			ImGui::TextWrapped("I wish you goodluck. As soon as you arrive in the Kingdom of Luminara the Omnitrix will guide.");
+			ImGui::TextWrapped("I wish you goodluck! As soon as you arrive in the Kingdom of Luminara the Omnitrix will guide you.");
 
 			ImGui::Spacing();
 			if (ImGui::Button("Travel?", ImVec2(120, 0))) {
@@ -9630,18 +9776,130 @@ int main()
 				ImGui::Separator();
 				ImGui::TextWrapped("Now that you have restored your health go look for the King.");
 				ImGui::BulletText("HINT! Look for the castle.");
-				if (abs(playerPos.x - kingBobPos.x) < 15.0f) {
+				if (distance(playerPos, kingBobPos) < 15.0f) {
 					ImGui::Spacing();
 					ImGui::Separator();
 					if (ImGui::Button("Talk to King Bob", ImVec2(-1.0f, 40.0f))) {
 						questKing1 = false;
-						questArmour = true;
+						questArmor = true;
 					}
 				}
 				ImGui::End();
-
-
 			}
+			if (questArmor) {
+				ImGui::Begin("Acquire Armour", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+				if (!questArmorStarted) {
+					ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1), "BELOOOOO, Welcome to the Kingdom of Luminara!");
+					ImGui::Separator();
+					ImGui::TextWrapped("Dark times have fallen upon this kingdom. My daughter, the princess, has been taken hostage by the Gypsy goblins, and I need your help to find her. You will not survive this battle unprepared. Arm yourself with proper armor and a sword. Go to the blacksmith i've prepared you something there.");
+					if (ImGui::Button("Start quest", ImVec2(-1.0f, 40.0f)))
+						questArmorStarted = true;
+				}
+				else{
+					ImGui::TextColored(ImVec4(1, 0.9f, 0, 1), "ACTIVE MISSION:");
+					ImGui::Separator();
+					ImGui::TextWrapped("Find the blacksmith in the village and acquire proper armour for the battle ahead.");
+					ImGui::BulletText("HINT! At the gate is a sign that indicates where the blacksmith is.");
+					if (distance(playerPos, armorPos) < 10.0f) {
+						ImGui::Spacing();
+						ImGui::Separator();
+						if (ImGui::Button("Pick up Armour", ImVec2(-1.0f, 40.0f))) {
+							questArmor = false;
+							questKing2 = true;
+							equippedArmor = true;
+						}
+					}
+				}
+				ImGui::End();
+			}
+			if (questKing2){
+				ImGui::Begin("Return to King Bob", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+				ImGui::TextColored(ImVec4(1, 0.9f, 0, 1), "ACTIVE MISSION:");
+				ImGui::Separator();
+				ImGui::TextWrapped("Looks like you are protected with this armor. Go back to King Bob for further instructions.");
+				ImGui::BulletText("HINT! Look for the castle.");
+				if (distance(playerPos, kingBobPos) < 15.0f) {
+					ImGui::Spacing();
+					ImGui::Separator();
+					if (ImGui::Button("Talk to King Bob", ImVec2(-1.0f, 40.0f))) {
+						questKing2 = false;
+						questWitch = true;
+					}
+				}
+				ImGui::End();
+			}
+			if(questWitch){
+				ImGui::Begin("Finding the Witch", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+				if (!questWitchStarted) {
+					ImGui::TextWrapped("This armor suits you very well Knight! Now all you need is a sword! This is a special sword, it used to belong to my dear Father, but i trust it in your hands.");
+					if (ImGui::Button("Start quest", ImVec2(-1.0f, 40.0f))) {
+						questWitchStarted = true;
+					}
+				}
+				else {
+					ImGui::TextColored(ImVec4(1, 0.9f, 0, 1), "ACTIVE MISSION:");
+					ImGui::Separator();
+					ImGui::TextWrapped("Find the Witch's Hut outside the village and tell her to give you the Sword of Luminara. You just tell her i sent you.");
+					ImGui::BulletText("HINT! At the gate is a sign that indicates where the blacksmith is.");
+					if (distance(playerPos, witchPos) < 10.0f) {
+						ImGui::Spacing();
+						ImGui::Separator();
+						if (ImGui::Button("Talk to witch", ImVec2(-1.0f, 40.0f))) {
+							talkToWitch = true;
+							questWitch = false;
+						}
+					}
+				}
+				ImGui::End();
+			}
+			if (talkToWitch) {
+				ImGui::Begin("The strange witch", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+				ImGui::TextWrapped("Ohh, a Traveler!? Haven't seen one of you in ages. So, the King sent you for his father's blade?");
+				ImGui::TextWrapped("\nFine. Take the Sword of Luminara. It's the only thing that can pierce goblin hide. Now leave before anyone sees we've spoken!");
+				if (ImGui::Button("Take Sword of Luminara", ImVec2(-1.0f, 40.0f))) {
+					talkToWitch = false;
+					questKing3 = true;
+					swordTaken = true;
+				}
+				ImGui::End();
+			}
+			if (questKing3) {
+				ImGui::Begin("Return to King Bob", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+				ImGui::TextColored(ImVec4(1, 0.9f, 0, 1), "ACTIVE MISSION:");
+				ImGui::Separator();
+				ImGui::TextWrapped("You have the Sword of Luminara! Now return to King Bob at the castle and prepare for the battle ahead.");
+				ImGui::BulletText("HINT! Look for the castle.");
+				if (distance(playerPos, kingBobPos) < 15.0f) {
+					ImGui::Spacing();
+					ImGui::Separator();
+					if (ImGui::Button("Talk to King Bob", ImVec2(-1.0f, 40.0f))) {
+						questKing3 = false;
+						questFight = true;
+					}
+				}
+				ImGui::End();
+			}
+			if (questFight) {
+				ImGui::Begin("Saving Princess", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+				ImGui::TextColored(ImVec4(1, 0.9f, 0, 1), "FINAL MISSION:");
+				ImGui::Separator();
+				ImGui::TextWrapped("You are now ready to face the gypsy goblins and save the princess! They have taken her to their Golden Forrest, which is located somewhere Far in North-East.\n");
+				ImGui::TextWrapped("Be careful they are some fearless creatures.\n I wish you goodluck.\n");
+				if(ImGui::Button("Start Mission", ImVec2(-1.0f, 40.0f))) {
+					questFight = false;
+					inFight = true;
+				}
+				ImGui::End();
+			}
+			if (inFight) {
+				ImGui::Begin("Saving Princess", NULL, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+				ImGui::TextColored(ImVec4(1, 0.9f, 0, 1), "FINAL MISSION:");
+				ImGui::Separator();
+				ImGui::TextWrapped("Find and defeat the gypsy goblins in the Golden Forrest and save the Princess!");
+				ImGui::BulletText("HINT! Head North-East from the village.");
+				ImGui::End();
+			}
+
 
 			
 		}
@@ -9771,29 +10029,6 @@ void processKeyboardInput()
 		camera.rotateOx(-moveSpeed);
 }
 
-unsigned int loadCubeMap(std::vector<std::string> faces)
-{
-	unsigned int textureID;
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-	for (unsigned int i = 0; i < faces.size(); i++) {
-		unsigned int width, height;
-		unsigned char* data = loadRawBMP(faces[i].c_str(), width, height);
-		if (data) {
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-				0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data
-			);
-			delete[] data;
-		}
-	}
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	return textureID;
-}
-
 void registerCollide(Mesh& mesh, vec3 pos, vec3 scale) {
 	Collide box;
 	box.min = (mesh.minB * scale) + pos;
@@ -9806,7 +10041,7 @@ void registerCollide(Mesh& mesh, vec3 pos, vec3 scale) {
 
 	for (int x = minX; x <= maxX; x++) {
 		for (int z = minZ; z <= maxZ; z++) {
-			if (x >= 0 && x < 100 && z >= 0 && z < 100) {
+			if (x >= 0 && x < 99 && z >= 0 && z < 99) {
 				grid[x][z].push_back(box);
 			}
 		}
