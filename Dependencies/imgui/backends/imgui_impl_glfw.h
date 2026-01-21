@@ -22,10 +22,10 @@
 // - Introduction, links and more at the top of imgui.cpp
 
 #pragma once
-//#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"// -- Petru
+#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"// -- Petru
 //#include "C:\ECG\acg\Dependencies\imgui\imgui.h"// -- Alexutz
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"// -- Petru Calc
-#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h" //--Alex
+//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h" //--Alex
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"      // IMGUI_IMPL_API
 #ifndef IMGUI_DISABLE
 

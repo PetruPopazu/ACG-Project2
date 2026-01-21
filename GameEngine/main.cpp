@@ -17,13 +17,13 @@
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h" //-- Petru Calc
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Petru Calc
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h" //-- Petru Calc
-#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h" //-- Alex
-#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Alex
-#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h" //--Alex
+//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\imgui.h" //-- Alex
+//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h" //-- Alex
+//#include "C:\Users\Popazu\Desktop\ECG\ProjGit\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h" //--Alex
 
-//#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"
-//#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
-//#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h"
+#include "D:\ACG\ACG-Project2\Dependencies\imgui\imgui.h"
+#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
+#include "D:\ACG\ACG-Project2\Dependencies\imgui\backends\imgui_impl_opengl3.h"
 
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\imgui.h"
 //#include "H:\alexutzvaci\PetruPopazu\ACG-Project2\Dependencies\imgui\backends\imgui_impl_glfw.h"
@@ -506,6 +506,61 @@ int main()
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &rHandModel[0][0]);
 			box.draw(shader);
 
+			//sword
+			{
+				shader.use();
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, swordC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, swordN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+
+				if (!swordTaken) {
+					float bobbingOffset = sin(currentFrame * 2.0f) * 0.5f;
+					ModelMatrix = glm::mat4(1.0);
+					ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-205.0f, 10.0f + bobbingOffset, 200.0f));
+					float rotationAngle = currentFrame * 150.0f;
+					ModelMatrix = rotate(ModelMatrix, radians(rotationAngle), vec3(0.0f, 1.0f, 0.0f));
+					ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
+					MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
+
+					swordModel.draw(shader);
+				}
+				else {
+					mat4 marianSwordModel = rHandModel;
+					marianSwordModel = translate(marianSwordModel, vec3(0.0f, 3.0f, 3.0f));
+					marianSwordModel = rotate(marianSwordModel, radians(90.0f), vec3(1.0f, 0.0f, 0.0f));
+					marianSwordModel = scale(marianSwordModel, vec3(15.0f, 15.0f, 15.0f));
+					mat4 swordMVP = ProjectionMatrix * ViewMatrix * marianSwordModel;
+					glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &swordMVP[0][0]);
+					glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &marianSwordModel[0][0]);
+					swordModel.draw(shader);
+				}
+			}
+			if (!equippedArmor) {
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, handDiffuse);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, handNormal);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+			}
+			else {
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, armorC);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, armorN);
+				glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
+			}
+
 			//then the left hand
 			mat4 lHandModel = torsoModel;
 			lHandModel = translate(lHandModel, vec3(-0.7f, 0.3f, 0.4f));
@@ -551,6 +606,7 @@ int main()
 				box.draw(shader);
 			}
 			//Health bar
+			if(!showStory)
 			{
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, red);
@@ -3655,34 +3711,7 @@ int main()
 				vraji.draw(shader);
 			}
 		}
-		//sword
-		{
-			shader.use();
-
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, swordC);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, swordN);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_normal"), 1);
-
-			if (!swordTaken) {
-				float bobbingOffset = sin(currentFrame * 2.0f) * 0.5f;
-				ModelMatrix = glm::mat4(1.0);
-				ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-205.0f, 10.0f + bobbingOffset, 200.0f));
-				float rotationAngle = currentFrame * 150.0f;
-				ModelMatrix = rotate(ModelMatrix, radians(rotationAngle), vec3(0.0f, 1.0f, 0.0f));
-				ModelMatrix = scale(ModelMatrix, glm::vec3(5.0f, 5.0f, 5.0f));
-				MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
-				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
-				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
-
-				swordModel.draw(shader);
-			}
-			else {
-
-			}
-		}
+		
 		//tombstones
 		{
 			//tombstone1
@@ -9978,7 +10007,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 
 void processKeyboardInput()
 {
-	float moveSpeed = 100.0f * deltaTime;
+	float moveSpeed = 25.0f * deltaTime;
 	vec3 nextPos = playerPos;
 	if (window.isPressed(GLFW_KEY_LEFT_SHIFT))
 		moveSpeed *= 2.0f;
