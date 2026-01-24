@@ -170,9 +170,7 @@ Mesh MeshLoaderObj::loadObj(const std::string &filename)
 	mesh.minB = minB;
 	mesh.maxB = maxB;
 
-	std::cout << "Model: " << filename
-		<< " | Min: " << minB.x << ", " << minB.y << ", " << minB.z
-		<< " | Max: " << maxB.x << ", " << maxB.y << ", " << maxB.z << std::endl;
+	//std::cout << "Model: " << filename << " | Min: " << minB.x << ", " << minB.y << ", " << minB.z << " | Max: " << maxB.x << ", " << maxB.y << ", " << maxB.z << std::endl;
 
 	return mesh;
 }

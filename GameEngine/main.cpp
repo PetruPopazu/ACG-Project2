@@ -36,9 +36,9 @@ struct Collide {
 };
 
 const float square_size = 20.0f;
-const float grid_size = 100.0f;
+const float grid_size = 200.0f;
 const float offset = 1000.0f;//we use the offset in order to have positive values for the array
-std::vector<Collide> grid[100][100];
+std::vector<Collide> grid[200][200];
 
 void registerCollide(Mesh& mesh, vec3 worldPos, vec3 scale);
 bool isColliding(vec3 playerPos);
@@ -557,7 +557,7 @@ int main()
 				}
 				else {
 					mat4 marianSwordModel = rHandModel;
-					marianSwordModel = translate(marianSwordModel, vec3(0.1f, 0.0f, 2.1f));
+					marianSwordModel = translate(marianSwordModel, vec3(1.0f, 0.0f, 2.5f));
 					marianSwordModel = rotate(marianSwordModel, radians(90.0f), vec3(1.0f, 0.0f, 0.0f));
 					marianSwordModel = scale(marianSwordModel, vec3(15.0f, 15.0f, 15.0f));
 					mat4 swordMVP = ProjectionMatrix * ViewMatrix * marianSwordModel;
@@ -1069,7 +1069,7 @@ int main()
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &helmetModel[0][0]);
 				helmet.draw(shader);
 
-				glActiveTexture(GL_TEXTURE0);
+				/*glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, spearC);
 				glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
 
@@ -1084,10 +1084,10 @@ int main()
 				mat4 spearMVP = ProjectionMatrix * ViewMatrix * spearModel;
 				glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &spearMVP[0][0]);
 				glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &spearModel[0][0]);
-				spear.draw(shader);
+				spear.draw(shader);*/
 			}
 		}
-		if (inFight) {
+		if (inFight && !isDead) {
 			vec3* gPositions[3] = { &goblin1Pos, &goblin2Pos, &goblin3Pos };
 			float* gHealths[3] = { &goblin1Health, &goblin2Health, &goblin3Health };
 			float* gTimers[3] = { &g1SwingTimer, &g2SwingTimer, &g3SwingTimer };
@@ -1422,11 +1422,11 @@ int main()
 		}
 		//Castel
 		{
-			shader.use();
+			mountainShader.use();
 
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, stoneTex);
-			glUniform1i(glGetUniformLocation(shader.getId(), "texture_diffuse"), 0);
+			glUniform1i(glGetUniformLocation(mountainShader.getId(), "texture_diffuse"), 0);
 
 			ModelMatrix = glm::mat4(1.0);
 			ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-45.0f, 9.0f, -300.0f));
@@ -1436,7 +1436,7 @@ int main()
 			glUniformMatrix4fv(MatrixID2, 1, GL_FALSE, &MVP[0][0]);
 			glUniformMatrix4fv(ModelMatrixID, 1, GL_FALSE, &ModelMatrix[0][0]);
 
-			castle.draw(shader);
+			castle.draw(mountainShader);
 		}
 		//king bob
 		{
@@ -9976,7 +9976,7 @@ int main()
 					ImGui::TextColored(ImVec4(1, 0.9f, 0, 1), "ACTIVE MISSION:");
 					ImGui::Separator();
 					ImGui::TextWrapped("Find the Witch's Hut outside the village and tell her to give you the Sword of Luminara. You just tell her i sent you.");
-					ImGui::BulletText("HINT! At the gate is a sign that indicates where the blacksmith is.");
+					ImGui::BulletText("HINT! At the gate is a sign that indicates where the witch is.");
 					if (distance(playerPos, witchPos) < 10.0f) {
 						ImGui::Spacing();
 						ImGui::Separator();
@@ -10198,7 +10198,7 @@ void registerCollide(Mesh& mesh, vec3 pos, vec3 scale) {
 
 	for (int x = minX; x <= maxX; x++) {
 		for (int z = minZ; z <= maxZ; z++) {
-			if (x >= 0 && x < 99 && z >= 0 && z < 99) {
+			if (x >= 0 && x < 199 && z >= 0 && z < 199) {
 				grid[x][z].push_back(box);
 			}
 		}
@@ -10209,7 +10209,7 @@ bool isColliding(vec3 pos) {
 	int cx = (pos.x + offset) / square_size;
 	int cz = (pos.z + offset) / square_size;
 
-	if (cx < 0 || cx >= 100 || cz < 0 || cz >= 100)
+	if (cx < 0 || cx >= 200 || cz < 0 || cz >= 200)
 		return false;
 
 	for (Collide box : grid[cx][cz]) {
